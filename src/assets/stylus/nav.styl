@@ -1,0 +1,78 @@
+@import './public.styl';
+.Nav
+  width: 100%
+  height: 120px
+  border-bottom: 1px solid #eee
+  background-color: $cNavtopClear
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1)
+  display: flex
+  flex-flow: column nowrap
+  justify-content: space-between
+  .top
+    box-sizing: border-box
+    width: 100%
+    color: #ffffff
+    height: 60px
+    background-color: $cNavtopDeep
+    padding: 0 20px
+    font-size: 16px
+    .left
+      display: flex
+      flex-flow: row nowrap
+      align-items: center
+      align-items: center
+      .now
+        font-weight: 600
+        color: $cTip
+        box-shadow: 0 -4px 0 $cTip inset
+      p
+        height: 60px
+        line-height: 60px
+        margin-right: 40px
+        cursor pointer
+  .bottom
+    // font-size: 15px
+    box-sizing: border-box
+    padding: 0 50px
+    color:#aaa
+    height: 60px;
+    width: 100%;
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+    align-items: center
+    .left
+      height: 100%
+      display: flex
+      flex-flow: row nowrap
+      align-items: center
+      .now
+        font-weight: 600
+        color: $cTip
+      // box-shadow: 0 -2px 0 $cTip inset
+      li
+        cursor pointer
+        line-height: 60px;
+        height: 100%;
+        margin-right: 30px
+    .right
+      .searchIput 
+        padding: 0 15px
+        width: 180px
+        height: 30px
+        border: none
+        display: flex
+        flex-flow: row nowrap
+        align-items: center 
+        justify-content: space-between
+        background-color: rgba(0,0,0,0.26)
+        border-radius: 30px
+        input 
+          color: #fff
+          background-color rgba(0,0,0,0)
+          border: none 
+          outline: none
+        span 
+          cursor pointer
+          &::before
+            color: rgba(255,255,255,.65)
