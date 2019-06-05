@@ -1,0 +1,124 @@
+.LoginBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 350px;
+  display: flex;
+  color: #000;
+  border-radius: 10px;
+  flex-flow: row nowrap;
+  align-items: center;
+  background-color: rgba(230, 230, 230, 0.7);
+  moz-user-select: -moz-none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.LoginBox div {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.LoginBox .log {
+  position: relative;
+  width: 320px;
+  height: 100%;
+}
+.LoginBox .log::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 65%;
+  top: 50%;
+  right: 0;
+  background-color: #000;
+  transform: translate(0, -50%);
+}
+.LoginBox .log span::before {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 62px;
+}
+.LoginBox .log h1 {
+  margin-top: 20px;
+  font-weight: 500;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.7);
+}
+.LoginBox .input {
+  width: 280px;
+  height: 100%;
+  display: flex;
+  padding: 0 60px 0 40px;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+}
+.LoginBox .input p {
+  font-weight: 600;
+}
+.LoginBox .input input {
+  color: #873800;
+  margin: 10px 0;
+  width: 100%;
+  height: 26px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.7);
+  outline: none;
+  -moz-user-select: auto;
+  -o-user-select: auto;
+  -khtml-user-select: auto;
+  -webkit-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+}
+.LoginBox .input input::selection {
+  background-color: #fff;
+}
+.LoginBox .input .seed {
+  width: 100%;
+  height: 26px;
+  margin: 10px 0;
+  position: relative;
+}
+.LoginBox .input .seed .textBox {
+  position: absolute;
+  width: 100%;
+  display: block;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.4);
+}
+.LoginBox .input .seed span {
+  position: absolute;
+}
+.LoginBox .input .seed span.Loginline {
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.LoginBox .input .seed span.box {
+  cursor: move;
+  top: 100%;
+  transform: translate(0, -50%);
+  width: 5px;
+  height: 100%;
+  background-color: #000;
+}
+.LoginBox .input .loginBtn {
+  cursor: pointer;
+  color: #fff;
+  margin-top: 20px;
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  border: none;
+  outline: none;
+  background-color: #000000;
+}

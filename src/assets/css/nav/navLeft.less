@@ -1,0 +1,223 @@
+    @import "./../public.less";
+    
+    .el-menu-vertical-demo:not(.el-menu--collapse) {
+        /* 设置滚动条的样式 */
+        &::-webkit-scrollbar {
+          width: 0;
+        }
+
+        /* 滚动槽 */
+        &::-webkit-scrollbar-track {
+          -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
+          border-radius: 0;
+        }
+
+        /* 滚动条滑块 */
+        &::-webkit-scrollbar-thumb {
+          border-radius: 0;
+          background: rgba(0, 0, 0, 0.1);
+          -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+        }
+    }
+
+    .navLeft{
+        position: relative;
+        // box-shadow: 6px 4px 0 rgba(0,0,0,0.1);
+        .isCollapseIcon {
+            display: none;
+            width: 50px;
+            height: 50px;
+            top: 0;
+            left: 100%;
+            position: absolute;
+            .collapseIcon {
+                display: block;
+                width: 100%;
+                height: 100%;
+                background-color: @oColor2;
+                // background-color: #fff;
+            }
+        }
+        .el-menu-vertical-demo{
+            border: none;
+            position: relative;
+            background-color: @cColor1;
+            width: 60px;
+            height: 100vh;
+            overflow-y: auto;
+            &:not(.el-menu--collapse) {
+              width: 220px;
+              min-height: 100vh;
+
+            }
+            .setting {
+                // // border-top: 1px solid @bColor3;
+                // &::before{
+                //   content: "";
+                //   position: absolute;
+                //   width: 10px;
+                //   height: 100%;
+                //   left: 0;
+                //   top: 0;
+                //   background-color: @cColor2;
+                // }
+                background-color: @cColor1;
+                width: 220px;
+                height: 50px;
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: space-between;
+                align-items: center;
+                // padding: 0 10px;
+                box-sizing: border-box;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 10;
+                a{
+                  width: 55px;
+                  height: 50px;
+                  span {
+                    display: block;
+                    position: relative;
+                    width: 55px;
+                    height: 100%;
+                    cursor: pointer;
+
+                    // margin-right: 5px;
+                    // background-color: @fColor1;
+                    &:hover {
+                      background-color: @cColor2;
+                    }
+
+                    &::before {
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                    }
+                  }
+                }
+            }
+            .userBox{
+                top: 50px;
+                left: 0;
+                z-index: 10;
+                width: 220px;
+                height: 160px;
+                position: fixed;
+                background-image: url("./../../img/userBg.jpg");
+                background-size: cover;
+                background-position: center;
+                box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+                &::before{
+                    content: "";
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    background-color: @cColor1;
+                    opacity: 0.5;
+                    z-index: 0;
+                }
+                div {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-flow: column nowrap;
+                    justify-content: center;
+                    padding: 0 40px;
+                    box-sizing: border-box;
+                    img {
+                      cursor: pointer;
+                      width: 40px;
+                      height: 40px;
+                      border-radius: 40px;
+                      background-color: @oColor1;
+                      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2)
+                    }
+
+                    span:nth-of-type(1) {
+                      margin: 6px 0;
+                      font-size: 16px;
+                      font-weight: 500;
+                      color: #fff;
+                    }
+
+                    span:nth-of-type(2) {
+                      font-size: 14px;
+                      font-weight: 400;
+                      color: @bColor1;
+                    }
+                }
+            }
+            .nullBox{
+                height: 210px;
+            }
+            .el-submenu{
+                .el-submenu__title {
+                  position: relative;
+                  .menuTitleBox{
+                    left: 0;
+                    top: 0;
+                    padding: 0 20px;
+                    width: 100%;
+                    height: 100%;
+                    box-sizing: border-box;
+                    position: absolute;
+                    background-color: @cColor1;
+                    border-bottom: 1px solid rgba(255,255,255,0.1);
+                    &:hover{
+                      background-color: @cColor3;
+                      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+                      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+                      
+                    }
+                    i::before {
+                      color: #fff !important;
+                      margin-right: 10px;
+                    }
+                    .nemuTitle {
+                      color: #fff;
+                      font-size: 14px;
+                      font-weight: 500;
+                      letter-spacing: 3px;
+                    }
+                  }
+                  i::before {
+                    color: #fff !important;
+                  }
+                }
+                .el-menu{
+                    .el-menu-item-group {
+                      background-color: @cColor2;
+                      .el-menu-item {
+                        color: @bColor2;
+                        padding: 0 0 0 65px !important;
+                        position: relative;
+
+                        a {
+                          position: absolute;
+                          top: 0;
+                          left: 0;
+                          padding-left: 55px;
+                          box-sizing: border-box;
+                          width: 100%;
+                          height: 100%;
+                          letter-spacing: 2px;
+                        }
+
+                        &:hover {
+                          background-color: @cColor3;
+                        }
+                      }
+                    }
+                }
+            }
+        }
+    }

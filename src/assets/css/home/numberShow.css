@@ -1,0 +1,49 @@
+.NumberShow {
+  width: 260px;
+  height: 100px;
+  display: flex;
+  flex-flow: row nowrap;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  color: #fff;
+}
+.NumberShow .icon {
+  width: 100px;
+  height: 100%;
+  background-color: #006d75;
+  position: relative;
+}
+.NumberShow .icon span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.NumberShow .icon span::before {
+  font-size: 48px;
+}
+.NumberShow .title {
+  width: 160px;
+  height: 100%;
+  text-indent: 10px;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  background-color: #08979c;
+}
+.NumberShow .title p {
+  height: 30px;
+  width: 100%;
+  font-weight: 500;
+  line-height: 30px;
+}
+.NumberShow .title h1 {
+  width: 100%;
+  height: 50px;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  line-height: 50px;
+}

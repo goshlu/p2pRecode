@@ -1,0 +1,144 @@
+@import "./../public.less";
+
+.LoginBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 350px;
+    display: flex;
+    color: #000;
+    border-radius: 10px;
+    flex-flow: row nowrap;
+    align-items: center;
+    background-color: rgba(230,230,230,0.7);
+    // 禁止文字被鼠标选中 
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select:none;
+    -khtml-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+
+  div {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .log {
+      position: relative;
+        &::after{
+            content: "";
+            position: absolute;
+            width: 1px;
+            height: 65%;
+            top: 50%;
+            right: 0;
+            background-color: #000;
+            transform: translate(0,-50%);
+        }
+        width: 320px;
+        height: 100%;
+        span::before{
+            // color: @fColor4;
+            color: rgba(0,0,0,0.5);
+            font-size: 62px;
+        }
+        h1{
+            margin-top: 20px;
+            font-weight: 500;
+            font-size: 20px;
+            color: rgba(0,0,0,0.7);
+        }
+  }
+
+  .input {
+    width: 280px;
+    height: 100%;
+    display: flex;
+    padding: 0 60px 0 40px;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    p{
+        font-weight: 600;
+    }
+    input{
+        color: #873800;
+        margin: 10px 0;
+        width: 100%;
+        height: 26px;
+        border: none;
+        background-color: rgba(255,255,255,0);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.7);
+        // border-radius: 26px;
+        outline: none;
+        // 禁止文字被鼠标选中 
+        // moz-user-select: -moz-none;
+        -moz-user-select: auto;
+        -o-user-select:auto;
+        -khtml-user-select:auto;
+        -webkit-user-select:auto;
+        -ms-user-select:auto;
+        user-select:auto;
+        &::selection{
+            // color: #000;
+            background-color: #fff
+        }
+    }
+    .seed{
+        width: 100%;
+        height: 26px;
+        margin: 10px 0;
+        position: relative;
+        .textBox {
+            position: absolute;
+            width: 100%;
+            display: block;
+            // left: 50%;
+            text-align: center;
+            color: rgba(0,0,0,0.4);
+            // transform: translate(-50%,0);
+            // width: 100px;
+        }
+        span{
+            position: absolute;
+            &.Loginline {
+                bottom: 0;
+                width: 100%;
+                height: 1px;
+                background-color: rgba(0, 0, 0, 0.7);
+                // transform: translate(0,-50%)
+            }
+            &.box{
+                cursor: move;
+                // left: 10px;
+                // right: 95%;
+                top: 100%;
+                transform: translate(0,-50%);
+                width: 5px;
+                height: 100%;
+                background-color: #000;
+            }
+        }
+    }
+    .loginBtn{
+        cursor: pointer;
+        color: #fff;
+        margin-top: 20px;
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        border: none;
+        outline: none;
+        background-color: rgba(0,0,0,1);
+        &:hover{
+            // background-color: rgba(0,0,0,0.7)
+        }
+    }
+  }
+}

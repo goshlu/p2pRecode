@@ -1,0 +1,27 @@
+.Home {
+  padding: 0 20px;
+}
+.Home .homeSearch {
+  height: 120px;
+  position: relative;
+}
+.Home .homeSearch .Search {
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  transform: translate(0, -50%);
+}
+.Home .homeNumberShow {
+  margin: auto;
+  padding: 20px 0;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.Home .homeNeedDo {
+  padding: 20px 0;
+}
+.Home .charBox {
+  padding: 20px 0;
+}

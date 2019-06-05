@@ -1,0 +1,58 @@
+@import "./../public.less";
+
+.NumberShow {
+  width: 260px;
+  height: 100px;
+  display: flex;
+  flex-flow: row nowrap;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  color: #fff;
+  .icon {
+    width: 100px;
+    height: 100%;
+    background-color: @cColor3;
+    position: relative;
+    span{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        &::before{
+            font-size: 48px;
+        }
+    }
+  }
+  .title{
+      width: 160px;
+      height: 100%;
+      text-indent: 10px;
+      position: relative;
+      display: flex;
+      flex-flow: column;
+    //   align-items: center;
+      justify-content: center;
+      background-color: @cColor4;
+      p{
+        //   position: absolute;
+          height: 30px;
+        //   bottom: 0;
+          width: 100%;
+          font-weight: 500;
+        //   color: @bColor1;
+        //   text-align: center;
+          line-height: 30px;
+      }
+      h1{
+          width: 100%;
+          height: 50px;
+        //   text-align: center;
+          font-size: 32px;
+          font-weight: 500;
+          letter-spacing: 2px;
+          line-height:50px;
+      }
+  }
+}
+
