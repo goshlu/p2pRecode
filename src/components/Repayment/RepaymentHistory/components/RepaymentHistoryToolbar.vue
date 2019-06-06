@@ -6,7 +6,6 @@
         clearable
         placeholder="搜索借款方"
         prefix-icon="el-icon-search"
-        v-model="search.name"
         style="width: 200px; margin-right: 10px"
       >
       </el-input>
@@ -18,7 +17,6 @@
         clearable
         placeholder="搜索借款电话"
         prefix-icon="el-icon-search"
-        v-model="search.phone"
         style="width: 200px; margin-right: 10px"
       >
       </el-input>
@@ -26,7 +24,7 @@
 
     <!-- 选择状态 -->
     <div style="padding: 10px 0">
-      <el-select v-model="search.state" clearable placeholder="请选择">
+      <el-select clearable placeholder="请选择">
         <el-option
           v-for="item in stateOptions"
           :key="item.value"
@@ -48,12 +46,16 @@
 #search>div{
   float: left;
 }
+body{
+  padding: 0px;
+  margin: 0px;
+}
 </style>
 
 
 <script>
 export default {
-  props: ["search"],
+
   data() {
     return {
       stateOptions: [

@@ -5,7 +5,7 @@
   "author": "'Qiliin' <'joon_e@126.com'>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 172.16.6.57",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js ",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
