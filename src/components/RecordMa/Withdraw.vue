@@ -8,7 +8,7 @@
         <!-- 搜索框 -->
         <Search :searchOpt="searchOpt"/>
         <!-- 导出按钮 el-icon-download -->
-        <el-select size="mini" v-model="value2" filterable placeholder="导出">
+        <el-select size="small" v-model="value2" filterable placeholder="导出">
             <el-option
               v-for="item in options2"
               :key="item.value2"
@@ -38,11 +38,11 @@
           :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5'}"
           style="width: 100%"
         >
-          <el-table-column fixed prop="loan_id" label="充值单号" width="120"></el-table-column>
+          <el-table-column prop="loan_id" label="充值单号" width="120"></el-table-column>
           <el-table-column prop="loan_money" label="用户手机" width="120"></el-table-column>
           <el-table-column prop="loan_money" label="真实姓名" width="100"></el-table-column>
-          <el-table-column prop="loan_ deadline" label="用户来源" width="120"></el-table-column>
-          <el-table-column prop="loan_ deadline" label="应用来源" width="100"></el-table-column>
+          <!-- <el-table-column prop="loan_ deadline" label="用户来源" width="120"></el-table-column> -->
+          <!-- <el-table-column prop="loan_ deadline" label="应用来源" width="100"></el-table-column> -->
           <el-table-column prop="loan_money" label="充值金额" width="100"></el-table-column>
           <el-table-column prop="loan_money" label="到账金额" width="100"></el-table-column>
           <el-table-column prop="loan_money" label="手续费" width="80"></el-table-column>
@@ -59,7 +59,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="status" label="状态" width="100"></el-table-column>
-          <el-table-column fixed="right" label="操作" width="100">
+          <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)" type="text" size="small">审核</el-button>
             </template>

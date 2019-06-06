@@ -16,7 +16,7 @@
     </ul>
     <div class="bottom" v-if="openChildren">
       <ul class="left">
-        <li v-for="(item,index) in openChildren" :key="index">
+        <li :class="openChild===item.title?now:noo" v-for="(item,index) in openChildren" :key="index" @click="childClick(item.title)">
           <router-link :to="item.url">{{item.title}}</router-link>
         </li>
         <!-- <li class="now">角色管理</li>
@@ -52,6 +52,7 @@ export default {
       noo:"",
       input:"",
       openTitle:"",
+      openChild:"",
       openChildren:[]
     }
   },
@@ -67,12 +68,15 @@ export default {
       // console.log(index);
       this.doUpdateNavIsopenTrue(index);
       this.getNavData.forEach(element => {
-          if(element.isOpen){
-            // return element.children;
-            this.openChildren=element.children;
-            this.openTitle=element.title;
-          }
-        });
+        if(element.isOpen){
+          // return element.children;
+          this.openChildren=element.children;
+          this.openTitle=element.title;
+        }
+      });
+    },
+    childClick(title){
+      this.openChild=title;
     }
   },
 
