@@ -90,16 +90,17 @@
         prop="uptime"
         label="上架时间"
         width="200">
-        <template slot-scope="scope">
+        <!--<template slot-scope="scope">
           <span>{{scope.row.uptime | dateFormat}}</span>
-        </template>
+        </template>-->
       </el-table-column>
       <el-table-column
         prop="start_time"
-        label="开售时间">
-        <template slot-scope="scope">
-          <span>{{scope.row.uptime | dateFormat}}</span>
-        </template>
+        label="开售时间"
+        width="200">
+        <!--<template slot-scope="scope">
+          <span>{{scope.row.start_time | dateFormat}}</span>
+        </template>-->
       </el-table-column>
       <el-table-column
         prop="state"
@@ -114,7 +115,7 @@
 
 <script>
   import Pagination from './Pagination/Pagination';
-  import MyButton from './Button/Button';
+  import MyButton from '../Button/Button';
 
   export default {
     name: "TenderAll",
@@ -176,39 +177,17 @@
         typeValue:0,
         tableDataOrigin:[],
         tableData: [{
+          id:1,
+          phone:13323479765,
+          loan_name:"临时借",
+          year_mon:"2%",
+          loan_method:"",
+          loan_money:1988,
           date: '2016-05-02',
           name: '王小虎',
           province: '上海',
           city: '普陀区',
           address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1517 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1519 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-03',
-          name: '王大虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1516 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-03',
-          name: '王大虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1516 弄',
           zip: 200333
         }]
       }

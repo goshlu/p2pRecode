@@ -11,7 +11,7 @@
       style="width: 100%"
       stripe
       :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}"
-      >
+    >
       <el-table-column
         prop="cateName"
         label="分类名称"
@@ -25,13 +25,13 @@
       >
       </el-table-column>
       <el-table-column
-        prop="statusChinese"
+        prop="status"
         label="状态"
         align="center"
       >
         <template slot-scope="scope">
-          <span v-if="scope.row.status==0" class="off">{{ scope.row.statusChinese }}</span>
-          <span v-else class="on">{{ scope.row.statusChinese }}</span>
+          <span v-if="scope.row.status==0" class="off">禁用</span>
+          <span v-else class="on">启用</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -76,7 +76,7 @@
             </el-form-item>
           </el-form>
         </div>
-          <div class="btns">
+        <div class="btns">
           <el-button type="primary">确定</el-button>
           <el-button @click="showModal">取消</el-button>
         </div>
@@ -87,7 +87,7 @@
 
 <script>
   import Pagination from './Pagination/Pagination';
-  import MyButton from './Button/Button';
+  import MyButton from '../Button/Button';
   // import {getCategoryList} from '../../api'
 
   export default {
@@ -98,17 +98,10 @@
     },
     created(){
       //禁用/启用
-       this.Axios.get('http://19h4o94140.51mypc.cn/tendercategory').then(res => {
-         console.log(res);
-         this.tableData = res.data;
-          this.tableData.forEach(item => {
-            if(item.status == 0){
-              item.statusChinese = "禁用";
-            }else{
-              item.statusChinese = "启用";
-            }
-          });
-       }).catch((err)=>{console.log(err)});
+      this.Axios.get('http://19h4o94140.51mypc.cn/tendercategory').then(res => {
+        console.log(res);
+        this.tableData = res.data;
+      }).catch((err)=>{console.log(err)});
     },
     methods: {
       handleClick(row) {
@@ -125,6 +118,9 @@
       handleEdit(whatModalTitle,index, row){
         this.showModal(whatModalTitle);
         console.log(index,row);
+      },
+      handleAdd(whatModalTitle){
+        this.showModal(whatModalTitle);
       }
     },
     data() {

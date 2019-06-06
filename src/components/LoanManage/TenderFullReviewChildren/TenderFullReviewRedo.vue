@@ -191,7 +191,7 @@
 </template>
 
 <script>
-  import MyButton from '../Button/Button';
+  import MyButton from '../../Button/Button';
 
   export default {
     name: "TenderFullReviewRedo",
