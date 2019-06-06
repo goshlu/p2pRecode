@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>还款管理</h2>
-    <RepaymentToolbar/>
+    <RepaymentToolbar />
     <RepaymentTable :data="tableData"/>
     <RepaymentPage />
   </div>
@@ -32,6 +32,13 @@ export default {
     return {
       tableData: []
     };
+  },
+  watch: {
+    search: {
+      deep: true,
+      immediate: true,
+      handler: "fetchData"
+    }
   },
   methods: {
     async fetchData() {

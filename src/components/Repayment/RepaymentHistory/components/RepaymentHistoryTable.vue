@@ -1,8 +1,8 @@
 <template>
   <div id="table">
-    <el-table :data="data" :stripe="true" style="width: 100%" height="450px" align="center">
-      <el-table-column fixed type="selection" width="55"></el-table-column>
-      <el-table-column fixed prop="rep_state" label="借款方"></el-table-column>
+    <el-table :data="data" :stripe="true" style="width: 100%">
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column prop="rep_state" label="借款方"></el-table-column>
       <el-table-column prop="rep_method" label="还款方式"></el-table-column>
       <el-table-column prop="num_period" label="期数"></el-table-column>
       <el-table-column prop="rep_time" label="应还款时间"></el-table-column>
@@ -12,7 +12,7 @@
       <el-table-column prop="rep_principal" label="本金（￥）"></el-table-column>
       <el-table-column prop="rep_interest" label="利息"></el-table-column>
       <el-table-column prop="rep_late_charage" label="逾期罚息（￥）"></el-table-column>
-      <el-table-column flex="right" prop="rep_isover" label="是否逾期"></el-table-column>
+      <el-table-column prop="rep_isover" label="是否逾期"></el-table-column>
     </el-table>
   </div>
 </template>
@@ -29,11 +29,13 @@
 export default {
   data(){
     return{
-    }
+
+    };
   },
   props: ["data"],
   methods: {
   
   }
+  
 };
 </script>

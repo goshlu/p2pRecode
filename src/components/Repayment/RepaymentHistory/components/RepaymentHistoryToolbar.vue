@@ -1,30 +1,19 @@
 <template>
+<!-- 搜索 -->
   <div id="search">
-    <!-- 搜索借款方 -->
-    <div style="padding: 10px 0">
-      <el-input
-        clearable
-        placeholder="搜索借款方"
-        prefix-icon="el-icon-search"
-        style="width: 200px; margin-right: 10px"
-      >
-      </el-input>
-    </div>
-
-    <!-- 搜索借款电话 -->
-    <div style="padding: 10px 0">
-      <el-input
-        clearable
-        placeholder="搜索借款电话"
-        prefix-icon="el-icon-search"
-        style="width: 200px; margin-right: 10px"
-      >
+    <div style="padding: 10px 0px">
+      <el-input v-model="input2" class="input-with-select">
+        <el-select v-model="select" slot="prepend">
+          <el-option label="借款方" value="1"></el-option>
+          <el-option label="是否逾期" value="2"></el-option>
+        </el-select>
+        <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
     </div>
 
     <!-- 选择状态 -->
     <div style="padding: 10px 0">
-      <el-select clearable placeholder="请选择">
+      <el-select v-model="value" clearable placeholder="请选择">
         <el-option
           v-for="item in stateOptions"
           :key="item.value"
@@ -39,12 +28,12 @@
 
 <style>
 #search{
-  width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  margin: 5px 20px;
 }
-#search>div{
-  float: left;
+.el-select{
+  width: 120px;
 }
 body{
   padding: 0px;
@@ -67,7 +56,11 @@ export default {
           value: "daihuankuan",
           label: "待还款"
         }
-      ]
+      ],
+      value:'',
+      input1: '',
+      input2: '',
+      select: '',
     };
   }
 };
