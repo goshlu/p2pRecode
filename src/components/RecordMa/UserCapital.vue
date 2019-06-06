@@ -3,22 +3,21 @@
 		<el-header>
 			<el-row :gutter="15">
 				<el-col :span="7">
-					<el-input placeholder="请输入内容" v-model="uinput" class="input-with-select">
-						<el-select v-model="usel" slot="prepend" placeholder="请选择">
-							<el-option label="餐厅名" value="1"></el-option>
-							<el-option label="订单号" value="2"></el-option>
-							<el-option label="用户电话" value="3"></el-option>
+					<el-input size="small" placeholder="请输入内容" v-model="uinput" class="input-with-select">
+						<el-select size="small" class="select-width" v-model="usel"  slot="prepend" placeholder="请选择">
+							<el-option label="姓名" value="0"></el-option>
+							<el-option label="手机号" value="1"></el-option>
 						</el-select>
-						<el-button slot="append" icon="el-icon-search"></el-button>
+						<el-button size="small" @click="UserSearch" slot="append" icon="el-icon-search"></el-button>
 					</el-input>
 				</el-col>
-				<el-col :span="4" :offset="2">
+				<el-col :span="3">
 					<el-select size="small" v-model="value" filterable placeholder="请选择">
 						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 						</el-option>
 					</el-select>
 				</el-col>
-				<el-col :span="2" :offset="6">
+				<el-col :span="2" :offset="12">
 					<el-button plain size="small" @click="exportExcel">导出</el-button>
 				</el-col>
 
@@ -115,6 +114,7 @@
 				currentPage: 1, //当前页
 				input_phone: "",
 				input_name: "",
+				pubdata:"",
 				options: [{
 						value: 0,
 						label: "全部用户"
@@ -135,14 +135,25 @@
 			this.axiosFun();
 		},
 		watch: {
-			input_phone() {
-				this.axiosFun();
-			},
-			input_name() {
+			value(){
+				this.inputdatacheck();
 				this.axiosFun();
 			}
 		},
 		methods: {
+			UserSearch(){
+				this.inputdatacheck();
+				this.axiosFun();
+			},
+			inputdatacheck(){
+					if(this.usel==0){
+						this.input_phone="";
+						this.input_name=this.uinput;
+					}else{
+						this.input_name=""
+						this.input_phone=this.uinput;
+					}
+			},
 			axiosFun() {
 				this.Axios.get("http://19h4o94140.51mypc.cn/usercapital", {
 						params: {
@@ -195,7 +206,16 @@
 		},
 	};
 </script>
-<style scoped>
+<style scoped="scoped">
+/* 	 .el-select .el-input {
+    width: 90px;
+  } */
+  .select-width{
+	  width:100px;
+  }
+  .input-with-select{
+	  width: 300px;
+  }
 	.el-header {
 		/* background-color: #B3C0D1; */
 		color: orange;
