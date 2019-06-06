@@ -1,9 +1,10 @@
 <template>
   <div class="wrapper">
     <div class="wrapper-content">
-      <div class="title">
+      <!-- <div class="title">
         <h2>标的上架</h2>
-      </div>
+      </div> -->
+    <Title nav="贷款管理" navItem="新增贷款"/>
       <!-- search -->
       <div class="searchWrap">
         <div style="margin-top: 15px;">
@@ -62,9 +63,13 @@
 </template>
 
 <script>
+import Title from "./../../commonComponents/headerTitle"
+
 export default {
   name: "BidFrameHome",
-  components: {},
+  components: {
+    Title
+  },
   data() {
     return {
       paginations: {
@@ -148,11 +153,11 @@ export default {
 .el-table {
   margin-top: 20px;
 }
-.title {
+/* .title {
   width: 100%;
   height: 40px;
   background-color: #006d75;
-}
+} */
 h2 {
   color: #fff;
   line-height: 40px;

@@ -1,8 +1,9 @@
 <template>
   <div class="Loans">
-    <div class="title">
+    <!-- <div class="title">
       <h2>新增借款</h2>
-    </div>
+    </div> -->
+    <Title nav="贷款管理" navItem="新增贷款"/>
     <div class="content">
       <div class="EssentialInfo">
         <div class="EssentialTitle">
@@ -76,8 +77,8 @@
             <el-input v-model="source"></el-input>
           </el-form-item>
           <!-- **还款方式： -->
-          <el-form-item label="*借款天数：">
-            <el-input v-model="repayment" placeholder="输入整数天数"></el-input>
+          <el-form-item label="*借款时间：">
+            <el-input v-model="repayment"></el-input>
           </el-form-item>
           <!-- *借款起息方式： -->
           <el-form-item label="*借款起息方式：">
@@ -142,9 +143,12 @@
 </template>
 
 <script>
+import Title from "./../commonComponents/headerTitle"
 export default {
   name: "NewLoans",
-  components: {},
+  components: {
+    Title,
+  },
   data() {
     return {
       form: {},
@@ -188,11 +192,11 @@ export default {
   margin: 0 auto;
 }
 
-.title {
+/* .title {
   width: 100%;
   height: 40px;
   background-color: #006d75;
-}
+} */
 
 h2 {
   color: #fff;

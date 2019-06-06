@@ -1,47 +1,51 @@
 <template>
   <div class="PowerMaBu">
-    <div class="btns">
+    <Title nav="权限管理" navItem="角色管理"/>
+    <div class="seleAndBtn">
+      <div class="selects">
+        <div>
+          <p>部门筛选：</p>
+          <el-dropdown>
+            <el-button class="el-dropdown-link">
+              全部部门<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>人 事 部</el-dropdown-item>
+              <el-dropdown-item>市 场 部</el-dropdown-item>
+              <el-dropdown-item>运 营 部</el-dropdown-item>
+              <el-dropdown-item>研 发 部</el-dropdown-item>
+              <el-dropdown-item>客 服 部</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+          
+        <div>
+          <p>角色筛选：</p>
+          <el-dropdown>
+            <el-button class="el-dropdown-link">
+              全部角色<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>总经理</el-dropdown-item>
+              <el-dropdown-item>秘书</el-dropdown-item>
+              <el-dropdown-item>运营专员</el-dropdown-item>
+              <el-dropdown-item>人事专员</el-dropdown-item>
+              <el-dropdown-item>客户专员</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>      
+        </div>
+
+        <div>
+          <p>搜索：</p>
+          <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input21"></el-input>
+        </div>
+      </div>
+      <div class="btns">
         <el-button type="primary">新增角色</el-button>
         <el-button type="danger">删除角色</el-button>
+      </div>
     </div>
-    <div class="selects">
-      <div>
-        <p>部门筛选：</p>
-        <el-dropdown>
-          <el-button class="el-dropdown-link">
-            全部部门<i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>人 事 部</el-dropdown-item>
-            <el-dropdown-item>市 场 部</el-dropdown-item>
-            <el-dropdown-item>运 营 部</el-dropdown-item>
-            <el-dropdown-item>研 发 部</el-dropdown-item>
-            <el-dropdown-item>客 服 部</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-        
-      <div>
-        <p>角色筛选：</p>
-        <el-dropdown>
-          <el-button class="el-dropdown-link">
-            全部角色<i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>总经理</el-dropdown-item>
-            <el-dropdown-item>秘书</el-dropdown-item>
-            <el-dropdown-item>运营专员</el-dropdown-item>
-            <el-dropdown-item>人事专员</el-dropdown-item>
-            <el-dropdown-item>客户专员</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>      
-      </div>
 
-      <div>
-        <p>搜索：</p>
-        <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input21"></el-input>
-      </div>
-    </div>
     <div class="table">
       <el-table :stripe="true" :border="false" ref="multipleTable" :data="tableData3" tooltip-effect="dark" style="width: 100%"  @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
@@ -82,9 +86,11 @@
 </template>
 
 <script>
+  import Title from './../../commonComponents/headerTitle';
   export default {
     name:'PowerMaBu',
     components:{
+      Title,
     },
     data(){
       return{

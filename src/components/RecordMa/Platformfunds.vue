@@ -48,6 +48,7 @@
 		<el-main>
 			<el-table id="moneyTable" 
 			stripe style="font-size: 11px;"
+			:header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}"
 			 :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
 			  :cell-style="{'text-align':'center'}"
 			    tooltip-effect="dark"
