@@ -19,7 +19,7 @@
         </div>
 
         <div class="searchTypes">
-          <el-select v-model="typeValue" slot="prepend" placeholder="请选择" @change="">
+          <el-select v-model="typeValue" slot="prepend" placeholder="请选择">
             <el-option
               v-for="item in allType"
               :key="item.value"
@@ -127,7 +127,7 @@
 
 <script>
   import Pagination from './Pagination/Pagination';
-  import MyButton from './Button/Button';
+  import MyButton from '../Button/Button';
 
   export default {
     name: "InvestRecord",

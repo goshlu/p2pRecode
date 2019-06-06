@@ -2,28 +2,32 @@
 .PowerMa
   background-color: #fff
   .PowerMaBu
-    .selects,.btns
-      height: 30px
-      padding: 20px
+    .seleAndBtn
       display: flex
-      // border-bottom: 1px solid $cTBorder
-      align-items: center
       flex-flow: row nowrap
-      &.selects>div
+      justify-content: space-between
+      .selects,.btns
+        height: 30px
+        padding: 20px
         display: flex
+        // border-bottom: 1px solid $cTBorder
         align-items: center
         flex-flow: row nowrap
-        &:last-child>p
-          width: 63px
-        p
-          margin-right: 10px
-          font-weight 600
-          color:#333
-      &.btns button 
-        margin: 0 20px 0 0
-        // margin-left: 0
-      button 
-        margin-right: 30px
+        &.selects>div
+          display: flex
+          align-items: center
+          flex-flow: row nowrap
+          &:last-child>p
+            width: 63px
+          p
+            margin-right: 10px
+            font-weight 600
+            color:#333
+        &.btns button 
+          margin: 0 20px 0 0
+          // margin-left: 0
+        button 
+          margin-right: 30px
     .table
       padding: 20px
       table th

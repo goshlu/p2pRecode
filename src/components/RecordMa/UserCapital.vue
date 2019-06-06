@@ -1,4 +1,5 @@
 <template>
+
   <el-container>
     <el-header>
       <el-row :gutter="15">
@@ -97,149 +98,140 @@
       </el-row>
     </el-footer>
   </el-container>
+
+	
+
+
 </template>
+
 <script>
-import FileSaver from "file-saver";
-import XLSX from "xlsx";
-export default {
-  name: "UserCapital",
-  data() {
-    // const item = {
-    // 	userId: '201709091123',
-    // 	name: '企业1号',
-    // 	phone: '13800009999',
-    // 	total_assets: 300,
-    // 	balance: 0,
-    // 	Freezing_amount: 0,
-    // 	amount_collected: 0,
-    // 	Cumulative_investment: 0,
-    // 	Cumulative_investment_re: 200,
-    // 	Accumulated_loan: 0,
-    // 	Accumulated_repayment: 0,
-    // 	repayment_balance: 0
-    // };
-    return {
-      tableData: [],
-      total: 0, //默认数据总数
-      pagesize: 10, //每页的数据条数
-      currentPage: 1, //当前页
-      input_phone: "",
-      input_name: "",
-      options: [
-        {
-          value: 0,
-          label: "全部用户"
-        },
-        {
-          value: 1,
-          label: "个人用户"
-        },
-        {
-          value: 2,
-          label: "企业用户"
-        }
-      ],
-      value: 0
-    };
-  },
-  watch: {
-    input_phone() {
-      this.Axios.get("http://19h4o94140.51mypc.cn/usercapital", {
-        params: {
-          phone: this.input_phone
-        }
-      })
-        .then(response => {
-          // 成功过后对表格内容进行重新赋值
-          this.tableData = response.data;
-          this.total = this.tableData.length;
-          // console.log(response);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    input_name() {
-      this.Axios.get("http://19h4o94140.51mypc.cn/usercapital", {
-        params: {
-          phone: this.input_phone,
-          name: this.input_name,
-          type: this.value
-        }
-      })
-        .then(response => {
-          this.tableData = response.data;
-          this.total = this.tableData.length;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    searchFun() {
-      this.total = this.tableData.length;
-      this.Axios.get("http://19h4o94140.51mypc.cn/usercapital", {
-        params: {
-          phone: this.input_phone,
-          name: this.input_name,
-          type: this.value
-        }
-      })
-        .then(response => {
-          console.log(response.data);
-          this.tableData = response.data;
-          this.total = this.tableData.length;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    getRowClass() {
-      return "background:#f2f2f2";
-    },
-    exportExcel() {
-      /* generate workbook object from table */
-      var wb = XLSX.utils.table_to_book(
-        document.querySelector("#moneyTableExport")
-      );
-      /* get binary string as output */
-      var wbout = XLSX.write(wb, {
-        bookType: "xlsx",
-        bookSST: true,
-        type: "array"
-      });
-      try {
-        FileSaver.saveAs(
-          new Blob([wbout], {
-            type: "application/octet-stream"
-          }),
-          "sheetjs.xlsx"
-        );
-      } catch (e) {
-        if (typeof console !== "undefined") console.log(e, wbout);
-      }
-      return wbout;
-    },
-    current_change: function(currentPage) {
-      this.currentPage = currentPage;
-    },
-    handleSizeChange(pagesize) {
-      this.pagesize = pagesize;
-    }
-  }
-};
+	import FileSaver from "file-saver";
+	import XLSX from "xlsx";
+	export default {
+		name: "UserCapital",
+		data() {
+			return {
+				usel: "",
+				uinput: "",
+				tableData: [],
+				total: 0, //默认数据总数
+				pagesize: 10, //每页的数据条数
+				currentPage: 1, //当前页
+				input_phone: "",
+				input_name: "",
+				pubdata:"",
+				options: [{
+						value: 0,
+						label: "全部用户"
+					},
+					{
+						value: 1,
+						label: "个人用户"
+					},
+					{
+						value: 2,
+						label: "企业用户"
+					}
+				],
+				value: 0
+			};
+		},
+		created() {
+			this.axiosFun();
+		},
+		watch: {
+			value(){
+				this.inputdatacheck();
+				this.axiosFun();
+			}
+		},
+		methods: {
+			UserSearch(){
+				this.inputdatacheck();
+				this.axiosFun();
+			},
+			inputdatacheck(){
+					if(this.usel==0){
+						this.input_phone="";
+						this.input_name=this.uinput;
+					}else{
+						this.input_name=""
+						this.input_phone=this.uinput;
+					}
+			},
+			axiosFun() {
+				this.Axios.get("http://19h4o94140.51mypc.cn/usercapital", {
+						params: {
+							phone: this.input_phone,
+							name: this.input_name,
+							type: this.value
+						}
+					})
+					.then(response => {
+						this.tableData = response.data;
+						this.total = this.tableData.length;
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+			},
+			searchFun() {
+				this.total = this.tableData.length;
+				this.axiosFun();
+			},
+			exportExcel() {
+				/* generate workbook object from table */
+				var wb = XLSX.utils.table_to_book(
+					document.querySelector("#moneyTableExport")
+				);
+				/* get binary string as output */
+				var wbout = XLSX.write(wb, {
+					bookType: "xlsx",
+					bookSST: true,
+					type: "array"
+				});
+				try {
+					FileSaver.saveAs(
+						new Blob([wbout], {
+							type: "application/octet-stream"
+						}),
+						"sheetjs.xlsx"
+					);
+				} catch (e) {
+					if (typeof console !== "undefined") console.log(e, wbout);
+				}
+				return wbout;
+			},
+			current_change: function(currentPage) {
+				this.currentPage = currentPage;
+			},
+			handleSizeChange(pagesize) {
+				this.pagesize = pagesize;
+			}
+		},
+	};
 </script>
-<style scoped>
-.el-header {
-  /* background-color: #B3C0D1; */
-  color: #333;
-  line-height: 60px;
-}
+<style scoped="scoped">
+/* 	 .el-select .el-input {
+    width: 90px;
+  } */
+  .select-width{
+	  width:100px;
+  }
+  .input-with-select{
+	  width: 300px;
+  }
+	.el-header {
+		/* background-color: #B3C0D1; */
+		color: orange;
+		line-height: 60px;
+	}
 
-.el-aside {
-  color: #333;
-}
+	.el-aside {
+		color: #000
+	}
 
-.el-table th {
-  text-align: center !important;
-}
+	.el-table th {
+		text-align: center !important;
+	}
 </style>
