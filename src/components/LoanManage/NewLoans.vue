@@ -150,11 +150,7 @@
             </el-dialog>
           </el-form-item>
         </el-form>
-        <el-divider></el-divider>
-        <el-row>
-          <el-button type="primary">提交</el-button>
-          <el-button>保存</el-button>
-        </el-row>
+        
       </div>
     </div>
   </div>
