@@ -12,6 +12,7 @@
         ref="multipleTable"
         tooltip-effect="dark"
         :default-sort="{prop: 'date', order: 'descending'}"
+        :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}"
       >
         <el-table-column prop="id" sortable label="编号" align="center"></el-table-column>
         <el-table-column prop="loan_user" label="借款方" align="center"></el-table-column>

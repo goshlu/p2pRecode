@@ -23,8 +23,8 @@
         :border="false"
         ref="multipleTable"
         tooltip-effect="dark"
-        align="center"
         style="width:100%"
+        :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}"
       >
         <el-table-column prop="id" label="编号" align="center"></el-table-column>
         <el-table-column prop="loan_user" label="借款方" align="center"></el-table-column>
@@ -172,7 +172,7 @@ h2 {
 }
 /* 分页 */
 .pagination {
-  text-align: left;
+  text-align: right;
   margin-top: 10px;
 }
 </style>

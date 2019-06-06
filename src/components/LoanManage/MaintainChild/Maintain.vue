@@ -116,21 +116,18 @@
           <!-- *募集时间： -->
           <el-form-item label="*募集时间：">
             <div class="block">
-              <!-- <span class="demonstration"></span> -->
               <el-date-picker v-model="Raise" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
           <!-- *上架时间： -->
           <el-form-item label="*上架时间：">
             <div class="block">
-              <!-- <span class="demonstration"></span> -->
               <el-date-picker v-model="Shelf" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
           <!-- *开售时间： -->
           <el-form-item label="*开售时间：">
             <div class="block">
-              <!-- <span class="demonstration"></span> -->
               <el-date-picker v-model="Opening" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
@@ -170,7 +167,18 @@
       <!-- 备注 -->
       <div class="RiskMeasure">
         <label for="项目介绍">
-
+          <el-form ref="from2" :model="from2" label-width="150px">
+            <el-form-item label="项目介绍：">
+              <el-input type="textarea" v-model="introduce"></el-input>
+            </el-form-item>
+            <el-form-item >
+              <!-- <el-input type="textarea"></el-input> -->
+            </el-form-item>
+            <el-form-item label="风控措施：">
+              <el-input type="textarea" size="medium" v-model="Measures"></el-input>
+            </el-form-item>
+          </el-form>
+          
         </label>
       </div>
       <el-divider></el-divider>
@@ -192,6 +200,9 @@ export default {
       isGuarantee: true,
       checkList: ["高收益"],
       from1: {},
+      from2:{},
+      introduce:"",
+      Measures:"",
       input: "新手1号",
       LoanName: "",
       LoanType: "",
@@ -325,8 +336,14 @@ span {
   color:#333;
 }
 
+.el-textarea__inner{
+  width: 223%;
+  height: 140px;
+}
+
 .el-row {
   text-align: right;
   padding: 20px 0;
+  margin-right: 400px;
 }
 </style>
