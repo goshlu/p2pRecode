@@ -1,6 +1,6 @@
 <template>
   <div class="PowerMaBu">
-    <Title nav="权限管理" navItem="角色管理"/>
+    <Title :navArr="navArr"/>
     <div class="seleAndBtn">
       <div class="selects">
         <div>
@@ -42,7 +42,7 @@
       </div>
       <div class="btns">
         <el-button type="primary">新增角色</el-button>
-        <el-button type="danger">删除角色</el-button>
+        <el-button type="danger">批量删除</el-button>
       </div>
     </div>
 
@@ -94,6 +94,7 @@
     },
     data(){
       return{
+        navArr:['权限管理','角色管理'],
         input21:"",
         tableData3: [{
             numberId: '99921',

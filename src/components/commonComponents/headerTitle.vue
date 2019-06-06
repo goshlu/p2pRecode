@@ -2,8 +2,7 @@
   <div class="title">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item class="nextMenu">{{nav}}</el-breadcrumb-item>
-      <el-breadcrumb-item class="nextMenu">{{navItem}}</el-breadcrumb-item>
+      <el-breadcrumb-item v-for="(item,index) in navArr" :key="index" class="nextMenu">{{item}}</el-breadcrumb-item>
     </el-breadcrumb>
   </div>
 </template>
@@ -16,8 +15,7 @@
       }
     },
     props:[
-      'nav',
-      'navItem'
+      'navArr'
     ]
   }
 </script>
@@ -34,7 +32,8 @@
       left 10px
       top 20px
       // z-index 1
-      // padding-left 10px
+      box-sizing border-box
+      padding-left 10px
       position absolute
       box-sizing border-box
       background-color $cNavtopClearC
