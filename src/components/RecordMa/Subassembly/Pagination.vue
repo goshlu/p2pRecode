@@ -31,7 +31,7 @@ export default {
 <style scoped>
 .wrapper {
   margin-top:20px; 
-  text-align: left;
+  text-align: right;
 }
 
 </style>
