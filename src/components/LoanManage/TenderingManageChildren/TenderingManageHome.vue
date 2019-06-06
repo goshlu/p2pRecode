@@ -4,22 +4,24 @@
     <Title :navArr="navArr"/>
 
     <div class="wrapper-content">
-      <!--<div class="title">
-        <h1 style="margin-bottom: 20px;">招标管理</h1>
-      </div>-->
       <div class="searchWrap">
-        <div>
-          <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-            <el-select v-model="searchSel" slot="prepend" placeholder="请选择">
-              <el-option
-                v-for="item in searchOpt"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-            <el-button slot="append" icon="el-icon-search"></el-button>
-          </el-input>
+        <div class="flex-item">
+          <div class="searchDiff">
+            <el-input placeholder="请输入内容" v-model="searchText" class="input-with-select">
+              <el-select v-model="searchSel" slot="prepend" placeholder="请选择" @change="searchSelectChange">
+                <el-option
+                  v-for="item in searchOpt"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+              <el-button slot="append" icon="el-icon-search" @click="executeSearch"></el-button>
+            </el-input>
+          </div>
+        </div>
+        <div class="flex-item">
+          <el-button size="small">导出</el-button>
         </div>
       </div>
       <!--表格-->
@@ -38,7 +40,7 @@
           label="借款编号">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="member.username"
           label="借款方">
         </el-table-column>
         <el-table-column
@@ -47,11 +49,11 @@
           width="130">
         </el-table-column>
         <el-table-column
-          prop="loan_name"
-          label="借款名称">
+          prop="name"
+          label="标名">
         </el-table-column>
         <el-table-column
-          prop="loan_money"
+          prop="money"
           label="借款金额">
         </el-table-column>
         <el-table-column
@@ -65,16 +67,6 @@
         <el-table-column
           prop="loan_day"
           label="期限">
-        </el-table-column>
-        <el-table-column
-          prop="mon_mon"
-          label="借款管理费月率"
-          width="130">
-        </el-table-column>
-        <el-table-column
-          prop="loan_m_money"
-          label="借款管理费"
-          width="100">
         </el-table-column>
         <!--<el-table-column
           prop="uptime"
@@ -93,14 +85,24 @@
           </template>
         </el-table-column>-->
         <el-table-column
+          prop="loan_day"
+          label="已投金额">
+        </el-table-column>
+        <el-table-column
+          prop="loan_day"
+          label="投资进度">
+        </el-table-column>
+        <el-table-column
           prop="state"
           label="状态">
         </el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <el-button type="primary" icon="el-icon-edit" size="mini">
-              <router-link :to="{name:'TenderingManageModify',params:{}}">修改</router-link>
-            </el-button>
+            <router-link :to="{name:'TenderingManageModify',params:{}}">
+              <el-button type="primary" icon="el-icon-edit" size="mini">
+                修改
+              </el-button>
+            </router-link>
             <el-button type="danger" icon="el-icon-download" size="mini" @click="handleCancel">下架</el-button>
           </template>
         </el-table-column>
@@ -156,16 +158,16 @@
       return {
         navArr:['借贷管理','进行中标的管理'],
         isShowModal: false,
-        notesText: "",
+        searchText: "",
+        notesText:"",
         tableData: [{
           id:1,
           phone:13323479765,
-          loan_name:"临时借",
           year_mon:"2%",
           loan_method:"按月付息",
-          loan_money:1988,
+          money:1988,
           date: '2016-05-02',
-          name: '王小虎',
+          name: '标名',
           province: '上海',
           city: '普陀区',
           address: '上海市普陀区金沙江路 1518 弄',
@@ -174,7 +176,10 @@
           uptime: "2017-01-01T04:23:33.000Z",
           state: 5,
           loan_m_money: "200",
-          loan_day: "5天"
+          loan_day: "5天",
+          member:{
+            username:"王小虎"
+          }
         }],
         allTableData: [],
         input5: "",
@@ -196,11 +201,11 @@
     },
     created(){
       // this.tableDataOrigin = this.tableData;
-      this.Axios.get('http://19h4o94140.51mypc.cn/tenderall').then(res => {
+      /*this.Axios.get('http://19h4o94140.51mypc.cn/tenderall').then(res => {
         console.log(res);
         this.allTableData = res.data;
         this.setPaginations();
-      }).catch((err)=>{console.log(err)});
+      }).catch((err)=>{console.log(err)});*/
     },
     methods: {
       //编辑
@@ -211,6 +216,19 @@
       showModal() {
         this.notesText = "";
         this.isShowModal = !this.isShowModal;
+      },
+      executeSearch(){
+        if(this.searchSel == 0){
+          this.tableData = this.tableDataOrigin;
+        }else if(this.searchSel == 1 && this.searchText != ""){ //搜索借款方
+          this.tableData = this.tableDataOrigin.filter(item => {
+            return item.name.includes(this.searchText);
+          })
+        }else if(this.searchSel == 2 && this.searchText != ""){ //搜索借款方手机
+
+        }else{
+          return this.$message('请输入搜索内容！');
+        }
       },
       searchSelectChange(){
         if(this.searchSel == 0) this.executeSearch();
@@ -255,20 +273,29 @@
 
 <style scoped>
   .wrapper .wrapper-content{
-    padding: 0 10px 10px 10px;
+    padding: 20px;
   }
 
-  .searchWrap {
+  .searchWrap{
     display: flex;
+    justify-content: space-between;
     margin-bottom: 30px;
   }
-
-  .searchWrap >>> .el-select .el-input {
-    width: 120px;
+  .searchWrap .searchDiff{
+    /*flex-basis: 40%;*/
+    flex-grow: 0;
   }
-
+  .searchWrap >>> .el-select .el-input {
+    width: 130px;
+  }
   .searchWrap >>> .input-with-select .el-input-group__prepend {
     background-color: #fff;
+  }
+  .flex-item{
+    display: flex;
+  }
+  .flex-item .searchDiff{
+    margin-right: 20px;
   }
 
   .wrapper .wrapper-content .modal {

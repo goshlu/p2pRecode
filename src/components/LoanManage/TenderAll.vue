@@ -33,8 +33,8 @@
         </div>
       </div>
       <div class="flex-item">
-        <MyButton btn-type="" btn-text="自定义列" ></MyButton>
-        <MyButton btn-type="" btn-text="导出" ></MyButton>
+        <el-button size="small">自定义列</el-button>
+        <el-button size="small">导出</el-button>
       </div>
     </div>
 
@@ -144,13 +144,11 @@
 </template>
 
 <script>
-  import MyButton from '../Button/Button';
   import Title from "./../commonComponents/headerTitle";
 
   export default {
     name: "TenderAll",
     components:{
-      MyButton,
       Title
     },
     created(){
@@ -276,33 +274,31 @@
 
   #all-wrap{
     position: relative;
+
   }
   #all-wrap .content-wrap{
-    padding: 0 10px 10px 10px;
+    padding: 20px;
   }
-  #all-wrap >>> .searchWrap{
+  .searchWrap{
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
   }
-  #all-wrap >>> .searchWrap .searchDiff{
+  .searchWrap .searchDiff{
     /*flex-basis: 40%;*/
     flex-grow: 0;
   }
-  #all-wrap >>> .searchWrap  .el-select .el-input {
+  .searchWrap >>> .el-select .el-input {
     width: 130px;
   }
-  #all-wrap >>> .searchWrap  .input-with-select .el-input-group__prepend {
+  .searchWrap >>> .input-with-select .el-input-group__prepend {
     background-color: #fff;
   }
-  #all-wrap .flex-item{
+  .flex-item{
     display: flex;
   }
-  #all-wrap .flex-item .searchDiff{
+  .flex-item .searchDiff{
     margin-right: 20px;
-  }
-  #all-wrap .flex-item >>> .el-button{
-    height: 40px;
   }
 
   /*分页*/

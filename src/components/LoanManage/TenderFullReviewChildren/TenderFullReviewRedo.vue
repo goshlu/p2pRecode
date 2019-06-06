@@ -183,8 +183,12 @@
 
     <div class="btns-wrap">
       <div class="btns-content">
-        <MyButton btn-type="primary" btn-text="提交" fun-name="open" @open="open"></MyButton>
-        <MyButton btn-type="" btn-text="返回" fun-name="goBack" @goBack="goBack"></MyButton>
+        <MyButton btn-type="primary" btn-text="提交" size="medium" fun-name="open" @open="open"></MyButton>
+        <MyButton btn-type="" btn-text="返回" size="medium" fun-name="goBack" @goBack="goBack"></MyButton>
+
+        <el-button type="primary" icon="el-icon-view" size="mini">提交</el-button>
+        <el-button>提交</el-button>
+
       </div>
     </div>
   </div>
