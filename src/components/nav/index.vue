@@ -77,7 +77,7 @@ export default {
   },
 
   created(){
-    this.axios(fetchNav).then(
+    this.Axios(`https://5cd808f00cc5100014f1e33e.mockapi.io/${fetchNav}`).then(
       res => {
         // console.log(res.data);
         this.doUpdateNavData(res.data);
