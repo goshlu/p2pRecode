@@ -8,10 +8,10 @@
         <div class="EssentialTitle">
           <h4>
             基本信息
-            <span @click="isShow = !isShow" class="show">
+            <p @click="isShow = !isShow" class="show">
               收起
               <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
+            </p>
           </h4>
         </div>
         <el-form ref="from1" :model="from1" label-width="150px" v-if="isShow">
@@ -54,16 +54,14 @@
         </el-form>
       </div>
 
-      <el-divider></el-divider>
-
       <div class="GuaranteeInfo">
         <div class="GuaranteeTitle">
           <h4>
             担保信息
-            <span class="show" @click="isGuarantee = !isGuarantee">
+            <p class="show" @click="isGuarantee = !isGuarantee">
               收起
               <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
+            </p>
           </h4>
         </div>
         <el-form ref="from2" :model="from2" label-width="150px" v-if="isGuarantee">
@@ -78,30 +76,10 @@
           </el-form-item>
         </el-form>
       </div>
-
-      <el-divider></el-divider>
-
-      <div class="BorrowingInfo">
-        <div class="BorrowingTitle">
-          <h4>
-            借款资料
-            <span class="show" @click="isBorrow = !isBorrow">
-              收起
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-          </h4>
-        </div>
-        <el-form ref="from2" :model="from2" label-width="150px" v-if="isBorrow">
-          <el-form-item label="是否担保：">
-           <el-image></el-image>
-          </el-form-item>
-        </el-form>
-      </div>
-      <el-divider></el-divider>
       <!-- 标的信息 -->
       <div class="LoansInfo">
         <div class="LoansTitle">
-          <p>标的信息</p>
+          <h4>标的信息</h4>
         </div>
         <el-form ref="from2" :model="from2" label-width="150px">
           <el-form-item label="*标名：">
@@ -118,11 +96,9 @@
               ></el-option>
             </el-select>
           </el-form-item>
-
           <el-form-item label="*最低起投金额：">
             <el-input placeholder="请输入0-99999的整数" v-model="Minimum"></el-input>
           </el-form-item>
-
           <el-form-item label="*递增金额：">
             <el-select v-model="Incremental" placeholder="请选择">
               <el-option
@@ -133,12 +109,10 @@
               ></el-option>
             </el-select>
           </el-form-item>
-
           <!-- *最大可投金额： -->
           <el-form-item label="*最大可投金额：">
             <el-input placeholder="请输入>=最小可投且<=借款总额的正整数" v-model="Maximum"></el-input>
           </el-form-item>
-
           <!-- *募集时间： -->
           <el-form-item label="*募集时间：">
             <div class="block">
@@ -146,7 +120,6 @@
               <el-date-picker v-model="Raise" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
-
           <!-- *上架时间： -->
           <el-form-item label="*上架时间：">
             <div class="block">
@@ -154,7 +127,6 @@
               <el-date-picker v-model="Shelf" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
-
           <!-- *开售时间： -->
           <el-form-item label="*开售时间：">
             <div class="block">
@@ -162,31 +134,27 @@
               <el-date-picker v-model="Opening" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
-
           <!-- *投资计息方式： -->
           <el-form-item label="*投资计息方式：">
-            <el-radio v-model="radio" label="1">成交日</el-radio>
-            <el-radio v-model="radio" label="2">T+1</el-radio>
-            <el-radio v-model="radio" label="3">T+2</el-radio>
-            <el-radio v-model="radio" label="4">成立计息</el-radio>
+            <el-radio v-model="radio1" label="0">成交日</el-radio>
+            <el-radio v-model="radio1" label="1">T+1</el-radio>
+            <el-radio v-model="radio1" label="2">T+2</el-radio>
+            <el-radio v-model="radio1" label="3">成立计息</el-radio>
           </el-form-item>
-
           <!-- *上架渠道： -->
           <el-form-item label="*上架渠道：">
             <el-checkbox v-model="PC">PC</el-checkbox>
             <el-checkbox v-model="APP">APP</el-checkbox>
           </el-form-item>
-
           <!-- *设置精选： -->
           <el-form-item label="*设置精选：">
-            <el-radio v-model="radio" label="1">否</el-radio>
-            <el-radio v-model="radio" label="2">是</el-radio>
+            <el-radio v-model="radio2" label="0">否</el-radio>
+            <el-radio v-model="radio2" label="1">是</el-radio>
           </el-form-item>
-
           <!-- *新手专享： -->
           <el-form-item label="*设置精选：">
-            <el-radio v-model="radio" label="1">否</el-radio>
-            <el-radio v-model="radio" label="2">是</el-radio>
+            <el-radio v-model="radio3" label="0">否</el-radio>
+            <el-radio v-model="radio3" label="1">是</el-radio>
           </el-form-item>
           <!-- 标签 -->
           <el-form-item label="*标签：">
@@ -199,24 +167,11 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-divider></el-divider>
-      <!-- 项目介绍 -->
-      <div class="ProjectInfo">
-        <div class="ProjectTitle">
-          <p>项目介绍</p>
-        </div>
-        <div class="text1">
-          <el-input type="textarea"></el-input>
-        </div>
-      </div>
-      <!--  -->
+      <!-- 备注 -->
       <div class="RiskMeasure">
-        <div class="RiskMeasureTitle">
-          <p>风控措施</p>
-        </div>
-        <div class="text1">
-          <el-input v-model="textarea" type="textarea"></el-input>
-        </div>
+        <label for="项目介绍">
+
+        </label>
       </div>
       <el-divider></el-divider>
       <el-row>
@@ -235,21 +190,22 @@ export default {
     return {
       isShow: true,
       isGuarantee: true,
-      isBorrow: true,
       checkList: ["高收益"],
       from1: {},
-      from2: {},
       input: "新手1号",
-      LoanName:"",
-      LoanType:"",
-      Minimum:"",
-      Incremental:"",
-      Maximum:"",
-      Raise:"",
-      Shelf:"",
-      Opening:"",
+      LoanName: "",
+      LoanType: "",
+      Minimum: "",
+      Incremental: "",
+      Maximum: "",
+      Raise: "",
+      Shelf: "",
+      Opening: "",
       textarea: "",
-      radio: "1",
+      radio: "0",
+      radio1:"0",
+      radio2:"0",
+      radio3:"0",
       APP: "",
       PC: "",
       value: "",
@@ -328,15 +284,26 @@ h2 {
   font-weight: normal;
   margin-left: 10px;
   cursor: pointer;
+  display:inline-block;
 }
 .content {
   background-color: #fff;
 }
 
+span {
+  display: inline-block;
+  width: 70%;
+  height: 40px;
+  border-radius: 4px;
+  padding: 0 15px;
+  color: #888;
+  border: 1px solid #dcdfe6;
+}
+
 .el-form {
-  margin-top: 30px;
-  width: 90%;
+  width: 75%;
   margin: 0 auto;
+  padding-top: 20px;
 }
 
 .el-form-item {
@@ -349,24 +316,17 @@ h2 {
   width: 70%;
 }
 
-.text1 {
-  width: 78%;
-  margin-left: 50px;
-  margin-top: 20px;
-}
-
 .EssentialTitle,
 .GuaranteeTitle,
-.BorrowingTitle,
-.LoansTitle,
-.ProjectTitle,
-.RiskMeasureTitle {
-  padding: 20px 0 10px 10px;
+.LoansTitle{
+  padding: 20px 0 10px 200px;
+  font-size:20px;
+  letter-spacing: 2px;
+  color:#333;
 }
 
 .el-row {
-  width: 80%;
-  margin: 0 auto;
-  padding-bottom: 10px;
+  text-align: right;
+  padding: 20px 0;
 }
 </style>

@@ -146,7 +146,7 @@ h2 {
 }
 /* 分页 */
 .pagination {
-  text-align: left;
+  text-align: right;
   margin-top: 10px;
 }
 </style>

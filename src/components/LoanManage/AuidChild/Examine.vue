@@ -54,7 +54,6 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-divider></el-divider>
       <!-- 担保信息 -->
       <div class="GuaranteeInfo">
         <div class="GuaranteeTitle">
@@ -72,19 +71,6 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-divider></el-divider>
-      <!-- 借款资料 -->
-      <div class="BorrowingInfo">
-        <div class="BorrowingTitle">
-          <h4>借款资料</h4>
-        </div>
-        <el-form ref="from1" :model="from1" label-width="150px">
-          <el-form-item label="是否担保：">
-            <el-image></el-image>
-          </el-form-item>
-        </el-form>
-      </div>
-      <el-divider></el-divider>
       <!-- 审核 -->
       <div class="ToExamine">
         <div class="ToExamineTitle">
@@ -95,9 +81,10 @@
             <el-radio v-model="radio" label="1">通过</el-radio>
             <el-radio v-model="radio" label="2">不通过</el-radio>
           </el-form-item>
-        </el-form>
-        <el-form class="Remarks">
-          <el-form-item label="*备注：">
+          <el-form-item label="">
+            <!-- <el-input type="textarea"></el-input> -->
+          </el-form-item>
+          <el-form-item label="备注：">
             <el-input type="textarea"></el-input>
           </el-form-item>
         </el-form>
@@ -138,30 +125,45 @@ h2 {
   margin-left: 10px;
   line-height: 40px;
 }
+span {
+  display: inline-block;
+  width: 70%;
+  height: 40px;
+  border-radius: 4px;
+  padding: 0 15px;
+  color: #888;
+  border: 1px solid #dcdfe6;
+}
 /* 表单 */
 .el-form {
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
+  padding-top:20px;
 }
 .el-form-item {
   display: inline-block;
-  width: 49%;
+  width: 48%;
+  color: #222;
 }
 /* 基本信息 */
 .EssentialTitle,
 .GuaranteeTitle,
 .BorrowingTitle,
 .ToExamineTitle {
-  padding: 20px 0 10px 10px;
+  padding: 20px 0 10px 280px;
+  font-size: 20px;
+  letter-spacing: 2px;
 }
 /* 备注 */
-.Remarks {
-  margin-left:180px;
+.el-textarea__inner{
+  width: 223%;
+  height: 140px;
 }
 /* 按钮 */
-.el-row{
-  width:80%;
-  margin:0 auto;
-  padding-bottom: 10px;
+.el-row {
+ text-align: right;
+ padding-top:20px;
+ padding-bottom: 20px;
+ margin-right:360px;
 }
 </style>
