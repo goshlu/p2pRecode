@@ -6,19 +6,9 @@
           <div class="grid-content bg-purple">
             <el-input
               size="small"
-              v-model="input_phone"
-              suffix-icon="el-icon-search"
-              placeholder="搜索用户手机号"
-            ></el-input>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <el-input
-              size="small"
               v-model="input_name"
               suffix-icon="el-icon-search"
-              placeholder="搜索姓名"
+              placeholder="请输入内容"
             ></el-input>
           </div>
         </el-col>
