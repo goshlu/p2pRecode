@@ -1,24 +1,18 @@
 <template>
   <div id="review_app">
-    <div class="title">
-      <h2>提现审核</h2>
-    </div>
-    <div id="nav" style="display: block; width: 100%">
+    <Title :navArr="navArr"/>
+    <div class="app_content">
+      <div id="nav" style="display: block; width: 100%">
       <div class="one">
         <!-- 搜索框 -->
         <Search :searchOpt="searchOpt"/>
-        <!-- 导出按钮 el-icon-download -->
-        <el-select size="small" v-model="value2" filterable placeholder="导出">
-            <el-option
-              v-for="item in options2"
-              :key="item.value2"
-              :label="item.label"
-              :value="item.value2"
-            ></el-option>
-          </el-select>
-        <el-row class="export" style="margin-right: 0; margin-top: 15px; display: inline-block;">
-          <el-button plain @click="exportExcel">导出</el-button>
-        </el-row>
+        <!-- 导出 -->
+        <div class="export">
+            <el-select v-model="value" placeholder="批量导出" class="exportWidth">
+              <el-option @click="exportExcel" label="导出全部" value="1"></el-option>
+              <el-option label="导出选中" value="2"></el-option>
+            </el-select>
+          </div>
       </div>
       <div class="two">
         <!-- 选择方式 -->
@@ -38,30 +32,27 @@
           :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5'}"
           style="width: 100%"
         >
-          <el-table-column prop="loan_id" label="充值单号" width="120"></el-table-column>
-          <el-table-column prop="loan_money" label="用户手机" width="120"></el-table-column>
-          <el-table-column prop="loan_money" label="真实姓名" width="100"></el-table-column>
-          <!-- <el-table-column prop="loan_ deadline" label="用户来源" width="120"></el-table-column> -->
-          <!-- <el-table-column prop="loan_ deadline" label="应用来源" width="100"></el-table-column> -->
-          <el-table-column prop="loan_money" label="充值金额" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="到账金额" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="手续费" width="80"></el-table-column>
-          <el-table-column prop="loan_money" label="充值方式" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="交易流水号" width="150"></el-table-column>
-          <el-table-column label="订单时间" width="160">
+          <el-table-column type="selection"></el-table-column>
+            <el-table-column prop="loan_id" label="提现单号" ></el-table-column>
+            <!-- <el-table-column prop="loan_money" label="用户手机" ></el-table-column> -->
+            <el-table-column prop="loan_money" label="真实姓名" ></el-table-column>
+            <!-- <el-table-column prop="loan_ deadline" label="用户类型" ></el-table-column> -->
+            <el-table-column prop="loan_money" label="提现金额" ></el-table-column>
+            <el-table-column prop="loan_money" label="提现手续费" ></el-table-column>
+            <el-table-column prop="loan_money" label="预计到账金额"  ></el-table-column>
+            <el-table-column prop="loan_money" label="银行账号" ></el-table-column>
+            <!-- <el-table-column prop="loan_money" label="银行名称" ></el-table-column> -->
+            <!-- <el-table-column label="提交时间" width="160">
+              <template slot-scope="scope">
+                <p>{{ scope.row.loan_date | dateFormat }}</p>
+              </template>
+            </el-table-column> -->
+            <el-table-column prop="status" label="状态"></el-table-column>
+          <el-table-column label="操作" >
             <template slot-scope="scope">
-              <p>{{ scope.row.loan_date | dateFormat }}</p>
-            </template>
-          </el-table-column>
-          <el-table-column label="到账时间" width="160">
-            <template slot-scope="scope">
-              <p>{{ scope.row.loan_date | dateFormat }}</p>
-            </template>
-          </el-table-column>
-          <el-table-column prop="status" label="状态" width="100"></el-table-column>
-          <el-table-column label="操作" width="100">
-            <template slot-scope="scope">
-              <el-button @click="handleClick(scope.row)" type="text" size="small">审核</el-button>
+              <el-button type="primary" icon="el-icon-view" size="mini" 
+              @click="handleView(scope.$index, scope.row)"  >查看</el-button>
+              <el-button @click="handleClick(scope.row)" type="primary" icon="el-icon-edit" size="small">审核</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -77,9 +68,13 @@
       :handleSizeChange="handleSizeChange"
     />
   </div>
+    </div>
+  
+    
 </template>
 
 <script>
+import Title from "./../commonComponents/headerTitle";
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
 
@@ -97,11 +92,13 @@ export default {
     Mode,
     Status,
     Pagination,
-    DatePicke
+    DatePicke,
+    Title,
     // Atable
   },
   data() {
     return {
+      value: "",
       tableData: [],
       currentPage: 1,
       pagesize: 5,
@@ -140,7 +137,8 @@ export default {
         { value: 8, label: "中国光大银行" },
         { value: 9, label: "招商银行" },
         { value: 10, label: "华夏银行" }
-      ]
+      ],
+      navArr:['资金管理','提现审核'],
     };
   },
 
@@ -203,18 +201,11 @@ export default {
   padding: 0;
   position: relative;
 }
+#review_app > .app_content {
+  margin: 20px;
+}
 #review_app > #nav {
   width: 100%;
-}
-.title {
-  width: 100%;
-  height: 40px;
-  background-color: #006d75;
-}
-h2 {
-  color: #fff;
-  margin-left: 10px;
-  line-height: 40px;
 }
 #nav .one,
 #nav .two {
