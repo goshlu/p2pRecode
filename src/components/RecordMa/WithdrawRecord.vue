@@ -8,7 +8,7 @@
         <!-- 搜索框 -->
         <Search :searchOpt="searchOpt"/>
         <!-- 导出按钮 el-icon-download -->
-        <el-select size="mini" v-model="value2" filterable placeholder="导出">
+        <el-select size="small" v-model="value2" filterable placeholder="导出">
             <el-option
               v-for="item in options2"
               :key="item.value2"
