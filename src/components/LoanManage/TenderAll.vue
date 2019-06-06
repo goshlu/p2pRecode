@@ -1,7 +1,10 @@
 <template>
   <div id="all-wrap">
-    <h1 style="margin-bottom: 20px;">所有借款标</h1>
 
+    <Title :navArr="navArr"/>
+
+    <!--<h1 style="margin-bottom: 20px;">所有借款标</h1>-->
+  <div class="content-wrap">
     <div class="searchWrap">
       <div class="flex-item">
         <div class="searchDiff">
@@ -110,16 +113,16 @@
         prop="state"
         label="状态">
       </el-table-column>
-        <!--<template slot-scope="scope">
-          <span v-if="scope.row.state == 1">新标待审核</span>
-          <span v-else-if="scope.row.state == 2">初审不通过</span>
-          <span v-else-if="scope.row.state == 3">新标待上架</span>
-          <span v-else-if="scope.row.state == 4">满标待审</span>
-          <span v-else-if="scope.row.state == 5">还款中</span>
-          <span v-else-if="scope.row.state == 6">已完成</span>
-          <span v-else-if="scope.row.state == 7">流标</span>
-          <span v-else-if="scope.row.state == 8">撤标</span>
-        </template>-->
+      <!--<template slot-scope="scope">
+        <span v-if="scope.row.state == 1">新标待审核</span>
+        <span v-else-if="scope.row.state == 2">初审不通过</span>
+        <span v-else-if="scope.row.state == 3">新标待上架</span>
+        <span v-else-if="scope.row.state == 4">满标待审</span>
+        <span v-else-if="scope.row.state == 5">还款中</span>
+        <span v-else-if="scope.row.state == 6">已完成</span>
+        <span v-else-if="scope.row.state == 7">流标</span>
+        <span v-else-if="scope.row.state == 8">撤标</span>
+      </template>-->
     </el-table>
 
     <!--分页-->
@@ -135,17 +138,20 @@
         @size-change="handleSizeChange"
       ></el-pagination>
     </div>
+  </div>
 
   </div>
 </template>
 
 <script>
   import MyButton from '../Button/Button';
+  import Title from "./../commonComponents/headerTitle";
 
   export default {
     name: "TenderAll",
     components:{
-      MyButton
+      MyButton,
+      Title
     },
     created(){
       // this.tableDataOrigin = this.tableData;
@@ -212,6 +218,7 @@
     },
     data() {
       return {
+        navArr:['借贷管理','所有借款标'],
         multipleSelection: [],
         allTableData: [],
         paginations: {
@@ -268,6 +275,9 @@
 
   #all-wrap{
     position: relative;
+  }
+  #all-wrap .content-wrap{
+    padding: 0 10px 10px 10px;
   }
   #all-wrap >>> .searchWrap{
     display: flex;

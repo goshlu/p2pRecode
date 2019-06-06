@@ -1,8 +1,11 @@
 <template>
   <div class="wrapper">
+
+    <Title :navArr="navArr"/>
+
     <div class="wrapper-content">
       <div class="title">
-        <h1 style="margin-bottom: 20px;">招标管理</h1>
+        <!--<h1 style="margin-bottom: 20px;">招标管理</h1>-->
       </div>
       <div class="searchWrap">
         <div>
@@ -93,13 +96,27 @@
         </el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <el-button type="primary" icon="el-icon-edit" size="mini"><router-link :to="{name:'TenderingManageModify',params:{}}">修改</router-link></el-button>
+            <el-button type="primary" icon="el-icon-edit" size="mini">
+              <router-link :to="{name:'TenderingManageModify',params:{}}">修改</router-link>
+            </el-button>
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="handleCancel">下架</el-button>
           </template>
         </el-table-column>
       </el-table>
+
       <!--分页-->
-      <Pagination></Pagination>
+      <div class="pagination">
+        <el-pagination
+          background
+          :page-sizes="paginations.page_sizes"
+          :page-size="paginations.page_size"
+          :layout="paginations.layout"
+          :total="paginations.total"
+          :current-page.sync="paginations.page_index"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+        ></el-pagination>
+      </div>
 
       <div class="modal" v-show="isShowModal">
         <div class="modal-content">
@@ -126,14 +143,18 @@
 </template>
 
 <script>
-  import Pagination from "../Pagination/Pagination";
+  import Title from "../../commonComponents/headerTitle";
 
   export default {
     name: "TenderingManageHome",
+    components: {
+      Title
+    },
     data() {
       return {
-        isShowModal:false,
-        notesText:"",
+        navArr:['借贷管理','进行中标的管理'],
+        isShowModal: false,
+        notesText: "",
         tableData: [
           {
             date: "2016-05-02",
@@ -180,68 +201,106 @@
         searchSel: 0,
         modeSel: "",
         searchOpt: [
-          { value: 0, label: "全部" },
-          { value: 1, label: "借款方" },
-          { value: 2, label: "借款人手机" }
-        ]
+          {value: 0, label: "全部"},
+          {value: 1, label: "借款方"},
+          {value: 2, label: "借款人手机"}
+        ],
+        paginations: {
+          page_index: 1, // 当前位于哪页
+          total: 0, // 总数
+          page_size: 5, // 1页显示多少条
+          page_sizes: [5, 10, 15, 20], //每页显示多少条
+          layout: "total, sizes, prev, pager, next" // 翻页属性
+        },
       };
-    },
-    components: {
-      Pagination
     },
     methods: {
       //编辑
-      handleCancel(row){
+      handleCancel(row) {
         this.showModal();
         console.log(row);
       },
-      showModal(){
+      showModal() {
         this.notesText = "";
         this.isShowModal = !this.isShowModal;
-      }
+      },
+      handleCurrentChange(page) {
+        // 当前页
+        let sortnum = this.paginations.page_size * (page - 1);
+        let table = this.allTableData.filter((item, index) => {
+          return index >= sortnum;
+        });
+        // 设置默认分页数据
+        this.tableData = table.filter((item, index) => {
+          return index < this.paginations.page_size;
+        });
+      },
+      handleSizeChange(page_size) {
+        // 切换size
+        this.paginations.page_index = 1;
+        this.paginations.page_size = page_size;
+        this.tableData = this.allTableData.filter((item, index) => {
+          return index < page_size;
+        });
+      },
+      setPaginations() {
+        // 总页数
+        this.paginations.total = this.allTableData.length;
+        this.paginations.page_index = 1;
+        this.paginations.page_size = 5;
+        // 设置默认分页数据
+        this.tableData = this.allTableData.filter((item, index) => {
+          return index < this.paginations.page_size;
+        });
+      },
     }
   };
 </script>
 
 <style scoped>
-  .wrapper {
-    width: 100%;
-    margin-top: 50px;
+  .wrapper .wrapper-content{
+    padding: 0 10px 10px 10px;
   }
+
   .searchWrap {
     display: flex;
     margin-bottom: 30px;
   }
+
   .searchWrap >>> .el-select .el-input {
     width: 120px;
   }
+
   .searchWrap >>> .input-with-select .el-input-group__prepend {
     background-color: #fff;
   }
-  .wrapper >>> .el-pagination{
+
+  .wrapper >>> .el-pagination {
     /*right: 0;
     bottom: -15%;*/
     bottom: -10px;
   }
 
-  .wrapper .wrapper-content .modal{
+  .wrapper .wrapper-content .modal {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: rgba(66,66,66,.5);
+    background-color: rgba(66, 66, 66, .5);
     width: 100%;
     height: 100%;
     z-index: 99;
   }
-  .wrapper .wrapper-content .modal .modal-content{
+
+  .wrapper .wrapper-content .modal .modal-content {
     width: 700px;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     background-color: #ffffff;
   }
-  .wrapper .wrapper-content .modal .modal-content .title{
+
+  .wrapper .wrapper-content .modal .modal-content .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -251,36 +310,44 @@
     color: #555555;
     border-bottom: 1px solid #d5d5d5;
   }
-  .wrapper .wrapper-content .modal .modal-content .main{
+
+  .wrapper .wrapper-content .modal .modal-content .main {
     width: 555px;
     margin: 30px auto 60px;
     font-size: 13px;
     color: #555555;
   }
-  .wrapper .wrapper-content .modal .modal-content .main .notes-wrap{
+
+  .wrapper .wrapper-content .modal .modal-content .main .notes-wrap {
     display: flex;
     margin-top: 40px;
   }
-  .wrapper .wrapper-content .modal .modal-content .main .notes-wrap label{
+
+  .wrapper .wrapper-content .modal .modal-content .main .notes-wrap label {
     margin-left: -9px;
   }
-  .modal .modal-content .main label{
+
+  .modal .modal-content .main label {
     margin-right: 5px;
   }
-  .modal .modal-content .btns{
+
+  .modal .modal-content .btns {
     display: flex;
     justify-content: center;
     padding: 20px 0;
     border-top: 1px solid #d5d5d5;
   }
-  .modal .modal-content .btns .el-button{
+
+  .modal .modal-content .btns .el-button {
     width: 120px;
     height: 45px;
   }
-  .modal .modal-content .btns .el-button:first-child{
+
+  .modal .modal-content .btns .el-button:first-child {
     margin-right: 40px;
   }
-  .modal .modal-content .btns .el-button:hover{
+
+  .modal .modal-content .btns .el-button:hover {
     box-shadow: 2px 2px 5px #adadad;
   }
 </style>
