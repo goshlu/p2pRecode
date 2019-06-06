@@ -10,7 +10,8 @@
       :data="tableData"
       style="width: 100%"
       stripe
-      :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}"
+      :cell-style="{border:'none',fontSize:'14px'}"
+      :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5',fontSize:'14px'}"
     >
       <el-table-column
         prop="cateName"
@@ -45,7 +46,19 @@
       </el-table-column>
     </el-table>
 
-    <Pagination @handleSizeChange="handleSizeChange" :total="tableData.length"></Pagination>
+    <!--分页-->
+    <div class="pagination">
+      <el-pagination
+        background
+        :page-sizes="paginations.page_sizes"
+        :page-size="paginations.page_size"
+        :layout="paginations.layout"
+        :total="paginations.total"
+        :current-page.sync="paginations.page_index"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+      ></el-pagination>
+    </div>
 
     <!--模态框-->
     <div class="modal" v-show="isShowModal">
@@ -54,13 +67,15 @@
           <span>{{whatModalTitle === 1?"添加分类":"修改分类"}}</span>
           <i class="el-icon-close" style="cursor: pointer;font-size: 30px;" @click="showModal"></i>
         </div>
-        <div class="main">
-          <el-form class="modalForm" :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
+        <div class="main"><!--
+          <el-form class="modalForm" :label-position="labelPosition"
+                   label-width="100px" :model="formLabelAlign" :rules="rules" ref="formLabelAlign"
+          >
             <el-form-item label="分类名称：" required>
               <el-input v-model="formLabelAlign.name"></el-input>
             </el-form-item>
             <el-form-item label="排序：">
-              <el-input v-model="formLabelAlign.sortNum" style="width: 170px;"></el-input>
+              <el-input v-model.number="formLabelAlign.sortNum" style="width: 170px;"></el-input>
               <span>数值越大越靠前</span>
             </el-form-item>
             <el-form-item label="状态：">
@@ -73,6 +88,21 @@
                 </el-option>
               </el-select>
               <span>禁用则前台不展示</span>
+            </el-form-item>
+          </el-form>-->
+          <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="密码" prop="pass">
+              <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkPass">
+              <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="年龄" prop="age">
+              <el-input v-model.number="ruleForm.age"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+              <el-button @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -111,24 +141,112 @@
         this.whatModalTitle = addOrModify;
         this.isShowModal = !this.isShowModal;
       },
-      handleSizeChange(){
-        alert("aaa");
-      },
       //编辑
       handleEdit(whatModalTitle,index, row){
         this.showModal(whatModalTitle);
         console.log(index,row);
       },
+      //添加
       handleAdd(whatModalTitle){
         this.showModal(whatModalTitle);
-      }
+      },
+      handleCurrentChange(page) {
+        // 当前页
+        let sortnum = this.paginations.page_size * (page - 1);
+        let table = this.allTableData.filter((item, index) => {
+          return index >= sortnum;
+        });
+        // 设置默认分页数据
+        this.tableData = table.filter((item, index) => {
+          return index < this.paginations.page_size;
+        });
+      },
+      handleSizeChange(page_size) {
+        // 切换size
+        this.paginations.page_index = 1;
+        this.paginations.page_size = page_size;
+        this.tableData = this.allTableData.filter((item, index) => {
+          return index < page_size;
+        });
+      },
+      setPaginations() {
+        // 总页数
+        this.paginations.total = this.allTableData.length;
+        this.paginations.page_index = 1;
+        this.paginations.page_size = 5;
+        // 设置默认分页数据
+        this.tableData = this.allTableData.filter((item, index) => {
+          return index < this.paginations.page_size;
+        });
+      },
+
+
     },
     data() {
+      //添加 排序数值校验
+      /*let checkSortNum = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('排序不能为空'));
+        }
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+            if (value < 0) {
+              callback(new Error('不能小于0'));
+            } else {
+              callback();
+            }
+          }
+        }, 1000);
+      };*/
+      var checkAge = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('年龄不能为空'));
+        }
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+            if (value < 18) {
+              callback(new Error('必须年满18岁'));
+            } else {
+              callback();
+            }
+          }
+        }, 1000);
+      };
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.ruleForm.checkPass !== '') {
+            this.$refs.ruleForm.validateField('checkPass');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.ruleForm.pass) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
       return {
         formLabelAlign:{
           name:"",
           sortNum:"",
           optionsValue:0
+        },
+        paginations: {
+          page_index: 1, // 当前位于哪页
+          total: 0, // 总数
+          page_size: 5, // 1页显示多少条
+          page_sizes: [5, 10, 15, 20], //每页显示多少条
+          layout: "total, sizes, prev, pager, next" // 翻页属性
         },
         labelPosition:"right",
         isShowModal:false,
@@ -140,7 +258,28 @@
         }, {
           value: 1,
           label: '启用'
-        }]
+        }],
+        /*rules: {
+          sortNum: [
+            { validator: checkSortNum, trigger: 'blur' }
+          ]
+        }*/
+        ruleForm: {
+          pass: '',
+          checkPass: '',
+          age: ''
+        },
+        rules: {
+          pass: [
+            { validator: validatePass, trigger: 'blur' }
+          ],
+          checkPass: [
+            { validator: validatePass2, trigger: 'blur' }
+          ],
+          age: [
+            { validator: checkAge, trigger: 'blur' }
+          ]
+        }
       }
     }
   }
@@ -202,10 +341,6 @@
     color: #b2b2b2;
     margin-left: 10px;
   }
-  .modal .modal-content .main .notes-wrap{
-    display: flex;
-    margin-top: 40px;
-  }
   .modal .modal-content .main .notes-wrap label{
     margin-left: -9px;
   }
@@ -240,4 +375,9 @@
     color: red;
   }
 
+  /*分页*/
+  .pagination{
+    text-align: right;
+    margin-top:30px;
+  }
 </style>

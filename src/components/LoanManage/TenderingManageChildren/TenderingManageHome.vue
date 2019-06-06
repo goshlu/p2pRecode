@@ -27,7 +27,6 @@
         style="width: 100%"
       >
         <el-table-column
-          fixed
           prop="date"
           label="借款编号"
           width="150">
@@ -50,7 +49,7 @@
         <el-table-column
           prop="address"
           label="借款金额"
-          width="300">
+          width="130">
         </el-table-column>
         <el-table-column
           prop="zip"
@@ -92,28 +91,27 @@
           label="状态"
           width="80">
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"><router-link :to="{name:'TenderingManageModify',params:{}}">修改</router-link></el-button>
-            <el-divider direction="vertical"></el-divider>
-            <el-button type="text" size="small" @click="showModal">下架</el-button>
+            <el-button type="primary" icon="el-icon-edit" size="mini"><router-link :to="{name:'TenderingManageModify',params:{}}">修改</router-link></el-button>
+            <el-button type="danger" icon="el-icon-delete" size="mini" @click="handleCancel">下架</el-button>
           </template>
         </el-table-column>
       </el-table>
       <!--分页-->
       <Pagination></Pagination>
 
-      <div class="modal" v-show="isShowModal" @click="showModal">
-        <div class="modal-content" @click.stop>
+      <div class="modal" v-show="isShowModal">
+        <div class="modal-content">
           <div class="title">
             <span>下架确认</span>
-            <i class="el-icon-close" style="cursor: pointer;font-size: 30px;" @click.stop="showModal"></i>
+            <i class="el-icon-close" style="cursor: pointer;font-size: 30px;" @click="showModal"></i>
           </div>
           <div class="main">
             <p><label>注意：</label><span style="color:#990000">标的下架后，投资款项全部返还至投资者账户中，只能获得返还的本金，无法获得利息</span></p>
             <div class="notes-wrap">
               <label><i style="color: red;margin-right: 2px;">*</i>备注：</label>
-              <textarea name="notes" cols="65" rows="6" v-model="notesText"></textarea>
+              <textarea name="notes" cols="65" rows="6" style="resize: none;" v-model="notesText"></textarea>
             </div>
           </div>
           <div class="btns">
@@ -192,7 +190,9 @@
       Pagination
     },
     methods: {
-      handleClick(row) {
+      //编辑
+      handleCancel(row){
+        this.showModal();
         console.log(row);
       },
       showModal(){
