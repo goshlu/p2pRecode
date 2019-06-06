@@ -127,7 +127,7 @@
 
 <script>
   import Pagination from './Pagination/Pagination';
-  import MyButton from './Button/Button';
+  import MyButton from '../Button/Button';
 
   export default {
     name: "InvestRecord",
