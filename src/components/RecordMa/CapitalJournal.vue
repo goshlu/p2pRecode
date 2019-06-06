@@ -155,6 +155,9 @@
 			this.axiosFun();
 		},
 		watch: {
+			exportvalue(){
+			this.exportExcel();	
+			},
 			value() {
 				this.inputdatacheck();
 				this.axiosFun();
@@ -214,7 +217,7 @@
 			},
 			datacheck() {
 				for (let i = 0; i < this.tableData.length; i++) {
-					console.log(this.tableData[i].type);
+					// console.log(this.tableData[i].type);
 					if (this.tableData[i].type == "1") {
 						this.tableData[i].type = "回收利息";
 					} else if (this.tableData[i].type == "2") {
@@ -232,6 +235,7 @@
 			exportExcel() {
 				/* generate workbook object from table */
 				var wb = XLSX.utils.table_to_book(document.querySelector('#moneyTableExport'))
+				// console.log(wb);
 				/* get binary string as output */
 				var wbout = XLSX.write(wb, {
 					bookType: 'xlsx',
