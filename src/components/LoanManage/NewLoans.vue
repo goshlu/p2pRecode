@@ -3,7 +3,7 @@
     <!-- <div class="title">
       <h2>新增借款</h2>
     </div> -->
-    <Title nav="贷款管理" navItem="新增贷款"/>
+    <Title :navArr="navArr"/>
     <div class="content">
       <div class="EssentialInfo">
         <div class="EssentialTitle">
@@ -151,6 +151,7 @@ export default {
   },
   data() {
     return {
+      navArr:['贷款管理','新增贷款'],
       form: {},
       loan: "",
       debtor: "",
