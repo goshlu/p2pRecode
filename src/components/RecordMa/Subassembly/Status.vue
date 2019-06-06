@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 15px; margin-left: 20px;display: inline-block;">
+  <div style="margin-top: 15px; margin-left: 30px;display: inline-block;">
     <!-- 状态 -->
     <el-select v-model="statusSel" class="selectWidth">
       <el-option

@@ -102,23 +102,23 @@ export default {
     },
     
     created(){
-        this.Axios.get("http://172.16.6.64:8080/outPut").then(
-            res => {
-                // console.log(res);
-                this.datas = {
-                    ...res.data
-                };
-                // console.log(this.datas);
-                getInMoney=this.datas.s1;
-                getOutMoney=this.datas.s2;
-                getDay=this.day;
-                showChars();
-            }
-        ).catch(
-            error => {
-                // console.log("222");
-            }
-        );
+        // this.Axios.get("http://172.16.6.64:8080/outPut").then(
+        //     res => {
+        //         // console.log(res);
+        //         this.datas = {
+        //             ...res.data
+        //         };
+        //         // console.log(this.datas);
+        //         getInMoney=this.datas.s1;
+        //         getOutMoney=this.datas.s2;
+        //         getDay=this.day;
+        //         showChars();
+        //     }
+        // ).catch(
+        //     error => {
+        //         // console.log("222");
+        //     }
+        // );
     }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 15px; margin-left: 20px;display: inline-block;">
+  <div style="margin-top: 15px; display: inline-block;">
     <!-- 充值方式 -->
     <el-select v-model="modeSel" placeholder="请选择" class="selectWidth">
       <el-option v-for="item in modeOpt" :key="item.value" :label="item.label" :value="item.value"></el-option>

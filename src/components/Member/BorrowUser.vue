@@ -24,36 +24,44 @@
           </div>
         </el-col>
         <el-col :span="3">
-          <el-select size="mini" v-model="value" filterable placeholder="全部状态">
+          <el-select size="mini" v-model="value1" filterable placeholder="全部状态">
             <el-option
-              v-for="item in options"
-              :key="item.value"
+              v-for="item in options1"
+              :key="item.value1"
               :label="item.label"
-              :value="item.value"
+              :value="item.value1"
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="2" :offset="16">
-          <el-button plain size="mini">导出</el-button>
+        <el-col :span="3" :offset="16">
+          <el-select size="mini" v-model="value2" filterable placeholder="导出">
+            <el-option
+              v-for="item in options2"
+              :key="item.value2"
+              :label="item.label"
+              :value="item.value2"
+            ></el-option>
+          </el-select>
         </el-col>
       </el-row>
     </el-header>
     <el-main>
-      <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" border style="width: 100%">
+      <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" border @selection-change="handleSelectionChange" style="width: 100%">
+        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="act_number" label="用户编号" width="120"></el-table-column>
         <el-table-column prop="per_name" label="姓名/公司名称" width="120"></el-table-column>
         <el-table-column prop="per_phone" label="手机/用户名" width="120"></el-table-column>
         <el-table-column prop="borrower_email" label="借款人邮箱" width="120"></el-table-column>
-        <el-table-column prop="act_state" label="锁定状态" width="300"></el-table-column>
-        <el-table-column fixed prop="reg_time" label="注册时间" width="150"></el-table-column>
-        <el-table-column fixed prop="register" label="最近登录" width="150"></el-table-column>
-        <el-table-column fixed prop="user_source" label="用户来源" width="150"></el-table-column>
+        <el-table-column prop="act_state" label="锁定状态" width="120"></el-table-column>
+        <el-table-column prop="reg_time" label="注册时间" width="160"></el-table-column>
+        <el-table-column prop="register" label="最近登录" width="160"></el-table-column>
+        <el-table-column prop="user_source" label="用户来源" width="120"></el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">
               <router-link to="/BorrowUserHome/BorrowUserChild">查看</router-link>
             </el-button>
-            <el-button type="text" size="small">编辑</el-button>
+            <el-button type="text" size="small" @click="update(scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -92,6 +100,13 @@ export default {
     },
     handleSizeChange(pagesize) {
       this.pagesize = pagesize;
+    },
+    handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
+    update(row) {
+      window.sessionStorage.setItem("rows", JSON.stringify(row));
+      this.$router.push("/inv_pwd");
     }
   },
   data() {
@@ -101,20 +116,31 @@ export default {
       input_phone1:"",
       input_phone2:"",
       total: 0, //默认数据总数
-				pagesize: 5, //每页的数据条数
-				currentPage: 1, //当前页
-      options: [
+			pagesize: 5, //每页的数据条数
+			currentPage: 1, //当前页
+      options1: [
         {
-          value: "选项1",
+          value1: "选项1",
           label: "锁定"
         },
         {
-          value: "选项2",
+          value1: "选项2",
           label: "正常"
         }
       ],
-      value: "",
-      input_phone: "17765929883",
+      options2: [
+        {
+          value2: "选项1",
+          label: "导出"
+        },
+        {
+          value2: "选项2",
+          label: "全部导出"
+        }
+      ],
+      value1: "",
+      value2: "",
+      // input_phone: "17765929883",
       tableData: [
         {
 
@@ -123,10 +149,49 @@ export default {
       ]
     };
   },
+
+  // 设置监听，搜索
+  watch:{
+    value1(){
+      
+    },
+    value2(){
+
+    },
+    input_phone1(){
+      this.Axios.get("http://rap2api.taobao.org/app/mock/177576/user",{
+        params:{
+          per_name:this.input_phone1
+        }
+      }).then(res=>{
+           // 成功过后对表格内容进行重新赋值
+           this.tableData = res.data;
+           this.total = this.tableData.length;
+      })
+      .catch(error=>{
+        console.log(error)
+      })
+    },
+    input_phone2(){
+      this.Axios.get("http://rap2api.taobao.org/app/mock/177576/user",{
+        params:{
+          per_phone:this.input_phone2
+        }
+      }).then(res => {
+        // 成功过后对表格内容进行重新赋值
+           this.tableData = res.data;
+           this.total = this.tableData.length;
+      })
+      .catch(res => {
+        console.log(error)
+      })
+    }
+  },
+
   created() {
     this.Axios.get("http://rap2api.taobao.org/app/mock/177576/user")
       .then(res => {
-        
+       // 成功过后对表格内容进行重新赋值
         this.tableData = res.data.datas.data;
         this.total=this.tableData.length;
         console.log(this.tableData);

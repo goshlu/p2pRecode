@@ -30,13 +30,8 @@ export default {
 
 <style scoped>
 .wrapper {
-  /* padding-top:20px;  */
-  position: relative;
+  margin-top:20px; 
+  text-align: left;
 }
-.el-pagination {
-  position: absolute;
-  bottom: -100%;
-  right: -10px;
-  top: 20px;
-}
+
 </style>

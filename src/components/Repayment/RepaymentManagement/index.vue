@@ -2,6 +2,7 @@
   <div>
     <RepaymentToolbar :search="search" />
     <RepaymentTable :data="tableData" :loading="loading" />
+    <RepaymentPage />
   </div>
 </template>
 

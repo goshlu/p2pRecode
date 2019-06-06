@@ -36,7 +36,7 @@
         :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         style="width:100%"
       >
-        <el-table-column prop="act_id" label="用户编号" width="120"></el-table-column>
+        <el-table-column prop="id" label="用户编号" width="120"></el-table-column>
         <el-table-column prop="per_name" label="姓名" width="100"></el-table-column>
         <el-table-column prop="per_phone" label="手机/用户名" width="120"></el-table-column>
         <el-table-column prop="real_name.real" label="实名状态" width="100"></el-table-column>
@@ -109,6 +109,7 @@ export default {
         let arrList = response.data.datas.data;
         this.tableData = arrList;
         this.total = this.tableData.length;
+        console.log(this.tableData);
       })
       .catch(error => {
         console.log(error);

@@ -1,5 +1,5 @@
 <template>
-  <div class="block" style="width: 280px; margin-top: 15px; margin-left: 20px;display: inline-block;">
+  <div class="block" style="width: 240px; margin-top: 15px; margin-left: 30px;display: inline-block;">
     <el-date-picker
       v-model="value7"
       type="daterange"

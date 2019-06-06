@@ -223,7 +223,26 @@ export default new Router({
           path: '/Platformfunds',
           name: "Platformfunds",
           component: () => import('@/components/RecordMa/Platformfunds.vue')
+        }, 
+        //还款记录
+        {
+          path: '/RepaymentManagement',
+          name: "RepaymentManagement",
+          component: () => import('@/components/Repayment/RepaymentManagement')
+        }, 
+        //还款记录
+        {
+          path: '/RepaymentHistory',
+          name: 'RepaymentHistory',
+          component: () => import('@/components/Repayment/RepaymentHistory')
         },
+
+        //系统配置页面
+        {
+          path: '/Config',
+          name: 'Config',
+          component: () => import('@/components/config/config.vue'),
+        }
       ],
     },
   ]

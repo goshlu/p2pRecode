@@ -66,16 +66,16 @@ export default {
         });
     },
     created(){
-        this.Axios.get("http://172.16.6.64:8080/seven").then(
-            res => {
-                console.log(res);
-                this.status = res.data;
-            }
-        ).catch(
-            error => {
-                // console.log("222");
-            }
-        );
+        // this.Axios.get("http://172.16.6.64:8080/seven").then(
+        //     res => {
+        //         console.log(res);
+        //         this.status = res.data;
+        //     }
+        // ).catch(
+        //     error => {
+        //         // console.log("222");
+        //     }
+        // );
     }
 }
 </script>

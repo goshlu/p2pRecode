@@ -26,7 +26,6 @@
           <!-- *借款方： -->
           <el-form-item label="*借款方：">
             <el-input v-model="debtor"></el-input>
-            <el-button type="button" ></el-button>
           </el-form-item>
           <!-- *借款总金额： -->
           <el-form-item label="*借款总金额：">
@@ -46,7 +45,7 @@
             </el-select>
           </el-form-item>
           <!-- *期限类型： -->
-          <el-form-item label="*期限类型：  ">
+          <el-form-item label="*期限类型：">
             <el-radio v-model="radio" label="month">月</el-radio>
             <el-radio v-model="radio" label="day">天</el-radio>
           </el-form-item>
@@ -115,7 +114,7 @@
             <el-radio v-model="radio" label="Civilian">民品抵</el-radio>
           </el-form-item>
           <!-- 抵押物材料 -->
-          <el-form-item label="抵押物材料">
+          <el-form-item label="抵押物材料：">
             <el-upload
               action="https://jsonplaceholder.typicode.com/posts/"
               list-type="picture-card"
@@ -209,7 +208,6 @@ export default {
   width: 100%;
   height: 40px;
   background-color: #006d75;
-  padding: 10px;
 }
 
 h2 {
@@ -222,7 +220,6 @@ h2 {
   background-color: #fff;
 }
 
-/* from1 */
 .from1,
 .from2,
 .from3 {
@@ -256,5 +253,6 @@ input {
 .el-row {
   width: 80%;
   margin: 0 auto;
+  padding-bottom:10px;
 }
 </style>

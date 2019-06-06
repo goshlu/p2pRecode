@@ -1,19 +1,49 @@
 <template>
   <div id="withdraw_app">
-    <div class="title"><h2>提现记录</h2></div>
+    <div class="title">
+      <h2>提现记录</h2>
+    </div>
     <div id="nav">
-      <!-- 搜索框 -->
-      <Search :searchOpt="searchOpt"/>
-      <!-- 选择充值方式 -->
-      <Mode :modeOpt="modeOpt"/>
-      <!-- 选择状态 -->
-      <Status :statusOpt="statusOpt"/>
-      <!-- 日期选择器 -->
-      <DatePicke/>
-      <!-- 导出按钮 el-icon-download -->
-      <el-row style="margin-right: 0; margin-top: 15px; display: inline-block;">
-        <el-button plain @click="exportExcel">导出</el-button>
-      </el-row>
+      <div class="one">
+        <!-- 搜索框 -->
+        <Search :searchOpt="searchOpt"/>
+        <!-- 导出按钮 el-icon-download -->
+        <el-row class="export" style="margin-right: 0; margin-top: 15px; display: inline-block;">
+          <el-button plain @click="exportExcel">导出</el-button>
+        </el-row>
+      </div>
+      <div class="two">
+        <!-- 选择充值方式 -->
+        <Mode :modeOpt="modeOpt"/>
+        <!-- 选择状态 -->
+        <Status :statusOpt="statusOpt"/>
+        <!-- 日期选择器 -->
+        <DatePicke/>
+        <!-- 自定义列 -->
+        <el-row class="customize" style="margin-top: 15px; display: inline-block;">
+          <el-button plain @click="toggle">自定义列</el-button>
+        </el-row>
+      </div>
+    </div>
+
+    <!-- 穿梭框 -->
+    <div id="filterColumn" v-if="isshow">
+      <template>
+        <el-checkbox
+          :indeterminate="isIndeterminate"
+          v-model="checkAll"
+          @change="handleCheckAllChange"
+        >全选</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+          <el-checkbox
+            v-for="(city,index) in cities"
+            :label="city"
+            v-model="checkArr[index]"
+            :key="city"
+          >{{city}}</el-checkbox>
+        </el-checkbox-group>
+      </template>
     </div>
 
     <!-- 表格 -->
@@ -26,8 +56,8 @@
           :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5'}"
           style="width: 100%"
         >
-          <el-table-column fixed prop="loan_id" label="充值单号" width="120"></el-table-column>
-          <el-table-column prop="loan_money" label="用户手机" width="120"></el-table-column>
+          <el-table-column v-show="checkArr[0]" fixed prop="loan_id" label="充值单号" width="120"></el-table-column>
+          <el-table-column v-show="checkArr[1]" prop="loan_money" label="用户手机" width="120"></el-table-column>
           <el-table-column prop="loan_money" label="真实姓名" width="100"></el-table-column>
           <el-table-column prop="loan_ deadline" label="用户来源" width="120"></el-table-column>
           <el-table-column prop="loan_ deadline" label="应用来源" width="100"></el-table-column>
@@ -52,7 +82,7 @@
     </div>
 
     <!-- 分页 -->
-     <Pagination
+    <Pagination
       :total="total"
       :pagesize="pagesize"
       :currentPage="currentPage"
@@ -73,6 +103,19 @@ import Status from "./Subassembly/Status";
 import Pagination from "./Subassembly/Pagination";
 import DatePicke from "./Subassembly/DatePicke";
 
+const cityOptions = [
+  "充值单号",
+  "用户手机",
+  "真实姓名",
+  "充值金额",
+  "到账金额",
+  "手续费",
+  "充值方式",
+  "订单时间",
+  "到账时间",
+  "状态"
+];
+
 export default {
   name: "WithdrawRecord",
   components: {
@@ -86,6 +129,11 @@ export default {
 
   data() {
     return {
+      checkArr: [1, 1, 1],
+      checkAll: false,
+      cities: cityOptions,
+      isIndeterminate: true,
+      isshow: false,
       tableData: [],
       currentPage: 1,
       pagesize: 5,
@@ -111,7 +159,7 @@ export default {
         { value: 1, label: "提现单号" },
         { value: 2, label: "用户手机" },
         { value: 3, label: "账户名" },
-        { value: 4, label: "银行账号" },
+        { value: 4, label: "银行账号" }
       ],
       modeOpt: [
         { value: 1, label: "全部银行" },
@@ -123,7 +171,7 @@ export default {
         { value: 7, label: "中信银行" },
         { value: 8, label: "中国光大银行" },
         { value: 9, label: "招商银行" },
-        { value: 10, label: "华夏银行" },
+        { value: 10, label: "华夏银行" }
       ],
       statusOpt: [
         { value: 1, label: "全部状态" },
@@ -132,13 +180,41 @@ export default {
         { value: 4, label: "已到账" },
         { value: 5, label: "已拒绝" },
         { value: 6, label: "提现处理中" },
-        { value: 7, label: "提现失败" },
+        { value: 7, label: "提现失败" }
       ],
+      checkedCities: [
+        "充值单号",
+        "用户手机",
+        "真实姓名",
+        "充值金额",
+        "到账金额",
+        "手续费",
+        "充值方式",
+        "订单时间",
+        "到账时间",
+        "状态"
+      ]
     };
   },
-  
- methods: {
-  //  分页
+
+  methods: {
+    // 筛选列 显示隐藏
+    toggle() {
+      this.isshow = !this.isshow;
+    },
+    // 筛选列 全选
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? cityOptions : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.cities.length;
+    },
+
+    //  分页
     handleClick(row) {
       console.log(row);
     },
@@ -172,7 +248,7 @@ export default {
         if (typeof console !== "undefined") console.log(e, wbout);
       }
       return wbout;
-    },
+    }
   },
 
   created() {
@@ -194,7 +270,32 @@ export default {
   padding: 0;
   position: relative;
 }
-#withdraw_app>#nav {
+#withdraw_app > #nav {
   width: 100%;
 }
+#filterColumn {
+  width: 200px;
+  /* height: 300px; */
+  background-color: white;
+}
+
+.title {
+  width: 100%;
+  height: 40px;
+  background-color: #006d75;
+}
+h2 {
+  color: #fff;
+  margin-left: 10px;
+  line-height: 40px;
+}
+#nav .one,#nav .two {
+  position: relative;
+}
+.export,.customize {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 </style>

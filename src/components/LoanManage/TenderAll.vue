@@ -44,73 +44,70 @@
     >
       <el-table-column
         fixed
-        prop="date"
-        label="借款编号"
-        width="150">
+        prop="id"
+        label="借款编号">
       </el-table-column>
       <el-table-column
         prop="name"
-        label="借款方"
-        width="120">
+        label="借款方">
       </el-table-column>
       <el-table-column
-        prop="province"
+        prop="phone"
         label="借款人手机"
-        width="120">
+        width="130">
       </el-table-column>
       <el-table-column
-        prop="city"
-        label="借款名称"
-        width="120">
+        prop="loan_name"
+        label="借款名称">
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="借款金额"
-        width="300">
+        prop="loan_money"
+        label="借款金额">
       </el-table-column>
       <el-table-column
-        prop="zip"
-        label="年化利率"
-        width="120">
+        prop="year_mon"
+        label="年化利率">
       </el-table-column>
       <el-table-column
-        prop="zip"
-        label="还款方式"
-        width="120">
+        prop="loan_method"
+        label="还款方式">
       </el-table-column>
       <el-table-column
-        prop="zip"
-        label="期限"
-        width="90">
+        prop="loan_day"
+        label="期限">
       </el-table-column>
       <el-table-column
-        prop="zip"
+        prop="mon_mon"
         label="借款管理费月率"
-        width="120">
+        width="130">
       </el-table-column>
       <el-table-column
-        prop="zip"
+        prop="loan_m_money"
         label="借款管理费"
-        width="120">
+        width="100">
       </el-table-column>
       <el-table-column
-        prop="zip"
+        prop="uptime"
         label="上架时间"
-        width="120">
+        width="200">
+        <template slot-scope="scope">
+          <span>{{scope.row.uptime | dateFormat}}</span>
+        </template>
       </el-table-column>
       <el-table-column
-        prop="zip"
-        label="开售时间"
-        width="80">
+        prop="start_time"
+        label="开售时间">
+        <template slot-scope="scope">
+          <span>{{scope.row.uptime | dateFormat}}</span>
+        </template>
       </el-table-column>
       <el-table-column
-        prop="zip"
-        label="状态"
-        width="80">
+        prop="state"
+        label="状态">
       </el-table-column>
     </el-table>
 
-    <Pagination></Pagination>
+    <Pagination @handleSizeChange="handleSizeChange" :total="tableData.length"></Pagination>
 
   </div>
 </template>
@@ -126,8 +123,11 @@
       MyButton
     },
     created(){
-      this.tableDataOrigin = this.tableData;
-
+      // this.tableDataOrigin = this.tableData;
+      this.Axios.get('http://19h4o94140.51mypc.cn/tenderall').then(res => {
+        console.log(res);
+        this.tableData = res.data;
+      }).catch((err)=>{console.log(err)});
     },
     methods: {
       handleClick(row) {
@@ -148,6 +148,9 @@
       },
       searchSelectChange(){
         if(this.searchSel == 0) this.executeSearch();
+      },
+      handleSizeChange(){
+
       }
     },
     data() {

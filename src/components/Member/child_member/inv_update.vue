@@ -4,7 +4,7 @@
     <div>
       <div class="up">
         <p>基本信息</p>
-        <div class="update">修改</div>
+        <div @click="update">修改</div>
       </div>
 
       <ul>
@@ -27,7 +27,7 @@
     <div>
       <div class="up">
         <p>银行卡信息</p>
-        <div class="update">修改</div>
+        <!-- <div @click="update">修改</div> -->
       </div>
       <ul>
         <li>
@@ -49,7 +49,7 @@
     <div>
       <div class="up">
         <p>操作</p>
-        <div class="update">修改</div>
+        <!-- <div @click="update">修改</div> -->
       </div>
 
       <div>
@@ -76,14 +76,14 @@ export default {
   components: {},
 
   created() {
-    // 取invUserChild1里传过来的sessionStororage
+    // 取invUserChild1里传过来的sessionStororage;
     var json = JSON.parse(window.sessionStorage.getItem("rows"));
     // 需要的数据存放在data
     this.phone = json.per_phone;
     this.pre_name = json.per_name;
     this.entitle = json.int_entitle;
     this.blink = json.act_message;
-    console.log(json);
+    // console.log(json);
   },
 
   data() {
@@ -121,7 +121,11 @@ export default {
       this.$router.push("/InvUser");
     },
     update() {
-      this.isDisabled = false;
+      if (this.isDisabled == true) {
+        this.isDisabled = false;
+      } else {
+        this.isDisabled = true;
+      }
     }
   }
 };

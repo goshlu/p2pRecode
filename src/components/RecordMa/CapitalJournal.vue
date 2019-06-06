@@ -18,7 +18,10 @@
 						</el-option>
 					</el-select>
 				</el-col>
-				<el-col :span="2" :offset="11">
+				<el-col :span="4">
+					<el-button @click="searchFun"  size="small" plain>搜索</el-button>
+				</el-col>
+				<el-col :span="2" :offset="7">
 					<el-button plain size="small" @click="exportExcel">导出</el-button>
 				</el-col>
 
@@ -140,110 +143,65 @@
 		},
 		created() {
 			this.total = this.tableData.length;
-			this.Axios.get('http://19h4o94140.51mypc.cn/capitaljournal').then(
-					(response) => {
-						
-						this.tableData = response.data;
-						for(let i=0;i<this.tableData.length;i++){
-							console.log(this.tableData[i].type);
-								if(this.tableData[i].type=="1"){
-									this.tableData[i].type="回收利息";
-								}else if(this.tableData[i].type=="2"){
-									this.tableData[i].type="回收本金";
-								}else if(this.tableData[i].type=="3"){
-									this.tableData[i].type="利息管理费";
-								}else{
-									this.tableData[i].type="借款入账";
-								}
-						}
-						this.total = this.tableData.length;
-						// console.log(response.data.datas.data);
-					})
-				.catch(function(error) {
-					console.log(error);
-				});
+			this.axiosFun();
 		},watch:{
-			input_phone(){
+			value(){
+				this.axiosFun();
+			}
+		},
+		methods: {
+				axiosFun(){
+					this.Axios.get('http://19h4o94140.51mypc.cn/capitaljournal',{
+						params:{
+							phone:this.input_phone,
+							name:this.input_name,
+							type:this.value
+						}
+					}).then(
+							(response) => {
+								this.tableData = response.data;
+								this.datacheck();
+								this.total = this.tableData.length;
+								// console.log(response);
+							})
+						.catch(function(error) {
+							console.log(error);
+						});
+				},
+				searchFun(){
+					this.total=this.tableData.length;
 				this.Axios.get('http://19h4o94140.51mypc.cn/capitaljournal',{
 					params:{
-						phone:this.input_phone
-					}
-				}).then(
-						(response) => {
-							this.tableData = response.data;
-								for(let i=0;i<this.tableData.length;i++){
-								console.log(this.tableData[i].type);
-									if(this.tableData[i].type=="1"){
-										this.tableData[i].type="回收利息";
-									}else if(this.tableData[i].type=="2"){
-										this.tableData[i].type="回收本金";
-									}else if(this.tableData[i].type=="3"){
-										this.tableData[i].type="利息管理费";
-									}else{
-										this.tableData[i].type="借款入账";
-									}
-							}
-							this.total = this.tableData.length;
-							// console.log(response);
-						})
-					.catch(function(error) {
-						console.log(error);
-					});
-			},input_name(){
-				this.Axios.get('http://19h4o94140.51mypc.cn/capitaljournal',{
-					params:{
-						name:this.input_name
-					}
-				}).then(
-						(response) => {
-							this.tableData = response.data;
-								for(let i=0;i<this.tableData.length;i++){
-								console.log(this.tableData[i].type);
-									if(this.tableData[i].type=="1"){
-										this.tableData[i].type="回收利息";
-									}else if(this.tableData[i].type=="2"){
-										this.tableData[i].type="回收本金";
-									}else if(this.tableData[i].type=="3"){
-										this.tableData[i].type="利息管理费";
-									}else{
-										this.tableData[i].type="借款入账";
-									}
-							}
-							this.total = this.tableData.length;
-							// console.log(response);
-						})
-					.catch(function(error) {
-						console.log(error);
-					});
-			},value(){
-				this.Axios.get('http://19h4o94140.51mypc.cn/capitaljournal',{
-					params:{
+						phone:this.input_phone,
+						name:this.input_name,
 						type:this.value
 					}
 				}).then(
 						(response) => {
+							console.log(response.data);
 							this.tableData = response.data;
-								for(let i=0;i<this.tableData.length;i++){
-								console.log(this.tableData[i].type);
-									if(this.tableData[i].type=="1"){
-										this.tableData[i].type="回收利息";
-									}else if(this.tableData[i].type=="2"){
-										this.tableData[i].type="回收本金";
-									}else if(this.tableData[i].type=="3"){
-										this.tableData[i].type="利息管理费";
-									}else{
-										this.tableData[i].type="借款入账";
-									}
-							}
+							this.datacheck();
 							this.total = this.tableData.length;
-							// console.log(response);
+							
 						})
 					.catch(function(error) {
 						console.log(error);
 					});
-			}
-		},
-		methods: {
+			},
+			datacheck(){
+					for(let i=0;i<this.tableData.length;i++){
+					console.log(this.tableData[i].type);
+						if(this.tableData[i].type=="1"){
+							this.tableData[i].type="回收利息";
+						}else if(this.tableData[i].type=="2"){
+							this.tableData[i].type="回收本金";
+						}else if(this.tableData[i].type=="3"){
+							this.tableData[i].type="利息管理费";
+						}else{
+							this.tableData[i].type="借款入账";
+						}
+				}
+			},
 			getRowClass() {
 				return 'background:#f2f2f2'
 			},

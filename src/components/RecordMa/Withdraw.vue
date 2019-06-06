@@ -4,16 +4,20 @@
       <h2>提现审核</h2>
     </div>
     <div id="nav" style="display: block; width: 100%">
-      <!-- 搜索框 -->
-      <Search :searchOpt="searchOpt"/>
-      <!-- 选择方式 -->
-      <Mode :modeOpt="modeOpt"/>
-      <!-- 日期选择器 -->
-      <DatePicke/>
-      <!-- 导出按钮 el-icon-download -->
-      <el-row  style="margin-right: 0; margin-top: 15px; display: inline-block;">
-        <el-button plain @click="exportExcel">导出</el-button>
-      </el-row>
+      <div class="one">
+        <!-- 搜索框 -->
+        <Search :searchOpt="searchOpt"/>
+        <!-- 导出按钮 el-icon-download -->
+        <el-row class="export" style="margin-right: 0; margin-top: 15px; display: inline-block;">
+          <el-button plain @click="exportExcel">导出</el-button>
+        </el-row>
+      </div>
+      <div class="two">
+        <!-- 选择方式 -->
+        <Mode :modeOpt="modeOpt"/>
+        <!-- 日期选择器 -->
+        <DatePicke/>
+      </div>
     </div>
 
     <!-- 表格 -->
@@ -115,7 +119,7 @@ export default {
         { value: 1, label: "提现单号" },
         { value: 2, label: "用户手机" },
         { value: 3, label: "账户名" },
-        { value: 4, label: "银行账号" },
+        { value: 4, label: "银行账号" }
       ],
       modeOpt: [
         { value: 1, label: "全部银行" },
@@ -127,8 +131,8 @@ export default {
         { value: 7, label: "中信银行" },
         { value: 8, label: "中国光大银行" },
         { value: 9, label: "招商银行" },
-        { value: 10, label: "华夏银行" },
-      ],
+        { value: 10, label: "华夏银行" }
+      ]
     };
   },
 
@@ -145,7 +149,7 @@ export default {
     handleSizeChange(pagesize) {
       this.pagesize = pagesize;
     },
-    
+
     // 导出
     exportExcel() {
       /* generate workbook object from table */
@@ -169,7 +173,7 @@ export default {
         if (typeof console !== "undefined") console.log(e, wbout);
       }
       return wbout;
-    },
+    }
   },
 
   created() {
@@ -193,6 +197,25 @@ export default {
 }
 #review_app > #nav {
   width: 100%;
+}
+.title {
+  width: 100%;
+  height: 40px;
+  background-color: #006d75;
+}
+h2 {
+  color: #fff;
+  margin-left: 10px;
+  line-height: 40px;
+}
+#nav .one,
+#nav .two {
+  position: relative;
+}
+.export {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>
 

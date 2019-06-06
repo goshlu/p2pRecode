@@ -4,40 +4,51 @@
       <h2>充值记录</h2>
     </div>
     <div id="nav">
-      <!-- 搜索框 -->
-      <Search :searchOpt="searchOpt"/>
-      <!-- 选择充值方式 -->
-      <Mode :modeOpt="modeOpt"/>
-      <!-- 选择状态 -->
-      <Status :statusOpt="statusOpt"/>
-      <!-- 日期选择器 -->
-      <DatePicke/>
-      <!-- 导出按钮 el-icon-download -->
-      <el-row style="margin-right: 0; margin-top: 15px; display: inline-block;">
-        <el-button plain @click="exportExcel">导出</el-button>
-      </el-row>
+      <div class="one">
+        <!-- 搜索框 -->
+        <Search :searchOpt="searchOpt"/>
+        <!-- 导出按钮 el-icon-download -->
+        <el-row class="export" style="margin-right: 0; margin-top: 15px; display: inline-block;">
+          <el-button plain @click="exportExcel">导出</el-button>
+        </el-row>
+      </div>
+      <div class="two">
+        <!-- 选择充值方式 -->
+        <Mode :modeOpt="modeOpt"/>
+        <!-- 选择状态 -->
+        <Status :statusOpt="statusOpt"/>
+        <!-- 日期选择器 -->
+        <DatePicke/>
+      </div>
     </div>
 
     <!-- 表格 -->
     <div class="wrapper" style="padding-top: 30px;" id="RechargeRecord">
       <div class="wrapper-content">
+        <!-- ref="multipleTable"
+          tooltip-effect="dark" 
+        show-summary="true"-->
         <el-table
           :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           stripe
           :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5'}"
+          @selection-change="handleSelectionChange"
           style="width: 100%"
         >
-          <el-table-column fixed prop="loan_id" label="充值单号" width="120"></el-table-column>
-          <el-table-column prop="loan_money" label="用户手机" width="120"></el-table-column>
-          <el-table-column prop="loan_money" label="真实姓名" width="100"></el-table-column>
-          <el-table-column prop="loan_ deadline" label="用户来源" width="120"></el-table-column>
-          <el-table-column prop="loan_ deadline" label="应用来源" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="充值金额" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="到账金额" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="手续费" width="80"></el-table-column>
-          <el-table-column prop="loan_money" label="充值方式" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="交易流水号" width="150"></el-table-column>
-          <el-table-column label="订单时间" width="160">
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column fixed prop="recharge_id" label="充值单号" width="120"></el-table-column>
+          <el-table-column prop="user_phone" label="用户手机" width="120"></el-table-column>
+          <el-table-column prop="user_name" label="真实姓名" width="100"></el-table-column>
+          <el-table-column prop="user_source" label="用户来源" width="120"></el-table-column>
+          <el-table-column prop="app_source" label="应用来源" width="100"></el-table-column>
+          <el-table-column prop="recharge_amount" label="充值金额" width="100"></el-table-column>
+          <el-table-column prop="arrival_amount" label="到账金额" width="100"></el-table-column>
+          <el-table-column prop="recharge_handlingFee" label="手续费" width="80"></el-table-column>
+          <el-table-column prop="recharge_type" label="充值方式" width="100"></el-table-column>
+          <el-table-column prop="trading_flowNum" label="交易流水号" width="150"></el-table-column>
+          <el-table-column prop="order_date" label="订单时间" width="150"></el-table-column>
+          <el-table-column prop="arrival_date" label="到账时间" width="150"></el-table-column>
+          <!-- <el-table-column label="订单时间" width="160">
             <template slot-scope="scope">
               <p>{{ scope.row.loan_date | dateFormat }}</p>
             </template>
@@ -46,14 +57,14 @@
             <template slot-scope="scope">
               <p>{{ scope.row.loan_date | dateFormat }}</p>
             </template>
-          </el-table-column>
+          </el-table-column>-->
           <el-table-column fixed="right" prop="status" label="状态" width="100"></el-table-column>
         </el-table>
       </div>
     </div>
 
     <!-- 分页 -->
-     <Pagination
+    <Pagination
       :total="total"
       :pagesize="pagesize"
       :currentPage="currentPage"
@@ -117,7 +128,7 @@ export default {
         { value: 2, label: "支付宝" },
         { value: 3, label: "微信" },
         { value: 4, label: "在线充值" },
-        { value: 5, label: "银行转账" },
+        { value: 5, label: "银行转账" }
       ],
       statusOpt: [
         { value: 1, label: "全部状态" },
@@ -129,6 +140,10 @@ export default {
   },
 
   methods: {
+    // 全选
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
     // 分页
     handleClick(row) {
       console.log(row);
@@ -163,13 +178,15 @@ export default {
         if (typeof console !== "undefined") console.log(e, wbout);
       }
       return wbout;
-    },
+    }
   },
 
   created() {
-    this.Axios.get("http://rap2api.taobao.org/app/mock/177576/borrow")
+    // http://5cf61a7646583900149cb303.mockapi.io/RechargeRecord
+    this.Axios.get("http://5cf61a7646583900149cb303.mockapi.io/RechargeRecord")
       .then(res => {
-        this.tableData = res.data.datas.data;
+        console.log(res);
+        this.tableData = res.data;
         this.total = this.tableData.length;
       })
       .catch(err => {
@@ -187,5 +204,23 @@ export default {
 }
 #recharge_app > #nav {
   width: 100%;
+}
+.title {
+  width: 100%;
+  height: 40px;
+  background-color: #006d75;
+}
+h2 {
+  color: #fff;
+  margin-left: 10px;
+  line-height: 40px;
+}
+#nav .one,#nav .two {
+  position: relative;
+}
+.export {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>

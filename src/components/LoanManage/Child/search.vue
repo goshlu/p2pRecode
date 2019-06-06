@@ -33,13 +33,14 @@ export default {
     return {
       input5: "",
       searchSel: "",
-      modeSel: "",
+      modeSel: 0,
       searchOpt: [
         { value: 1, label: "借款名称" },
         { value: 2, label: "借款方" },
         { value: 3, label: "借款人手机" }
       ],
       modeOpt: [
+        {value:0,label:"全部状态"},
         { value: 2, label: "新标待审核" },
         { value: 3, label: "新增草稿" },
         { value: 4, label: "初审不通过" }

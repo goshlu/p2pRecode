@@ -93,7 +93,7 @@
         </div>
         <el-form ref="from2" :model="from2" label-width="150px" v-if="isBorrow">
           <el-form-item label="是否担保：">
-            <img src alt>
+           <el-image></el-image>
           </el-form-item>
         </el-form>
       </div>
@@ -109,7 +109,7 @@
           </el-form-item>
 
           <el-form-item label="*标的类型：">
-            <el-select v-model="value" placeholder="请选择">
+            <el-select v-model="LoanType" placeholder="请选择">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -120,11 +120,11 @@
           </el-form-item>
 
           <el-form-item label="*最低起投金额：">
-            <el-input placeholder="请输入0-99999的整数" v-model="input1"></el-input>
+            <el-input placeholder="请输入0-99999的整数" v-model="Minimum"></el-input>
           </el-form-item>
 
           <el-form-item label="*递增金额：">
-            <el-select v-model="value" placeholder="请选择">
+            <el-select v-model="Incremental" placeholder="请选择">
               <el-option
                 v-for="item in option"
                 :key="item.value"
@@ -136,14 +136,14 @@
 
           <!-- *最大可投金额： -->
           <el-form-item label="*最大可投金额：">
-            <el-input placeholder="请输入>=最小可投且<=借款总额的正整数" v-model="input1"></el-input>
+            <el-input placeholder="请输入>=最小可投且<=借款总额的正整数" v-model="Maximum"></el-input>
           </el-form-item>
 
           <!-- *募集时间： -->
           <el-form-item label="*募集时间：">
             <div class="block">
               <!-- <span class="demonstration"></span> -->
-              <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+              <el-date-picker v-model="Raise" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
 
@@ -151,7 +151,7 @@
           <el-form-item label="*上架时间：">
             <div class="block">
               <!-- <span class="demonstration"></span> -->
-              <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+              <el-date-picker v-model="Shelf" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
 
@@ -159,7 +159,7 @@
           <el-form-item label="*开售时间：">
             <div class="block">
               <!-- <span class="demonstration"></span> -->
-              <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
+              <el-date-picker v-model="Opening" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
 
@@ -240,9 +240,15 @@ export default {
       from1: {},
       from2: {},
       input: "新手1号",
-      input1: "",
-      value1: "",
-      textarea:"",
+      LoanName:"",
+      LoanType:"",
+      Minimum:"",
+      Incremental:"",
+      Maximum:"",
+      Raise:"",
+      Shelf:"",
+      Opening:"",
+      textarea: "",
       radio: "1",
       APP: "",
       PC: "",
@@ -288,9 +294,6 @@ export default {
   methods: {
     handleCommand(command) {
       this.$message("click on item " + command);
-    },
-    open() {
-      console.log(456);
     }
   }
 };
@@ -313,7 +316,6 @@ export default {
   width: 100%;
   height: 40px;
   background-color: #006d75;
-  padding: 10px;
 }
 h2 {
   color: #fff;
@@ -365,5 +367,6 @@ h2 {
 .el-row {
   width: 80%;
   margin: 0 auto;
+  padding-bottom: 10px;
 }
 </style>

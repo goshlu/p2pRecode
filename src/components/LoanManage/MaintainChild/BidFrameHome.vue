@@ -18,25 +18,24 @@
       </div>
       <!-- table -->
       <el-table
-        :data="getLoansList"
-        stripe
-        border
-        :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5'}"
-        style="width: 100%"
+        :data="tableDataList"
+        :stripe="true"
+        :border="false"
+        ref="multipleTable"
+        tooltip-effect="dark"
+        align="center"
+        style="width:100%"
       >
-        <el-table-column fixed prop="loan_id" label="编号" width="120"></el-table-column>
-        <el-table-column prop="loan_use" label="借款方" width="120"></el-table-column>
-        <el-table-column prop="phone" label="借款人手机" width="120"></el-table-column>
-        <el-table-column prop="Name" label="标名" width="120"></el-table-column>
-        <el-table-column prop="address" label="担保机构" width="120"></el-table-column>
-        <el-table-column prop="zip" label="类型" width="120"></el-table-column>
-        <el-table-column prop="loan_money" label="借款金额" width="120"></el-table-column>
-        <el-table-column prop="loan_money_rate" label="年化利率" width="120"></el-table-column>
-        <el-table-column prop="payments_mode" label="还款方式" width="120"></el-table-column>
-        <el-table-column prop="loan_deadline" label="期限" width="120"></el-table-column>
-        <el-table-column prop="loan_date" label="审核时间" width="180"></el-table-column>
-        <el-table-column prop="state" label="状态" width="120"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="80">
+        <el-table-column prop="id" label="编号" align="center"></el-table-column>
+        <el-table-column prop="loan_user" label="借款方" align="center"></el-table-column>
+        <el-table-column prop="loan_phone" label="借款人手机" align="center"></el-table-column>
+        <el-table-column prop="loan_name" label="标名" align="center"></el-table-column>
+        <el-table-column prop="loan_type" label="类型" align="center"></el-table-column>
+        <el-table-column prop="loan_money" label="借款金额" align="center"></el-table-column>
+        <el-table-column prop="payments_mode" label="还款方式" align="center"></el-table-column>
+        <el-table-column prop="loan_deadline" label="期限" align="center"></el-table-column>
+        <el-table-column prop="state" label="状态" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
           <template>
             <el-button type="text" align="center" size="small">
               <router-link :to="{name:'Maintain'}">上架</router-link>
@@ -44,43 +43,94 @@
           </template>
         </el-table-column>
       </el-table>
-      <Pagination></Pagination>
       <!--分页-->
+      <div class="pagination">
+        <el-pagination
+          background
+          v-if="paginations.total > 0"
+          :page-sizes="paginations.page_sizes"
+          :page-size="paginations.page_size"
+          :layout="paginations.layout"
+          :total="paginations.total"
+          :current-page.sync="paginations.page_index"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+        ></el-pagination>
+      </div>
     </div>
-
   </div>
 </template>
 
 <script>
-
-import Pagination from '../Child/Pagination'
-
 export default {
-  name: "BidFrame",
-  components: {
-    Pagination
-  },
+  name: "BidFrameHome",
+  components: {},
   data() {
     return {
+      paginations: {
+        page_index: 1, // 当前位于哪页
+        total: 0, // 总数
+        page_size: 5, // 1页显示多少条
+        page_sizes: [5, 10, 15, 20], //每页显示多少条
+        layout: "total, sizes, prev, pager, next" // 翻页属性
+      },
       input5: "",
       select: "",
-      getLoansList: [
-        {
-          loan_id: 201709091123,
-          loan_use: "企业1号",
-          phone: "13800009999",
-          Name: "新手1号",
-          address: "上海泽润典当",
-          zip: "续贷",
-          loan_money: "¥20000",
-          loan_money_rate: "11.5%",
-          payments_mode: "按月付息",
-          loan_deadline: "5天",
-          loan_date: "2017-01-01 12:23:33",
-          state: "待上架"
-        }
-      ]
+      tableDataList: [],
+      tableData: []
     };
+  },
+  created() {
+    this.Axios.get("https://5cf615c346583900149cb2b9.mockapi.io/Loans")
+      .then(res => {
+        // console.log(res);
+        this.tableData = res.data;
+        this.setPaginations();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  methods: {
+    // 实现切换当前页数据长度的方法
+    handleSizeChange(page_size) {
+      //切换size
+      this.paginations.page_index = 1;
+      this.paginations.page_size = page_size;
+      this.tableDataList = this.tableData.filter((item, index) => {
+        return index < page_size;
+      });
+    },
+
+    //实现相应页面展示相应数据
+    handleCurrentChange(page) {
+      //获取当前页的索引
+      let index = this.paginations.page_size * (page - 1);
+      //获取总数
+      let nums = this.paginations.page_size * page;
+      //容器
+      let tables = [];
+      this.tableDataList = [];
+      for (let i = index; i < nums; i++) {
+        console.log(this.tableData[i]);
+        if (this.tableData[i]) {
+          this.tableDataList.push(this.tableData[i]);
+        }
+      }
+    },
+
+    //分页初始化
+    setPaginations() {
+      // 总页数
+      this.paginations.total = this.tableData.length;
+      this.paginations.page_index = 1;
+      this.paginations.page_size = 5;
+      // console.log(this.tableData);
+      // 设置默认分页数据
+      this.tableDataList = this.tableData.filter((item, index) => {
+        return index < this.paginations.page_size;
+      });
+    }
   }
 };
 </script>
@@ -95,19 +145,18 @@ export default {
   width: 100%;
   margin: 0 auto;
 }
-.el-table{
+.el-table {
   margin-top: 20px;
 }
-.title{
+.title {
   width: 100%;
   height: 40px;
   background-color: #006d75;
-  padding: 10px;
 }
-h2{
+h2 {
   color: #fff;
   line-height: 40px;
-  margin-left:10px;
+  margin-left: 10px;
 }
 .searchWrap {
   display: flex;
@@ -120,5 +169,10 @@ h2{
 }
 .searchWrap >>> .input-with-select .el-input-group__prepend {
   background-color: #fff;
+}
+/* 分页 */
+.pagination {
+  text-align: left;
+  margin-top: 10px;
 }
 </style>

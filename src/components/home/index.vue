@@ -42,16 +42,16 @@ export default {
         }
     },
     created(){
-        this.Axios.get("http://172.16.6.64:8080/index").then(
-            res => {
-                // console.log(res);
-                this.data = res.data
-            }
-        ).catch(
-            error => {
-                // console.log("222");
-            }
-        );
+        // this.Axios.get("http://172.16.6.64:8080/index").then(
+        //     res => {
+        //         // console.log(res);
+        //         this.data = res.data
+        //     }
+        // ).catch(
+        //     error => {
+        //         // console.log("222");
+        //     }
+        // );
         
     }
 }

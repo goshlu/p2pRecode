@@ -80,7 +80,7 @@
         </div>
         <el-form ref="from1" :model="from1" label-width="150px">
           <el-form-item label="是否担保：">
-            <img src alt>
+            <el-image></el-image>
           </el-form-item>
         </el-form>
       </div>
@@ -132,7 +132,6 @@ export default {
   width: 100%;
   height: 40px;
   background-color: #006d75;
-  padding: 10px;
 }
 h2 {
   color: #fff;
@@ -163,5 +162,6 @@ h2 {
 .el-row{
   width:80%;
   margin:0 auto;
+  padding-bottom: 10px;
 }
 </style>

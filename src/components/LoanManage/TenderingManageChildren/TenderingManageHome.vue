@@ -94,7 +94,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"><router-link to="TenderingManageModify">修改</router-link></el-button>
+            <el-button @click="handleClick(scope.row)" type="text" size="small"><router-link to="/BidFrame/Maintain">修改</router-link></el-button>
             <el-divider direction="vertical"></el-divider>
             <el-button type="text" size="small" @click="showModal">下架</el-button>
           </template>
