@@ -3,7 +3,7 @@
 		<el-header>
 			<el-row :gutter="15">
 				<el-col :span="7">
-					<el-input size="small" placeholder="请输入内容" v-model="uinput" class="input-with-select">
+					<el-input size="small" placeholder="请输入搜索内容" v-model="uinput" class="input-with-select">
 						<el-select size="small" class="select-width" v-model="usel"  slot="prepend" placeholder="请选择">
 							<el-option label="姓名" value="0"></el-option>
 							<el-option label="手机号" value="1"></el-option>
@@ -17,8 +17,11 @@
 						</el-option>
 					</el-select>
 				</el-col>
-				<el-col :span="2" :offset="12">
-					<el-button plain size="small" @click="exportExcel">导出</el-button>
+				<el-col :span="3" :offset="11">
+					<el-select size="small" v-model="exportvalue" filterable placeholder="请选择">
+						<el-option v-for="item in exportoptions" :key="item.exportvalue" :label="item.label" :value="item.exportvalue">
+						</el-option>
+					</el-select>
 				</el-col>
 
 
@@ -26,7 +29,7 @@
 		</el-header>
 		<el-main>
 			<el-table id="moneyTable" :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}" tooltip-effect="dark" stripe
-			 style="font-size: 11px;" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" :cell-style="{'text-align':'center',border:'none'}">
+			 style="font-size: 14px;" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" :cell-style="{'text-align':'center',border:'none'}">
 				<el-table-column type="selection">
 				</el-table-column>
 				<!-- 	<el-table-column prop="id" width="70" label="用户ID" align="center">
@@ -106,7 +109,7 @@
 		name: "UserCapital",
 		data() {
 			return {
-				usel: "",
+				usel: "0",
 				uinput: "",
 				tableData: [],
 				total: 0, //默认数据总数
@@ -115,6 +118,14 @@
 				input_phone: "",
 				input_name: "",
 				pubdata:"",
+				exportoptions:[{
+					exportvalue:0,
+					label:"导出选中"
+				},{
+					exportvalue:1,
+					label:"导出全部"
+				}],
+				exportvalue:0,
 				options: [{
 						value: 0,
 						label: "全部用户"
