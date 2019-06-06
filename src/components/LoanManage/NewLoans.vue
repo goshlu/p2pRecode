@@ -1,8 +1,9 @@
 <template>
   <div class="Loans">
-    <div class="title">
+    <!-- <div class="title">
       <h2>新增借款</h2>
-    </div>
+    </div> -->
+    <Title :navArr="navArr"/>
     <div class="content">
       <div class="EssentialInfo">
         <div class="EssentialTitle">
@@ -44,19 +45,7 @@
               <el-option value="Repayment" label="到期还本"></el-option>
             </el-select>
           </el-form-item>
-          <!-- *期限类型： -->
-          <el-form-item label="*期限类型：">
-            <el-radio v-model="radio" label="month">月</el-radio>
-            <el-radio v-model="radio" label="day">天</el-radio>
-          </el-form-item>
-          <!-- **还款方式： -->
-          <el-form-item label="*还款方式：">
-            <el-input v-model="repayment"></el-input>
-          </el-form-item>                 
-          <!-- *借款起息方式： -->
-          <el-form-item label="*借款起息方式：">
-            <el-radio v-model="radio1" label="1">成立利息</el-radio>
-          </el-form-item>
+
           <!-- *借款管理费月率： -->
           <el-form-item label="*借款管理费月率：">
             <el-input v-model="cost"></el-input>
@@ -68,9 +57,9 @@
           <!-- *借款类型： -->
           <el-form-item label="*借款类型：">
             <el-select v-model="Loan" placeholder="请选择">
-              <el-option value="Add"  label="新增"></el-option>
-              <el-option value="Continued"  label="续贷"></el-option>
-              <el-option value="Handle"  label="资产处理"></el-option>
+              <el-option value="Add" label="新增"></el-option>
+              <el-option value="Continued" label="续贷"></el-option>
+              <el-option value="Handle" label="资产处理"></el-option>
             </el-select>
           </el-form-item>
           <!-- 资金用途： -->
@@ -87,31 +76,44 @@
           <el-form-item label="还款来源：">
             <el-input v-model="source"></el-input>
           </el-form-item>
+          <!-- **还款方式： -->
+          <el-form-item label="*借款时间：">
+            <el-input v-model="repayment"></el-input>
+          </el-form-item>
+          <!-- *借款起息方式： -->
+          <el-form-item label="*借款起息方式：">
+            <el-radio v-model="radio2" label="0">成立利息</el-radio>
+          </el-form-item>
+          <!-- *期限类型： -->
+          <el-form-item label="*期限类型：">
+            <el-radio v-model="radio1" label="0">月</el-radio>
+            <el-radio v-model="radio1" label="1">天</el-radio>
+          </el-form-item>
         </el-form>
       </div>
-      <el-divider></el-divider>
       <div class="GuaranteeInfo">
         <div class="GuaranteeTitle">
           <h4>担保信息</h4>
         </div>
         <el-form ref="form" :model="form" label-width="150px">
-          <!-- 是否担保： -->
-          <el-form-item label="是否担保：">
-            <el-radio v-model="radio" label="false">否</el-radio>
-            <el-radio v-model="radio" label="true">是</el-radio>
-          </el-form-item>
           <!-- 担保机构： -->
           <el-form-item label="*担保机构：">
             <el-select v-model="Chanism" placeholder="请选择">
               <el-option value="1" label="上海泽润典当有限公司"></el-option>
             </el-select>
           </el-form-item>
+          <!-- 是否担保： -->
+          <el-form-item label="是否担保：">
+            <el-radio v-model="radio3" label="0">否</el-radio>
+            <el-radio v-model="radio3" label="1">是</el-radio>
+          </el-form-item>
+
           <!-- 抵押类型： -->
           <el-form-item label="抵押类型：">
-            <el-radio v-model="radio" label="Nothing">无</el-radio>
-            <el-radio v-model="radio" label="HousingLoan">房贷</el-radio>
-            <el-radio v-model="radio" label="CarLoan">车贷</el-radio>
-            <el-radio v-model="radio" label="Civilian">民品抵</el-radio>
+            <el-radio v-model="radio4" label="0">无</el-radio>
+            <el-radio v-model="radio4" label="1">房贷</el-radio>
+            <el-radio v-model="radio4" label="2">车贷</el-radio>
+            <el-radio v-model="radio4" label="3">民品抵</el-radio>
           </el-form-item>
           <!-- 抵押物材料 -->
           <el-form-item label="抵押物材料：">
@@ -130,30 +132,10 @@
         </el-form>
       </div>
       <el-divider></el-divider>
-      <div class="BorrowingInfo">
-        <div class="BorrowingTitle">
-          <h4>借款资料</h4>
-        </div>
-        <el-form ref="form" :model="form" label-width="150px">
-          <!-- *上传借款资料: -->
-          <el-form-item label="*上传借款资料：">
-            <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove"
-            >
-              <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="dialogImageUrl" alt>
-            </el-dialog>
-          </el-form-item>
-        </el-form>
-        <el-divider></el-divider>
+      <div class="CheakBtn">
         <el-row>
           <el-button type="primary">提交</el-button>
-          <el-button>保存</el-button>
+          <el-button>返回</el-button>
         </el-row>
       </div>
     </div>
@@ -161,27 +143,34 @@
 </template>
 
 <script>
+import Title from "./../commonComponents/headerTitle"
 export default {
   name: "NewLoans",
-  components: {},
+  components: {
+    Title,
+  },
   data() {
     return {
+      navArr:['贷款管理','新增贷款'],
       form: {},
       loan: "",
       debtor: "",
-      sum:"",
-      rate:"",
-      repayment:"",
-      cost:"",
-      penalty:"",
-      source:"",
+      sum: "",
+      rate: "",
+      repayment: "",
+      cost: "",
+      penalty: "",
+      source: "",
       capital: "",
       Loan: "",
-      method:"",
-      Chanism:"",
+      method: "",
+      Chanism: "",
       value: "",
-      radio: "false",
-      radio1: "1",
+      radio: "0",
+      radio1: "0",
+      radio2: "0",
+      radio3: "0",
+      radio4: "0",
       dialogImageUrl: "",
       dialogVisible: false
     };
@@ -204,11 +193,11 @@ export default {
   margin: 0 auto;
 }
 
-.title {
+/* .title {
   width: 100%;
   height: 40px;
   background-color: #006d75;
-}
+} */
 
 h2 {
   color: #fff;
@@ -220,28 +209,26 @@ h2 {
   background-color: #fff;
 }
 
-.from1,
-.from2,
-.from3 {
-  padding-top: 10px;
-  width: 100%;
-  margin: 0 auto;
-}
-
 .EssentialTitle,
-.GuaranteeTitle,
-.BorrowingTitle {
-  padding: 20px 0 10px 10px;
+.GuaranteeTitle {
+  padding: 30px 0 10px 280px;
+  font-size:20px;
+  letter-spacing: 2px;
 }
 
+.el-form {
+  width: 70%;
+  margin: 0 auto;
+  padding-top:20px;
+}
 .el-form-item {
   display: inline-block;
-  width: 49%;
+  width: 48%;
 }
 
 .el-select,
 .el-input {
-  width: 70%;
+  width: 80%;
 }
 
 select,
@@ -251,8 +238,9 @@ input {
 
 /* 按钮 */
 .el-row {
-  width: 80%;
-  margin: 0 auto;
-  padding-bottom:10px;
+ text-align: right;
+ padding-top:20px;
+ padding-bottom: 20px;
+ margin-right:420px;
 }
 </style>
