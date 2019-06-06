@@ -1,8 +1,9 @@
 <template>
   <div id="MaintainWrap">
-    <div class="title">
+    <!-- <div class="title">
       <h2>上架维护</h2>
-    </div>
+    </div> -->
+    <Title  :navArr="navArr"/> 
     <div class="content">
       <div class="EssentialInfo">
         <div class="EssentialTitle">
@@ -191,9 +192,13 @@
 </template>
 
 <script>
+import Title from "./../../commonComponents/headerTitle"
+
 export default {
   name: "Maintain",
-
+  components:{
+    Title
+  },
   data() {
     return {
       isShow: true,
@@ -255,7 +260,8 @@ export default {
           value: "选项4",
           label: "1000元"
         }
-      ]
+      ],
+      navArr:['借贷管理','标的上架','标的上架维护']
     };
   },
   methods: {
@@ -279,11 +285,6 @@ export default {
   font-size: 14px;
 }
 
-.title {
-  width: 100%;
-  height: 40px;
-  background-color: #006d75;
-}
 h2 {
   color: #fff;
   margin-left: 10px;

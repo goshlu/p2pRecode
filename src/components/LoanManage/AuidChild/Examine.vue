@@ -1,8 +1,6 @@
 <template>
   <div id="MaintainWrap">
-    <div class="title">
-      <h2>借款审核详情</h2>
-    </div>
+    <Title :navArr="navArr"/>
     <div class="content">
       <!-- 基本信息 -->
       <div class="EssentialInfo">
@@ -99,12 +97,18 @@
 </template>
 
 <script>
+import Title from "./../../commonComponents/headerTitle"
+
 export default {
+  components:{
+    Title
+  },
   data() {
     return {
       from1: {},
       from2: {},
-      radio: "1"
+      radio: "1",
+      navArr:['贷款管理','借款审核','借款审核详情']
     };
   }
 };
@@ -115,11 +119,7 @@ export default {
   background-color: #fff;
 }
 /* TopNav */
-.title {
-  width: 100%;
-  height: 40px;
-  background-color: #006d75;
-}
+
 h2 {
   color: #fff;
   margin-left: 10px;
