@@ -1,106 +1,104 @@
 <template>
+	<el-container>
+		<el-header>
+			<el-row :gutter="15">
+				<el-col :span="7">
+					<el-input size="small" placeholder="请输入搜索内容" v-model="uinput" class="input-with-select">
+						<el-select size="small" class="select-width" v-model="usel"  slot="prepend" placeholder="请选择">
+							<el-option label="姓名" value="0"></el-option>
+							<el-option label="手机号" value="1"></el-option>
+						</el-select>
+						<el-button size="small" @click="UserSearch" slot="append" icon="el-icon-search"></el-button>
+					</el-input>
+				</el-col>
+				<el-col :span="3">
+					<el-select size="small" v-model="value" filterable placeholder="请选择">
+						<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+						</el-option>
+					</el-select>
+				</el-col>
+				<el-col :span="3" :offset="11">
+					<el-select size="small" v-model="exportvalue" filterable placeholder="请选择">
+						<el-option v-for="item in exportoptions" :key="item.exportvalue" :label="item.label" :value="item.exportvalue">
+						</el-option>
+					</el-select>
+				</el-col>
 
-  <el-container>
-    <el-header>
-      <el-row :gutter="15">
-        <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <el-input
-              size="small"
-              v-model="input_name"
-              suffix-icon="el-icon-search"
-              placeholder="请输入内容"
-            ></el-input>
-          </div>
-        </el-col>
-        <el-col :span="4">
-          <el-select size="small" v-model="value" filterable placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="4">
-          <el-button @click="searchFun" size="small" plain>搜索</el-button>
-        </el-col>
-        <el-col :span="2" :offset="6">
-          <el-button plain size="small" @click="exportExcel">导出</el-button>
-        </el-col>
-      </el-row>
-    </el-header>
-    <el-main>
-      <el-table
-        id="moneyTable"
-        stripe
-        style="font-size: 11px;"
-        :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-        :header-cell-style="getRowClass"
-        :cell-style="{'text-align':'center'}"
-      >
-        <el-table-column prop="id" width="70" label="用户ID" align="center"></el-table-column>
-        <el-table-column prop="name" label="姓名" align="center"></el-table-column>
-        <el-table-column prop="phone" width="130" label="用户手机" align="center"></el-table-column>
-        <el-table-column prop="total_assets" label="总资产" align="center"></el-table-column>
-        <el-table-column prop="available_balance" label="可用余额" align="center"></el-table-column>
-        <el-table-column prop="frozen_balance" label="冻结金额" align="center"></el-table-column>
-        <el-table-column prop="amount_collected" label="待收金额" align="center"></el-table-column>
-        <el-table-column prop="cumulative_investment" label="累计投资" align="center"></el-table-column>
-        <el-table-column
-          prop="accumulated_return_investment"
-          width="100"
-          label="累计投资收益"
-          align="center"
-        ></el-table-column>
-        <el-table-column prop="accumulated_loan" label="累计借款" align="center"></el-table-column>
-        <el-table-column prop="accumulated_repayment" label="累计还款" align="center"></el-table-column>
-        <el-table-column prop="lending_repayment_balance" label="借还款差额" align="center"></el-table-column>
-      </el-table>
-      <el-table
-        hidden="true"
-        id="moneyTableExport"
-        stripe
-        style="font-size: 11px;"
-        :data="tableData"
-        :header-cell-style="getRowClass"
-        :cell-style="{'text-align':'center'}"
-      >
-        <el-table-column prop="id" width="130" label="用户ID" align="center"></el-table-column>
-        <el-table-column prop="username" label="姓名" align="center"></el-table-column>
-        <el-table-column prop="personageMemberInfoPhone" width="130" label="用户手机" align="center"></el-table-column>
-        <el-table-column prop="money" label="总资产" align="center"></el-table-column>
-        <el-table-column prop="money" label="可用余额" align="center"></el-table-column>
-        <el-table-column prop="smallmoney" label="冻结金额" align="center"></el-table-column>
-        <el-table-column prop="smallmoney" label="待收金额" align="center"></el-table-column>
-        <el-table-column prop="maxmoney" label="累计投资" align="center"></el-table-column>
-        <el-table-column prop="maxmoney" width="100" label="累计投资收益" align="center"></el-table-column>
-        <el-table-column prop="smallmoney" label="累计借款" align="center"></el-table-column>
-        <el-table-column prop="smallmoney" label="累计还款" align="center"></el-table-column>
-        <el-table-column prop="smallmoney" label="借还款差额" align="center"></el-table-column>
-      </el-table>
-    </el-main>
-    <el-footer style="margin:20px 0 10px">
-      <el-row>
-        <el-col>
-          <el-pagination
-            background
-            layout="total,prev, pager, next,sizes"
-            :page-sizes="[10, 25, 50, 100]"
-            :page-size="pagesize"
-            :total="total"
-            :current-page="currentPage"
-            @size-change="handleSizeChange"
-            @current-change="current_change"
-          ></el-pagination>
-        </el-col>
-      </el-row>
-    </el-footer>
-  </el-container>
 
-	
+			</el-row>
+		</el-header>
+		<el-main>
+			<el-table id="moneyTable" :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}" tooltip-effect="dark" stripe
+			 style="font-size: 14px;" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" :cell-style="{'text-align':'center',border:'none'}">
+				<el-table-column type="selection">
+				</el-table-column>
+				<!-- 	<el-table-column prop="id" width="70" label="用户ID" align="center">
+				</el-table-column> -->
+				<el-table-column prop="name" label="姓名" align="center">
+				</el-table-column>
+				<el-table-column prop="phone" width="130" label="用户手机" align="center">
+				</el-table-column>
+				<el-table-column prop="total_assets" label="总资产" align="center">
+				</el-table-column>
+				<el-table-column prop="available_balance" label="可用余额" align="center">
+				</el-table-column>
+				<el-table-column prop="frozen_balance" label="冻结金额" align="center">
+				</el-table-column>
+				<el-table-column prop="amount_collected" label="待收金额" align="center">
+				</el-table-column>
+				<el-table-column prop="cumulative_investment" label="累计投资" align="center">
+				</el-table-column>
+				<el-table-column prop="accumulated_return_investment" width="100" label="累计投资收益" align="center">
+				</el-table-column>
+				<el-table-column prop="accumulated_loan" label="累计借款" align="center">
+				</el-table-column>
+				<el-table-column prop="accumulated_repayment" label="累计还款" align="center">
+				</el-table-column>
+				<el-table-column prop="lending_repayment_balance" label="借还款差额" align="center">
+				</el-table-column>
 
+			</el-table>
+			<!-- 		<el-table hidden="true" id="moneyTableExport" stripe style="font-size: 11px;" :data="tableData" :header-cell-style="getRowClass" :cell-style="{'text-align':'center'}">
+				<el-table-column prop="id" width="130" label="用户ID" align="center">
+				</el-table-column>
+				<el-table-column prop="username" label="姓名" align="center">
+				</el-table-column>
+				<el-table-column prop="personageMemberInfoPhone" width="130" label="用户手机" align="center">
+				</el-table-column>
+				<el-table-column prop="money" label="总资产" align="center">
+				</el-table-column>
+				<el-table-column prop="money" label="可用余额" align="center">
+				</el-table-column>
+				<el-table-column prop="smallmoney" label="冻结金额" align="center">
+				</el-table-column>
+				<el-table-column prop="smallmoney" label="待收金额" align="center">
+				</el-table-column>
+				<el-table-column prop="maxmoney" label="累计投资" align="center">
+				</el-table-column>
+				<el-table-column prop="maxmoney" width="100" label="累计投资收益" align="center">
+				</el-table-column>
+				<el-table-column prop="smallmoney" label="累计借款" align="center">
+				</el-table-column>
+				<el-table-column prop="smallmoney" label="累计还款" align="center">
+				</el-table-column>
+				<el-table-column prop="smallmoney" label="借还款差额" align="center">
+				</el-table-column>
+				
+			</el-table> -->
+
+		</el-main>
+		<el-footer style="margin:20px 0 10px">
+			<el-row>
+				<el-col>
+					<el-pagination background layout="total,prev, pager, next,sizes" :page-sizes="[10, 25, 50, 100]" :page-size="pagesize"
+					 :total="total" :current-page="currentPage" @size-change="handleSizeChange" @current-change="current_change">
+					</el-pagination>
+				</el-col>
+
+			</el-row>
+
+		</el-footer>
+	</el-container>
 
 </template>
 
@@ -111,7 +109,7 @@
 		name: "UserCapital",
 		data() {
 			return {
-				usel: "",
+				usel: "0",
 				uinput: "",
 				tableData: [],
 				total: 0, //默认数据总数
@@ -120,6 +118,14 @@
 				input_phone: "",
 				input_name: "",
 				pubdata:"",
+				exportoptions:[{
+					exportvalue:0,
+					label:"导出选中"
+				},{
+					exportvalue:1,
+					label:"导出全部"
+				}],
+				exportvalue:0,
 				options: [{
 						value: 0,
 						label: "全部用户"
