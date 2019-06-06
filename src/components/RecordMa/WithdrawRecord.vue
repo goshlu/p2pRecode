@@ -8,6 +8,14 @@
         <!-- 搜索框 -->
         <Search :searchOpt="searchOpt"/>
         <!-- 导出按钮 el-icon-download -->
+        <el-select size="mini" v-model="value2" filterable placeholder="导出">
+            <el-option
+              v-for="item in options2"
+              :key="item.value2"
+              :label="item.label"
+              :value="item.value2"
+            ></el-option>
+          </el-select>
         <el-row class="export" style="margin-right: 0; margin-top: 15px; display: inline-block;">
           <el-button plain @click="exportExcel">导出</el-button>
         </el-row>

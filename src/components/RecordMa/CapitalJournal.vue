@@ -30,7 +30,7 @@
 		</el-header>
 		<el-main>
 			<el-table id="moneyTable" stripe style="font-size: 11px;" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-			 :header-cell-style="getRowClass" :cell-style="{'text-align':'center'}">
+			 :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}" :cell-style="{'text-align':'center'}">
 
 				<el-table-column prop="name" label="姓名" align="center">
 				</el-table-column>
