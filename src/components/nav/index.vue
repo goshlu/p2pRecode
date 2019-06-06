@@ -3,12 +3,12 @@
     <ul class="top">
       <li class="left">
         <p v-for="(item,index) in getNavData" :key="index" :class="openTitle===item.title?now:noo" @click="menuClick(index)">{{item.title}}</p>
-        <!-- <p>借贷管理</p>
+        <p>借贷管理</p>
         <p>还款管理</p>
         <p>资金管理</p>
         <p>会员管理</p>
         <p class="now">权限管理</p>
-        <p>系统配置</p> -->
+        <p>系统配置</p>
       </li>
       <li class="right">
 
