@@ -4,6 +4,15 @@ import router from './router';
 import elementUi from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './store/index';
+// 导入过滤器
+import filter from './common/filter';
+
+// 定义全局过滤器
+for (let key in filter) {
+  Vue.filter(key, (val, value1, value2) => {
+    return filter[key](val, value1, value2);
+  });
+}
 
 // Vue.use(vuex);
 //ELEMENT_UI

@@ -8,25 +8,22 @@
         <!-- 搜索框 -->
         <Search :searchOpt="searchOpt"/>
         <!-- 导出按钮 el-icon-download -->
-        <el-select size="mini" v-model="value2" filterable placeholder="导出">
-            <el-option
-              v-for="item in options2"
-              :key="item.value2"
-              :label="item.label"
-              :value="item.value2"
-            ></el-option>
-          </el-select>
-        <el-row class="export" style="margin-right: 0; margin-top: 15px; display: inline-block;">
+        <!-- <el-row class="export" style="margin-right: 0; margin-top: 15px; display: inline-block;">
           <el-button plain @click="exportExcel">导出</el-button>
-        </el-row>
+        </el-row> -->
       </div>
       <div class="two">
         <!-- 选择充值方式 -->
+        <p>充值方式筛选：</p>
         <Mode :modeOpt="modeOpt"/>
         <!-- 选择状态 -->
+        <p>状态筛选：</p>
         <Status :statusOpt="statusOpt"/>
         <!-- 日期选择器 -->
+        <p>日期筛选：</p>
         <DatePicke/>
+        <!-- 导出 -->
+        <Export/>
       </div>
     </div>
 
@@ -43,30 +40,38 @@
           @selection-change="handleSelectionChange"
           style="width: 100%"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column fixed prop="recharge_id" label="充值单号" width="120"></el-table-column>
-          <el-table-column prop="user_phone" label="用户手机" width="120"></el-table-column>
-          <el-table-column prop="user_name" label="真实姓名" width="100"></el-table-column>
-          <el-table-column prop="user_source" label="用户来源" width="120"></el-table-column>
-          <el-table-column prop="app_source" label="应用来源" width="100"></el-table-column>
-          <el-table-column prop="recharge_amount" label="充值金额" width="100"></el-table-column>
-          <el-table-column prop="arrival_amount" label="到账金额" width="100"></el-table-column>
-          <el-table-column prop="recharge_handlingFee" label="手续费" width="80"></el-table-column>
-          <el-table-column prop="recharge_type" label="充值方式" width="100"></el-table-column>
-          <el-table-column prop="trading_flowNum" label="交易流水号" width="150"></el-table-column>
-          <el-table-column prop="order_date" label="订单时间" width="150"></el-table-column>
-          <el-table-column prop="arrival_date" label="到账时间" width="150"></el-table-column>
-          <!-- <el-table-column label="订单时间" width="160">
+          <el-table-column type="selection"></el-table-column>
+          <el-table-column prop="loan_id" label="充值单号"></el-table-column>
+          <el-table-column prop="loan_money" label="用户手机"></el-table-column>
+          <!-- <el-table-column prop="loan_money" label="真实姓名"></el-table-column> -->
+          <!-- <el-table-column prop="loan_ deadline" label="用户来源"></el-table-column> -->
+          <!-- <el-table-column prop="loan_ deadline" label="应用来源"></el-table-column> -->
+          <el-table-column prop="loan_money" label="充值金额"></el-table-column>
+          <el-table-column prop="loan_money" label="到账金额"></el-table-column>
+          <el-table-column prop="loan_money" label="手续费"></el-table-column>
+          <el-table-column prop="loan_money" label="充值方式"></el-table-column>
+          <el-table-column prop="loan_money" label="交易流水号"></el-table-column>
+          <el-table-column label="订单时间">
             <template slot-scope="scope">
               <p>{{ scope.row.loan_date | dateFormat }}</p>
             </template>
           </el-table-column>
-          <el-table-column label="到账时间" width="160">
+          <el-table-column label="到账时间">
             <template slot-scope="scope">
               <p>{{ scope.row.loan_date | dateFormat }}</p>
             </template>
-          </el-table-column>-->
-          <el-table-column fixed="right" prop="status" label="状态" width="100"></el-table-column>
+          </el-table-column>
+          <el-table-column prop="status" label="状态"></el-table-column>
+          <el-table-column prop="do" label="操作" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <el-button
+                type="primary"
+                icon="el-icon-view"
+                size="mini"
+                @click="handleView(scope.$index, scope.row)"
+              >查看</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </div>
@@ -89,6 +94,7 @@ import XLSX from "xlsx";
 import Search from "./Subassembly/Search.vue";
 import Mode from "./Subassembly/Mode";
 import Status from "./Subassembly/Status";
+import Export from "./Subassembly/Export";
 // import Atable from "./Subassembly/Atable";
 import Pagination from "./Subassembly/Pagination";
 import DatePicke from "./Subassembly/DatePicke";
@@ -99,6 +105,7 @@ export default {
     Search,
     Mode,
     Status,
+    Export,
     Pagination,
     DatePicke
     // Atable
@@ -148,6 +155,10 @@ export default {
   },
 
   methods: {
+    // 查看
+    handleView(index, row) {
+        console.log(index, row);
+      },
     // 全选
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -191,10 +202,10 @@ export default {
 
   created() {
     // http://5cf61a7646583900149cb303.mockapi.io/RechargeRecord
-    this.Axios.get("http://5cf61a7646583900149cb303.mockapi.io/RechargeRecord")
+    this.Axios.get("http://rap2api.taobao.org/app/mock/177576/borrow")
       .then(res => {
         console.log(res);
-        this.tableData = res.data;
+        this.tableData = res.data.datas.data;
         this.total = this.tableData.length;
       })
       .catch(err => {
@@ -223,7 +234,8 @@ h2 {
   margin-left: 10px;
   line-height: 40px;
 }
-#nav .one,#nav .two {
+#nav .one,
+#nav .two {
   position: relative;
 }
 .export {
@@ -231,4 +243,5 @@ h2 {
   top: 0;
   right: 0;
 }
+.two 
 </style>
