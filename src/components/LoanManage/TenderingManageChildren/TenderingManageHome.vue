@@ -4,9 +4,9 @@
     <Title :navArr="navArr"/>
 
     <div class="wrapper-content">
-      <div class="title">
-        <!--<h1 style="margin-bottom: 20px;">招标管理</h1>-->
-      </div>
+      <!--<div class="title">
+        <h1 style="margin-bottom: 20px;">招标管理</h1>
+      </div>-->
       <div class="searchWrap">
         <div>
           <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
@@ -30,76 +30,78 @@
         style="width: 100%"
       >
         <el-table-column
-          prop="date"
-          label="借款编号"
-          width="150">
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          prop="id"
+          label="借款编号">
         </el-table-column>
         <el-table-column
           prop="name"
-          label="借款方"
-          width="120">
+          label="借款方">
         </el-table-column>
         <el-table-column
-          prop="province"
+          prop="phone"
           label="借款人手机"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="city"
-          label="标名"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="借款金额"
           width="130">
         </el-table-column>
         <el-table-column
-          prop="zip"
-          label="年化利率"
-          width="120">
+          prop="loan_name"
+          label="借款名称">
         </el-table-column>
         <el-table-column
-          prop="zip"
-          label="还款方式"
-          width="120">
+          prop="loan_money"
+          label="借款金额">
         </el-table-column>
         <el-table-column
-          prop="zip"
-          label="期限"
-          width="90">
+          prop="year_mon"
+          label="年化利率">
         </el-table-column>
         <el-table-column
-          prop="zip"
+          prop="loan_method"
+          label="还款方式">
+        </el-table-column>
+        <el-table-column
+          prop="loan_day"
+          label="期限">
+        </el-table-column>
+        <el-table-column
+          prop="mon_mon"
+          label="借款管理费月率"
+          width="130">
+        </el-table-column>
+        <el-table-column
+          prop="loan_m_money"
+          label="借款管理费"
+          width="100">
+        </el-table-column>
+        <!--<el-table-column
+          prop="uptime"
           label="上架时间"
-          width="120">
+          width="200">
+          <template slot-scope="scope">
+            <span>{{scope.row.uptime | dateFormat}}</span>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="zip"
+          prop="start_time"
           label="开售时间"
-          width="120">
-        </el-table-column>
+          width="200">
+          <template slot-scope="scope">
+            <span>{{scope.row.start_time | dateFormat}}</span>
+          </template>
+        </el-table-column>-->
         <el-table-column
-          prop="zip"
-          label="已投金额"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="zip"
-          label="投资进度"
-          width="80">
-        </el-table-column>
-        <el-table-column
-          prop="zip"
-          label="状态"
-          width="80">
+          prop="state"
+          label="状态">
         </el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button type="primary" icon="el-icon-edit" size="mini">
               <router-link :to="{name:'TenderingManageModify',params:{}}">修改</router-link>
             </el-button>
-            <el-button type="danger" icon="el-icon-delete" size="mini" @click="handleCancel">下架</el-button>
+            <el-button type="danger" icon="el-icon-download" size="mini" @click="handleCancel">下架</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -155,48 +157,26 @@
         navArr:['借贷管理','进行中标的管理'],
         isShowModal: false,
         notesText: "",
-        tableData: [
-          {
-            date: "2016-05-02",
-            name: "王小虎",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
-          },
-          {
-            date: "2016-05-04",
-            name: "王小虎",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1517 弄",
-            zip: 200333
-          },
-          {
-            date: "2016-05-01",
-            name: "王小虎",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1519 弄",
-            zip: 200333
-          },
-          {
-            date: "2016-05-03",
-            name: "王小虎",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1516 弄",
-            zip: 200333
-          },
-          {
-            date: "2016-05-03",
-            name: "王小虎",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1516 弄",
-            zip: 200333
-          }
-        ],
+        tableData: [{
+          id:1,
+          phone:13323479765,
+          loan_name:"临时借",
+          year_mon:"2%",
+          loan_method:"按月付息",
+          loan_money:1988,
+          date: '2016-05-02',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333,
+          start_time:"2017-01-01T04:23:33.000Z",
+          uptime: "2017-01-01T04:23:33.000Z",
+          state: 5,
+          loan_m_money: "200",
+          loan_day: "5天"
+        }],
+        allTableData: [],
         input5: "",
         searchSel: 0,
         modeSel: "",
@@ -214,6 +194,14 @@
         },
       };
     },
+    created(){
+      // this.tableDataOrigin = this.tableData;
+      this.Axios.get('http://19h4o94140.51mypc.cn/tenderall').then(res => {
+        console.log(res);
+        this.allTableData = res.data;
+        this.setPaginations();
+      }).catch((err)=>{console.log(err)});
+    },
     methods: {
       //编辑
       handleCancel(row) {
@@ -223,6 +211,14 @@
       showModal() {
         this.notesText = "";
         this.isShowModal = !this.isShowModal;
+      },
+      searchSelectChange(){
+        if(this.searchSel == 0) this.executeSearch();
+      },
+      //选择框
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+        console.log(this.multipleSelection);
       },
       handleCurrentChange(page) {
         // 当前页
@@ -273,12 +269,6 @@
 
   .searchWrap >>> .input-with-select .el-input-group__prepend {
     background-color: #fff;
-  }
-
-  .wrapper >>> .el-pagination {
-    /*right: 0;
-    bottom: -15%;*/
-    bottom: -10px;
   }
 
   .wrapper .wrapper-content .modal {
@@ -349,6 +339,12 @@
 
   .modal .modal-content .btns .el-button:hover {
     box-shadow: 2px 2px 5px #adadad;
+  }
+
+  /*分页*/
+  .pagination{
+    text-align: right;
+    margin-top:30px;
   }
 </style>
 

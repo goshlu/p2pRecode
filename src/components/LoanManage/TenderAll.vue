@@ -211,6 +211,7 @@
         });
       },
 
+      //选择框
       handleSelectionChange(val) {
         this.multipleSelection = val;
         console.log(this.multipleSelection);
