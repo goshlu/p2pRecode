@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<style>
+<style scope>
 h2{
   color:#fff;
   background-color: #006d75;
