@@ -1,10 +1,25 @@
 <template>
   <div>
-    <RepaymentToolbar :search="search" />
-    <RepaymentTable :data="tableData" :loading="loading" />
+    <h2>还款管理</h2>
+    <RepaymentToolbar />
+    <RepaymentTable :data="tableData"/>
     <RepaymentPage />
   </div>
 </template>
+
+<style scope>
+h2{
+  color:#fff;
+  background-color: #006d75;
+  padding-left: 10px;
+  font-size: 24px;
+  line-height: 40px;
+}
+body{
+  padding: 0px;
+  margin: 0px;
+}
+</style>
 
 <script>
 import RepaymentTable from "./components/RepaymentManagementTable";
@@ -15,13 +30,6 @@ import { fetchRest } from "@/api";
 export default {
   data() {
     return {
-      search: {
-        name: "",
-        province: ""
-      },
-
-      loading: false,
-
       tableData: []
     };
   },

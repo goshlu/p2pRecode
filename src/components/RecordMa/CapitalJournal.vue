@@ -2,15 +2,14 @@
 	<el-container>
 		<el-header>
 			<el-row :gutter="15">
-				<el-col :span="4">
-					<div class="grid-content bg-purple">
-						<el-input size="small" v-model="input_phone" suffix-icon="el-icon-search" placeholder="搜索用户手机号"></el-input>
-					</div>
-				</el-col>
-				<el-col :span="4">
-					<div class="grid-content bg-purple">
-						<el-input size="small" v-model="input_name" suffix-icon="el-icon-search" placeholder="搜索姓名"></el-input>
-					</div>
+				<el-col :span="7">
+					<el-input size="small" placeholder="请输入搜索内容" v-model="cinput" class="input-with-select">
+						<el-select size="small" class="select-width" v-model="csel" slot="prepend" placeholder="请选择">
+							<el-option label="姓名" value="0"></el-option>
+							<el-option label="手机号" value="1"></el-option>
+						</el-select>
+						<el-button size="small" @click="CapitalSearch" slot="append" icon="el-icon-search"></el-button>
+					</el-input>
 				</el-col>
 				<el-col :span="3">
 					<el-select size="small" v-model="value" filterable placeholder="请选择">
@@ -18,18 +17,18 @@
 						</el-option>
 					</el-select>
 				</el-col>
-				<el-col :span="4">
-					<el-button @click="searchFun"  size="small" plain>搜索</el-button>
-				</el-col>
-				<el-col :span="2" :offset="7">
-					<el-button plain size="small" @click="exportExcel">导出</el-button>
+				<el-col :span="3" :offset="11">
+					<el-select size="small" v-model="exportvalue" filterable placeholder="请选择">
+						<el-option v-for="item in exportoptions" :key="item.exportvalue" :label="item.label" :value="item.exportvalue">
+						</el-option>
+					</el-select>
 				</el-col>
 
 
 			</el-row>
 		</el-header>
 		<el-main>
-			<el-table id="moneyTable" stripe style="font-size: 11px;" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+			<el-table id="moneyTable" stripe style="font-size: 14px;" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
 			 :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}" :cell-style="{'text-align':'center'}">
 
 				<el-table-column prop="name" label="姓名" align="center">
@@ -54,9 +53,9 @@
 				</el-table-column>
 
 			</el-table>
-			<el-table hidden="true" id="moneyTableExport" stripe style="font-size: 11px;" :data="tableData"
-			 :header-cell-style="getRowClass" :cell-style="{'text-align':'center'}">
-			
+			<el-table hidden="true" id="moneyTableExport" stripe style="font-size: 11px;" :data="tableData" :header-cell-style="getRowClass"
+			 :cell-style="{'text-align':'center'}">
+
 				<el-table-column prop="name" label="姓名" align="center">
 				</el-table-column>
 				<el-table-column prop="phone" width="100" label="用户手机" align="center">
@@ -77,7 +76,7 @@
 				</el-table-column>
 				<el-table-column width='170' prop="date_operaing" label="操作时间" align="center">
 				</el-table-column>
-			
+
 			</el-table>
 		</el-main>
 		<el-footer style="margin:20px 0 10px">
@@ -122,6 +121,16 @@
 				currentPage: 1, //当前页
 				input_phone: '',
 				input_name: '',
+				cinput: "",
+				csel: "0",
+				exportoptions: [{
+					exportvalue: 0,
+					label: "导出选中"
+				}, {
+					exportvalue: 1,
+					label: "导出全部"
+				}],
+				exportvalue: 0,
 				options: [{
 					value: 0,
 					label: '全部类型'
@@ -134,7 +143,7 @@
 				}, {
 					value: 3,
 					label: '利息管理费'
-				},{
+				}, {
 					value: 4,
 					label: '借款入账'
 				}],
@@ -144,62 +153,80 @@
 		created() {
 			this.total = this.tableData.length;
 			this.axiosFun();
-		},watch:{
-			value(){
+		},
+		watch: {
+			exportvalue(){
+			this.exportExcel();	
+			},
+			value() {
+				this.inputdatacheck();
 				this.axiosFun();
 			}
 		},
 		methods: {
-				axiosFun(){
-					this.Axios.get('http://19h4o94140.51mypc.cn/capitaljournal',{
-						params:{
-							phone:this.input_phone,
-							name:this.input_name,
-							type:this.value
+			inputdatacheck() {
+				if (this.csel == 0) {
+					this.input_phone = "";
+					this.input_name = this.cinput;
+				} else {
+					this.input_name = ""
+					this.input_phone = this.cinput;
+				}
+			},
+			CapitalSearch() {
+				this.inputdatacheck();
+				this.axiosFun();
+			},
+			axiosFun() {
+				this.Axios.get('http://19h4o94140.51mypc.cn/capitaljournal', {
+						params: {
+							phone: this.input_phone,
+							name: this.input_name,
+							type: this.value
 						}
 					}).then(
-							(response) => {
-								this.tableData = response.data;
-								this.datacheck();
-								this.total = this.tableData.length;
-								// console.log(response);
-							})
-						.catch(function(error) {
-							console.log(error);
-						});
-				},
-				searchFun(){
-					this.total=this.tableData.length;
-				this.Axios.get('http://19h4o94140.51mypc.cn/capitaljournal',{
-					params:{
-						phone:this.input_phone,
-						name:this.input_name,
-						type:this.value
-					}
-				}).then(
 						(response) => {
-							console.log(response.data);
 							this.tableData = response.data;
 							this.datacheck();
 							this.total = this.tableData.length;
-							
+							// console.log(response);
 						})
 					.catch(function(error) {
 						console.log(error);
 					});
 			},
-			datacheck(){
-					for(let i=0;i<this.tableData.length;i++){
-					console.log(this.tableData[i].type);
-						if(this.tableData[i].type=="1"){
-							this.tableData[i].type="回收利息";
-						}else if(this.tableData[i].type=="2"){
-							this.tableData[i].type="回收本金";
-						}else if(this.tableData[i].type=="3"){
-							this.tableData[i].type="利息管理费";
-						}else{
-							this.tableData[i].type="借款入账";
+			searchFun() {
+				this.total = this.tableData.length;
+				this.Axios.get('http://19h4o94140.51mypc.cn/capitaljournal', {
+						params: {
+							phone: this.input_phone,
+							name: this.input_name,
+							type: this.value
 						}
+					}).then(
+						(response) => {
+							console.log(response.data);
+							this.tableData = response.data;
+							this.datacheck();
+							this.total = this.tableData.length;
+
+						})
+					.catch(function(error) {
+						console.log(error);
+					});
+			},
+			datacheck() {
+				for (let i = 0; i < this.tableData.length; i++) {
+					// console.log(this.tableData[i].type);
+					if (this.tableData[i].type == "1") {
+						this.tableData[i].type = "回收利息";
+					} else if (this.tableData[i].type == "2") {
+						this.tableData[i].type = "回收本金";
+					} else if (this.tableData[i].type == "3") {
+						this.tableData[i].type = "利息管理费";
+					} else {
+						this.tableData[i].type = "借款入账";
+					}
 				}
 			},
 			getRowClass() {
@@ -208,6 +235,7 @@
 			exportExcel() {
 				/* generate workbook object from table */
 				var wb = XLSX.utils.table_to_book(document.querySelector('#moneyTableExport'))
+				// console.log(wb);
 				/* get binary string as output */
 				var wbout = XLSX.write(wb, {
 					bookType: 'xlsx',
@@ -238,6 +266,14 @@
 		/* background-color: #B3C0D1; */
 		color: #333;
 		line-height: 60px;
+	}
+
+	.select-width {
+		width: 100px;
+	}
+
+	.input-with-select {
+		width: 300px;
 	}
 
 	.el-aside {

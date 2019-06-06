@@ -246,7 +246,7 @@ export default new Router({
         //还款记录
         {
           path: '/RepaymentHistory',
-          name: 'RepaymentHistory',
+          name: "RepaymentHistory",
           component: () => import('@/components/Repayment/RepaymentHistory')
         },
 

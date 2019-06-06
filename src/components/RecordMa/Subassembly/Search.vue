@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 15px; display: inline-block;">
+  <div style="display: inline-block;">
     <!-- 搜索选项 -->
     <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
       <el-select v-model="searchSel" slot="prepend" placeholder="请选择">
