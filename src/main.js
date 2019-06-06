@@ -10,16 +10,16 @@ import store from './store/index';
 Vue.use(elementUi);
 //定义全局axios实例
 import axios from 'axios';
-// Vue.prototype.axios=axios;
-Vue.prototype.axios = axios.create(
-  {
-    baseURL: 'https://5cd808f00cc5100014f1e33e.mockapi.io/',
-    // timeout: 1000,
-    // headers: {
-    //   'X-Custom-Header': 'foobar'
-    // }
-  }
-);
+Vue.prototype.Axios = axios;
+// Vue.prototype.axios = axios.create(
+//   {
+//     baseURL: 'https://5cd808f00cc5100014f1e33e.mockapi.io/',
+//     // timeout: 1000,
+//     // headers: {
+//     //   'X-Custom-Header': 'foobar'
+//     // }
+//   }
+// );
 
 Vue.config.productionTip = false;
 
