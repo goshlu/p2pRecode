@@ -217,6 +217,12 @@ export default {
   },
 
   methods: {
+    // 查看
+    handleView: function(row) {
+      window.sessionStorage.setItem("rows", JSON.stringify(row));
+      console.log(this.$router);
+      this.$router.push("/Withdraw/Details");
+    },
     // 筛选列 显示隐藏
     toggle() {
       this.isshow = !this.isshow;

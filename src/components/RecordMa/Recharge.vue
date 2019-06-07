@@ -1,11 +1,11 @@
 <template>
-  <!-- 提现路由 -->
+  <!-- 充值路由 -->
   <router-view></router-view>
 </template>
  
 <script>
 export default {
-  name: "Withdraw",
+  name: "Recharge",
   components: {},
   data() {
     return {};

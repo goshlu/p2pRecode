@@ -21,7 +21,7 @@
             </el-input>
           </div>
         </div>
-        
+
         <div class="two">
           <!-- 选择充值方式 -->
           <Mode :modeOpt="modeOpt"/>
@@ -174,20 +174,34 @@ export default {
   },
 
   methods: {
-    // 获取搜索列表
-    getSearchList(pageSize,currentPage){
-      this.Axios.post("",{}).then(res => {
-        console.log(res);
-        this.tableData = res.data.datas.data;
-        this.total = this.tableData.length;
-      })
-      .catch(err => {
-        console.log(err);
+    update() {
+      var sub = {
+        id: "1"
+      };
+      this.Axios.post("http://172.16.6.60:8080/member/borrow/members", sub, {
+        header: {}
+      }).then(res => {
+        if (res.status == 200) {
+        }
       });
     },
+    // 获取搜索列表
+    getSearchList(pageSize, currentPage) {
+      this.Axios.post("", {})
+        .then(res => {
+          console.log(res);
+          this.tableData = res.data.datas.data;
+          this.total = this.tableData.length;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     // 查看
-    handleView(index, row) {
-      console.log(index, row);
+    handleView: function(row) {
+      window.sessionStorage.setItem("rows", JSON.stringify(row));
+      console.log(this.$router);
+      this.$router.push("/Recharge/Details");
     },
     // 全选
     handleSelectionChange(val) {
@@ -234,7 +248,7 @@ export default {
     // http://5cf61a7646583900149cb303.mockapi.io/RechargeRecord
     this.Axios.get("http://rap2api.taobao.org/app/mock/177576/borrow")
       .then(res => {
-        console.log(res);
+        // console.log(res);
         this.tableData = res.data.datas.data;
         this.total = this.tableData.length;
       })
@@ -242,6 +256,14 @@ export default {
         console.log(err);
       });
   }
+
+  /* created() {
+    this.Axios.get("http://172.16.6.60:8080/member/borrow/members").then((res)=>{
+      // console.log(res.data.data)
+      let Arr = res.data.data
+      this.tableData = Arr
+    })
+  }, */
 };
 </script>
 
