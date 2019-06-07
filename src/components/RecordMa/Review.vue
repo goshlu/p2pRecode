@@ -1,11 +1,11 @@
 <template>
-  <!-- 提现路由 -->
+  <!-- 审核路由 -->
   <router-view></router-view>
 </template>
  
 <script>
 export default {
-  name: "Withdraw",
+  name: "Review",
   components: {},
   data() {
     return {};

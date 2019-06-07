@@ -115,7 +115,7 @@
 import Title from "./../commonComponents/headerTitle";
 
 export default {
-  name: "Reviewdetails",
+  name: "Details",
   components: {
     Title
   },
@@ -137,7 +137,7 @@ export default {
         resource: "",
         desc: ""
       },
-      navArr: ["资金管理", "提现审核", "提现审核详情"]
+      navArr: ["资金管理", "提现审核", "详情"]
     };
   },
   methods: {

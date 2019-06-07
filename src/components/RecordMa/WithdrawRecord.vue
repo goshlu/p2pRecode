@@ -1,106 +1,114 @@
 <template>
   <div id="withdraw_app">
-    <div class="title">
-      <h2>提现记录</h2>
-    </div>
-    <div id="nav">
-      <div class="one">
-        <!-- 搜索框 -->
-        <Search :searchOpt="searchOpt"/>
-        <!-- 导出按钮 el-icon-download -->
-        <el-select size="small" v-model="value2" filterable placeholder="导出">
-            <el-option
-              v-for="item in options2"
-              :key="item.value2"
-              :label="item.label"
-              :value="item.value2"
-            ></el-option>
-          </el-select>
-        <el-row class="export" style="margin-right: 0; margin-top: 15px; display: inline-block;">
-          <el-button plain @click="exportExcel">导出</el-button>
-        </el-row>
+    <Title :navArr="navArr"/>
+    <div class="app_content">
+      <div id="nav">
+        <div class="one">
+          <!-- 搜索框 -->
+          <Search :searchOpt="searchOpt"/>
+          <!-- 导出 -->
+          <div class="export" >
+            <el-select v-model="value" placeholder="批量导出" class="exportWidth">
+              <el-option @click="exportExcel" label="导出全部" value="1"></el-option>
+              <el-option label="导出选中" value="2"></el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class="two">
+          <!-- 选择充值方式 -->
+          <Mode :modeOpt="modeOpt"/>
+          <!-- 选择状态 -->
+          <Status :statusOpt="statusOpt"/>
+          <!-- 日期选择器 -->
+          <DatePicke/>
+          <!-- 自定义列 -->
+          <el-row class="customize">
+            <el-button plain @click="toggle">自定义列</el-button>
+          </el-row>
+        </div>
       </div>
-      <div class="two">
-        <!-- 选择充值方式 -->
-        <Mode :modeOpt="modeOpt"/>
-        <!-- 选择状态 -->
-        <Status :statusOpt="statusOpt"/>
-        <!-- 日期选择器 -->
-        <DatePicke/>
-        <!-- 自定义列 -->
-        <el-row class="customize" style="margin-top: 15px; display: inline-block;">
-          <el-button plain @click="toggle">自定义列</el-button>
-        </el-row>
-      </div>
-    </div>
 
-    <!-- 穿梭框 -->
-    <div id="filterColumn" v-if="isshow">
-      <template>
-        <el-checkbox
-          :indeterminate="isIndeterminate"
-          v-model="checkAll"
-          @change="handleCheckAllChange"
-        >全选</el-checkbox>
-        <div style="margin: 15px 0;"></div>
-        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+      <!-- 穿梭框 -->
+      <div id="filterColumn" v-if="isshow">
+        <template>
           <el-checkbox
-            v-for="(city,index) in cities"
-            :label="city"
-            v-model="checkArr[index]"
-            :key="city"
-          >{{city}}</el-checkbox>
-        </el-checkbox-group>
-      </template>
-    </div>
-
-    <!-- 表格 -->
-    <div id="WithdrawRecord" class="wrapper" style="padding-top: 30px;">
-      <div class="wrapper-content">
-        <!-- <div class="title"><h2>招标管理</h2></div> -->
-        <el-table
-          :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-          stripe
-          :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5'}"
-          style="width: 100%"
-        >
-          <el-table-column v-show="checkArr[0]" fixed prop="loan_id" label="充值单号" width="120"></el-table-column>
-          <el-table-column v-show="checkArr[1]" prop="loan_money" label="用户手机" width="120"></el-table-column>
-          <el-table-column prop="loan_money" label="真实姓名" width="100"></el-table-column>
-          <el-table-column prop="loan_ deadline" label="用户来源" width="120"></el-table-column>
-          <el-table-column prop="loan_ deadline" label="应用来源" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="充值金额" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="到账金额" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="手续费" width="80"></el-table-column>
-          <el-table-column prop="loan_money" label="充值方式" width="100"></el-table-column>
-          <el-table-column prop="loan_money" label="交易流水号" width="150"></el-table-column>
-          <el-table-column label="订单时间" width="160">
-            <template slot-scope="scope">
-              <p>{{ scope.row.loan_date | dateFormat }}</p>
-            </template>
-          </el-table-column>
-          <el-table-column label="到账时间" width="160">
-            <template slot-scope="scope">
-              <p>{{ scope.row.loan_date | dateFormat }}</p>
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" prop="status" label="状态" width="100"></el-table-column>
-        </el-table>
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+          >全选</el-checkbox>
+          <div style="margin: 15px 0;"></div>
+          <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+            <el-checkbox
+              v-for="(city,index) in cities"
+              :label="city"
+              v-model="checkArr[index]"
+              :key="city"
+            >{{city}}</el-checkbox>
+          </el-checkbox-group>
+        </template>
       </div>
-    </div>
 
-    <!-- 分页 -->
-    <Pagination
-      :total="total"
-      :pagesize="pagesize"
-      :currentPage="currentPage"
-      :current_change="current_change"
-      :handleSizeChange="handleSizeChange"
-    />
+      <!-- 表格 -->
+      <div id="WithdrawRecord" class="wrapper" style="padding-top: 30px;">
+        <div class="wrapper-content">
+          <el-table
+            :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+            stripe
+            :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5'}"
+            style="width: 100%"
+          >
+            <el-table-column type="selection"></el-table-column>
+            <el-table-column prop="loan_id" label="提现单号" ></el-table-column>
+            <!-- <el-table-column prop="loan_money" label="用户手机" ></el-table-column> -->
+            <el-table-column prop="loan_money" label="真实姓名" ></el-table-column>
+            <!-- <el-table-column prop="loan_ deadline" label="用户类型" ></el-table-column> -->
+            <el-table-column prop="loan_money" label="提现金额" ></el-table-column>
+            <el-table-column prop="loan_money" label="提现手续费" ></el-table-column>
+            <el-table-column prop="loan_money" label="到账金额"  ></el-table-column>
+            <el-table-column prop="loan_money" label="银行账号" ></el-table-column>
+            <!-- <el-table-column prop="loan_money" label="银行名称" ></el-table-column> -->
+            <!-- <el-table-column prop="loan_money" label="银行流水号" ></el-table-column> -->
+            <!-- <el-table-column label="提交时间" width="160">
+              <template slot-scope="scope">
+                <p>{{ scope.row.loan_date | dateFormat }}</p>
+              </template>
+            </el-table-column> -->
+            <el-table-column prop="loan_money" label="审核人"></el-table-column>
+            <el-table-column label="审核时间" width="160px">
+              <template slot-scope="scope">
+                <p>{{ scope.row.loan_date | dateFormat }}</p>
+              </template>
+            </el-table-column>
+            <!-- <el-table-column label="到账时间" width="160">
+              <template slot-scope="scope">
+                <p>{{ scope.row.loan_date | dateFormat }}</p>
+              </template>
+            </el-table-column> -->
+            <el-table-column prop="status" label="状态"></el-table-column>
+            <el-table-column prop="do" label="操作" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-button type="primary" icon="el-icon-view" size="mini"
+                  @click="handleView(scope.$index, scope.row)" >查看</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <Pagination
+        :total="total"
+        :pagesize="pagesize"
+        :currentPage="currentPage"
+        :current_change="current_change"
+        :handleSizeChange="handleSizeChange"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import Title from "./../commonComponents/headerTitle";
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
 
@@ -131,12 +139,14 @@ export default {
     Mode,
     Status,
     Pagination,
-    DatePicke
+    DatePicke,
+    Title
     // Atable
   },
 
   data() {
     return {
+      value: "",
       checkArr: [1, 1, 1],
       checkAll: false,
       cities: cityOptions,
@@ -201,11 +211,18 @@ export default {
         "订单时间",
         "到账时间",
         "状态"
-      ]
+      ],
+      navArr: ["资金管理", "提现记录"]
     };
   },
 
   methods: {
+    // 查看
+    handleView: function(row) {
+      window.sessionStorage.setItem("rows", JSON.stringify(row));
+      console.log(this.$router);
+      this.$router.push("/Withdraw/Details");
+    },
     // 筛选列 显示隐藏
     toggle() {
       this.isshow = !this.isshow;
@@ -278,6 +295,9 @@ export default {
   padding: 0;
   position: relative;
 }
+#withdraw_app > .app_content {
+  margin: 20px;
+}
 #withdraw_app > #nav {
   width: 100%;
 }
@@ -286,24 +306,16 @@ export default {
   /* height: 300px; */
   background-color: white;
 }
-
-.title {
-  width: 100%;
-  height: 40px;
-  background-color: #006d75;
-}
-h2 {
-  color: #fff;
-  margin-left: 10px;
-  line-height: 40px;
-}
-#nav .one,#nav .two {
+#nav .one,
+#nav .two {
   position: relative;
 }
-.export,.customize {
+.export,
+.customize {
   position: absolute;
   top: 0;
   right: 0;
+  margin-top: 15px;
+  display: inline-block;
 }
-
 </style>

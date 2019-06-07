@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import Title from "./../commonComponents/headerTitle"
+import Title from "./../../commonComponents/headerTitle"
 export default {
   name: "NewLoans",
   components: {
@@ -151,7 +151,7 @@ export default {
   },
   data() {
     return {
-      navArr:['贷款管理','新增贷款'],
+      navArr:['贷款管理','新增贷款','新增贷款修改'],
       form: {},
       loan: "",
       debtor: "",
@@ -193,11 +193,6 @@ export default {
   margin: 0 auto;
 }
 
-/* .title {
-  width: 100%;
-  height: 40px;
-  background-color: #006d75;
-} */
 
 h2 {
   color: #fff;
