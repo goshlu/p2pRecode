@@ -167,20 +167,23 @@
       </div>
       <!-- 备注 -->
       <div class="RiskMeasure">
-        <label for="项目介绍">
-          <el-form ref="from2" :model="from2" label-width="150px">
-            <el-form-item label="项目介绍：">
-              <el-input type="textarea" v-model="introduce"></el-input>
-            </el-form-item>
-            <el-form-item >
-              <!-- <el-input type="textarea"></el-input> -->
-            </el-form-item>
-            <el-form-item label="风控措施：">
-              <el-input type="textarea" size="medium" v-model="Measures"></el-input>
-            </el-form-item>
-          </el-form>
-          
-        </label>
+        <el-form ref="from2" :model="from2" label-width="150px">
+          <el-form-item label="项目介绍：">
+            <textarea name="notes" id="introduce" cols="100" rows="4"
+                      style="resize: none;border-radius:4px;padding:10px;border: 1px solid #dcdfe6;"
+                      v-model="introduce"
+            ></textarea>
+          </el-form-item>
+          <el-form-item >
+            <!-- <el-input type="textarea"></el-input> -->
+          </el-form-item>
+          <el-form-item label="风控措施：">
+            <textarea name="notes" id="measures" cols="100" rows="4"
+                      style="resize: none;border-radius:4px;padding:10px;border: 1px solid #dcdfe6;"
+                      v-model="Measures"
+            ></textarea>
+          </el-form-item>
+        </el-form>
       </div>
       <el-divider></el-divider>
       <el-row>
@@ -343,8 +346,7 @@ span {
 }
 
 .el-row {
-  text-align: right;
+  text-align: center;
   padding: 20px 0;
-  margin-right: 400px;
 }
 </style>

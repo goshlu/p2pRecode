@@ -33,40 +33,56 @@
       >
         <el-table-column
           type="selection"
-          width="55">
+          width="55"
+          align="center">
         </el-table-column>
         <el-table-column
           prop="id"
-          label="借款编号">
+          label="借款编号"
+          align="center"
+          width="80">
         </el-table-column>
         <el-table-column
-          prop="member.username"
-          label="借款方">
+          prop="name"
+          label="借款方"
+          align="center">
         </el-table-column>
         <el-table-column
           prop="phone"
           label="借款人手机"
-          width="130">
+          width="120"
+          align="center">
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="标名">
+          prop="elementName"
+          label="标名"
+          width="260"
+          align="center">
         </el-table-column>
         <el-table-column
           prop="money"
-          label="借款金额">
+          label="借款金额"
+          align="center">
+          <template slot-scope="scope">
+            {{scope.row.money}}元
+          </template>
         </el-table-column>
-        <el-table-column
+        <!--<el-table-column
           prop="year_mon"
           label="年化利率">
+        </el-table-column>-->
+        <el-table-column
+          prop="refundName"
+          label="还款方式"
+          align="center">
         </el-table-column>
         <el-table-column
-          prop="loan_method"
-          label="还款方式">
-        </el-table-column>
-        <el-table-column
-          prop="loan_day"
-          label="期限">
+          prop="deline"
+          label="期限"
+          align="center">
+          <template slot-scope="scope">
+            {{scope.row.deline}}天
+          </template>
         </el-table-column>
         <!--<el-table-column
           prop="uptime"
@@ -85,24 +101,32 @@
           </template>
         </el-table-column>-->
         <el-table-column
-          prop="loan_day"
-          label="已投金额">
+          prop="finishMoney"
+          label="已投金额"
+          align="center">
+          <template slot-scope="scope">
+            {{scope.row.finishMoney}}元
+          </template>
         </el-table-column>
-        <el-table-column
+        <!--<el-table-column
           prop="loan_day"
           label="投资进度">
+        </el-table-column>-->
+        <el-table-column
+          prop="status"
+          label="状态"
+          align="center">
+          进行中
         </el-table-column>
         <el-table-column
-          prop="state"
-          label="状态">
-        </el-table-column>
-        <el-table-column label="操作" width="200">
+            label="操作"
+            align="center">
           <template slot-scope="scope">
-            <router-link :to="{name:'TenderingManageModify',params:{}}">
+            <!--<router-link :to="{name:'TenderingManageModify',params:{}}">
               <el-button type="primary" icon="el-icon-edit" size="mini">
                 修改
               </el-button>
-            </router-link>
+            </router-link>-->
             <el-button type="danger" icon="el-icon-download" size="mini" @click="handleCancel">下架</el-button>
           </template>
         </el-table-column>
@@ -148,6 +172,8 @@
 
 <script>
   import Title from "../../commonComponents/headerTitle";
+
+  let BASE_URL = "http://172.16.6.62:8080";
 
   export default {
     name: "TenderingManageHome",
@@ -200,8 +226,17 @@
       };
     },
     created(){
-      // this.tableDataOrigin = this.tableData;
-      /*this.Axios.get('http://19h4o94140.51mypc.cn/tenderall').then(res => {
+      //sName &sPhone=17244562861
+      // let params = `page=${this.paginations.page_index}&limit=${this.paginations.page_size}`;
+      //获取信息列表
+      this.Axios.get(BASE_URL+'/element/elements?status=1').then(res => {
+        console.log(res);
+        this.tableData = res.data.data;
+        // 总页数
+        this.paginations.total = this.tableData.length;
+      }).catch((err)=>{console.log(err)});
+
+      /*this.Axios.get('http://172.16.6.75:8080/element/elements?'+params).then(res => {
         console.log(res);
         this.allTableData = res.data;
         this.setPaginations();
@@ -259,13 +294,13 @@
       },
       setPaginations() {
         // 总页数
-        this.paginations.total = this.allTableData.length;
-        this.paginations.page_index = 1;
+        this.paginations.total = this.tableData.length;
+        /*this.paginations.page_index = 1;
         this.paginations.page_size = 5;
         // 设置默认分页数据
         this.tableData = this.allTableData.filter((item, index) => {
           return index < this.paginations.page_size;
-        });
+        });*/
       },
     }
   };
