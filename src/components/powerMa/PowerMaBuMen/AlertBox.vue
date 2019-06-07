@@ -30,6 +30,12 @@
         </div>
       </div>
       <div>
+        <span>新增员工：</span>
+        <div>
+          <el-input v-model="value2" placeholder="请输入内容"></el-input>
+        </div>
+      </div>
+      <div>
         <span>部门描述：</span>
         <div>
           <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea">
@@ -67,6 +73,7 @@ export default {
           label: '修改专员'
         }],
         value: '',
+        value2:'',
         checkList: ['复选框 A','复选框 B','复选框 C'],
         textarea: '',
         radio:'1',
