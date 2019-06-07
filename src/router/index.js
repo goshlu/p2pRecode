@@ -181,6 +181,11 @@ export default new Router({
             name: 'BorrowUserChild',
             component: () => import('@/components/Member/child_member/BorrowUserChild.vue'),
           }
+          // {
+          //   path: 'AddUserChild',
+          //   name: 'AddUserChild',
+          //   component: () => import('@/components/Member/child_member/AddUserChild.vue'),
+          // }
           ]
         },
         //引入会员管理/投资用户管理+子路由修改用户管理
