@@ -1,51 +1,67 @@
 <template>
   <div id="tender-category-home">
-    <h1 style="margin-bottom: 20px;">借款标类别</h1>
+    <Title :navArr="navArr"/>
 
-    <div class="add-btn" @click="handleAdd(1)">
-      <MyButton btn-type="primary" btn-text="添加分类" icon-class=""></MyButton>
+    <div class="content-wrap">
+      <div class="add-btn">
+        <el-button type="primary"  @click="handleAdd(1)">添加分类</el-button>
+      </div>
+
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        stripe
+        :cell-style="{border:'none',fontSize:'14px'}"
+        :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5',fontSize:'14px'}"
+      >
+        <el-table-column
+          prop="cateName"
+          label="分类名称"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="sortNum"
+          label="排序"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="status"
+          label="状态"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <span v-if="scope.row.status==0" class="off">禁用</span>
+            <span v-else class="on">启用</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <el-button type="primary" icon="el-icon-edit" size="mini"
+                       @click="handleEdit(2, scope.$index, scope.row)">修改</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!--分页-->
+      <div class="pagination">
+        <el-pagination
+          background
+          :page-sizes="paginations.page_sizes"
+          :page-size="paginations.page_size"
+          :layout="paginations.layout"
+          :total="paginations.total"
+          :current-page.sync="paginations.page_index"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+        ></el-pagination>
+      </div>
     </div>
 
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      stripe
-      :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}"
-    >
-      <el-table-column
-        prop="cateName"
-        label="分类名称"
-        align="center"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="sortNum"
-        label="排序"
-        align="center"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="status"
-        label="状态"
-        align="center"
-      >
-        <template slot-scope="scope">
-          <span v-if="scope.row.status==0" class="off">禁用</span>
-          <span v-else class="on">启用</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="操作"
-        align="center"
-      >
-        <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" size="mini"
-                     @click="handleEdit(2, scope.$index, scope.row)">修改</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <Pagination @handleSizeChange="handleSizeChange" :total="tableData.length"></Pagination>
 
     <!--模态框-->
     <div class="modal" v-show="isShowModal">
@@ -55,16 +71,18 @@
           <i class="el-icon-close" style="cursor: pointer;font-size: 30px;" @click="showModal"></i>
         </div>
         <div class="main">
-          <el-form class="modalForm" :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
+          <el-form class="modalForm" :label-position="labelPosition"
+                   label-width="100px" :model="formLabelAlign" :rules="rules" ref="formLabelAlign"
+          >
             <el-form-item label="分类名称：" required>
               <el-input v-model="formLabelAlign.name"></el-input>
             </el-form-item>
             <el-form-item label="排序：">
-              <el-input v-model="formLabelAlign.sortNum" style="width: 170px;"></el-input>
+              <el-input v-model.number="formLabelAlign.sortNum" style="width: 170px;"></el-input>
               <span>数值越大越靠前</span>
             </el-form-item>
             <el-form-item label="状态：">
-              <el-select :value="formLabelAlign.optionsValue" style="width: 170px;">
+              <el-select v-model="formLabelAlign.optionsValue" style="width: 170px;">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -86,21 +104,20 @@
 </template>
 
 <script>
-  import Pagination from './Pagination/Pagination';
-  import MyButton from '../Button/Button';
+  import Title from "./../commonComponents/headerTitle";
   // import {getCategoryList} from '../../api'
 
   export default {
     name: "TenderCategory",
     components:{
-      Pagination,
-      MyButton
+      Title
     },
     created(){
       //禁用/启用
       this.Axios.get('http://19h4o94140.51mypc.cn/tendercategory').then(res => {
         console.log(res);
-        this.tableData = res.data;
+        this.allTableData = res.data;
+        this.setPaginations();
       }).catch((err)=>{console.log(err)});
     },
     methods: {
@@ -111,28 +128,88 @@
         this.whatModalTitle = addOrModify;
         this.isShowModal = !this.isShowModal;
       },
-      handleSizeChange(){
-        alert("aaa");
-      },
       //编辑
       handleEdit(whatModalTitle,index, row){
         this.showModal(whatModalTitle);
         console.log(index,row);
       },
+      //添加
       handleAdd(whatModalTitle){
         this.showModal(whatModalTitle);
-      }
+      },
+      handleCurrentChange(page) {
+        // 当前页
+        let sortnum = this.paginations.page_size * (page - 1);
+        let table = this.allTableData.filter((item, index) => {
+          return index >= sortnum;
+        });
+        // 设置默认分页数据
+        this.tableData = table.filter((item, index) => {
+          return index < this.paginations.page_size;
+        });
+      },
+      handleSizeChange(page_size) {
+        // 切换size
+        this.paginations.page_index = 1;
+        this.paginations.page_size = page_size;
+        this.tableData = this.allTableData.filter((item, index) => {
+          return index < page_size;
+        });
+      },
+      setPaginations() {
+        // 总页数
+        this.paginations.total = this.allTableData.length;
+        this.paginations.page_index = 1;
+        this.paginations.page_size = 5;
+        // 设置默认分页数据
+        this.tableData = this.allTableData.filter((item, index) => {
+          return index < this.paginations.page_size;
+        });
+      },
+
+
     },
     data() {
+      //添加 排序数值校验
+      let checkSortNum = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('排序不能为空'));
+        }
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+            if (value < 0) {
+              callback(new Error('不能小于0'));
+            } else {
+              callback();
+            }
+          }
+        }, 1000);
+      };
+      let checkName = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('分类名称不能为空'));
+        }
+      };
       return {
+        navArr:['借贷管理','借款标类别'],
         formLabelAlign:{
           name:"",
           sortNum:"",
           optionsValue:0
         },
+        paginations: {
+          page_index: 1, // 当前位于哪页
+          total: 0, // 总数
+          page_size: 5, // 1页显示多少条
+          page_sizes: [5, 10, 15, 20], //每页显示多少条
+          layout: "total, sizes, prev, pager, next" // 翻页属性
+        },
         labelPosition:"right",
         isShowModal:false,
         tableData: [],
+        allTableData: [],
         whatModalTitle : 0,
         options: [{
           value: 0,
@@ -140,7 +217,15 @@
         }, {
           value: 1,
           label: '启用'
-        }]
+        }],
+        rules: {
+          sortNum: [
+            { validator: checkSortNum, trigger: 'blur' }
+          ],
+          name: [
+            { validator: checkName, trigger: 'blur' }
+          ]
+        }
       }
     }
   }
@@ -150,18 +235,12 @@
 
   #tender-category-home{
     position: relative;
-    margin: 50px auto 0;
   }
-  #tender-category-home >>> .pagination-dom{
-    /*right: 0;
-    bottom: -15%;*/
+  #tender-category-home .content-wrap{
+    padding: 20px;
   }
-  #tender-category-home .add-btn{
-    float: left;
+  #tender-category-home .content-wrap .add-btn{
     margin-bottom: 30px;
-  }
-  #tender-category-home .add-btn >>> .el-button{
-    height: 40px;
   }
 
   .modal{
@@ -191,6 +270,7 @@
     color: #555555;
     /*border-bottom: 1px solid #d5d5d5;*/
     margin-bottom: 30px;
+    height: 40px;
   }
   .modal-content .main{
     width: 400px;
@@ -201,10 +281,6 @@
   .modal-content .main span{
     color: #b2b2b2;
     margin-left: 10px;
-  }
-  .modal .modal-content .main .notes-wrap{
-    display: flex;
-    margin-top: 40px;
   }
   .modal .modal-content .main .notes-wrap label{
     margin-left: -9px;
@@ -240,4 +316,9 @@
     color: red;
   }
 
+  /*分页*/
+  .pagination{
+    text-align: right;
+    margin-top:30px;
+  }
 </style>

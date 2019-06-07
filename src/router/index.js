@@ -63,7 +63,20 @@ export default new Router({
         {
           path: '/NewStence',
           name: 'NewStence',
-          component: () => import('@/components/LoanManage/NewStence.vue')
+          redirect: '/Stence',
+          component: () => import('@/components/LoanManage/NewStence.vue'),
+          children:[
+            {
+            path:"/Stence",
+            name:"Stence",
+            component:() => import('@/components/LoanManage/StenceChild/Stence.vue'),
+            },
+            {
+              path:"Edit",
+              name:"Edit",
+              component:() => import('@/components/LoanManage/StenceChild/Edit.vue'),
+            }
+          ]
         },
         //借款审核页面路由
         {

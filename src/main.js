@@ -32,7 +32,8 @@ Vue.prototype.Axios = axios;
 
 Vue.config.productionTip = false;
 
-
+import JSONToExcelConvertor from'./JSONToExcelConvertor/JSONToExcelConvertor';
+Vue.prototype.JSONToExcelConvertor=JSONToExcelConvertor;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
