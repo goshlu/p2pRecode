@@ -80,10 +80,9 @@
             <el-radio v-model="radio" label="2">不通过</el-radio>
           </el-form-item>
           <el-form-item label="">
-            <!-- <el-input type="textarea"></el-input> -->
           </el-form-item>
           <el-form-item label="备注：">
-            <el-input type="textarea"></el-input>
+            <textarea name="notes" id="notes" cols="100" rows="4" style="resize: none;border-radius:4px;padding:10px;border: 1px solid #dcdfe6;"></textarea>
           </el-form-item>
         </el-form>
       </div>
@@ -161,9 +160,11 @@ span {
 }
 /* 按钮 */
 .el-row {
- text-align: right;
+ text-align: center;
  padding-top:20px;
  padding-bottom: 20px;
- margin-right:360px;
+}
+.el-row .el-button{
+  /*width: 180px;*/
 }
 </style>

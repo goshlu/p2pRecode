@@ -154,6 +154,7 @@
     data() {
       return {
         navArr:['借贷管理','满标审核'],
+        notesText:"",
         isShowModal: false,
         searchText: "",
         tableData: [{
@@ -197,11 +198,12 @@
     },
     created(){
       // this.tableDataOrigin = this.tableData;
-      /*this.Axios.get('http://19h4o94140.51mypc.cn/tenderall').then(res => {
+
+      this.Axios.get('http://172.16.6.75:8080/element/fullElement?status=1').then(res => {
         console.log(res);
-        this.allTableData = res.data;
+        // this.allTableData = res.data;
         this.setPaginations();
-      }).catch((err)=>{console.log(err)});*/
+      }).catch((err)=>{console.log(err)});
     },
     methods: {
       //编辑

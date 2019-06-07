@@ -153,7 +153,7 @@
     },
     created(){
       // this.tableDataOrigin = this.tableData;
-      this.Axios.get('http://19h4o94140.51mypc.cn/tenderall').then(res => {
+      this.Axios.get('http://172.16.6.75:8080/borrow/select?status=1').then(res => {
         console.log(res);
         this.allTableData = res.data;
         this.setPaginations();
