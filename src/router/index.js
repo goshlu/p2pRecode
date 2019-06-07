@@ -19,13 +19,37 @@ export default new Router({
         {
           path: "/PowerMa",
           name: "PowerMa",
-          redirect: "/PowerMaBu",
+          redirect: "/PowerMaJueSe",
           component: () => import("@/components/PowerMa"),
           children:[
             {
-              path: "/PowerMaBu",
-              name: "PowerMaBu",
+              path: "/PowerMaJueSe",
+              name: "PowerMaJueSe",
               component: () => import("@/components/PowerMa/powerMaJueSe/PowerMaBu"),
+            }, {
+              path: "/PowerMaBuMen",
+              name: "PowerMaBuMen",
+              component: () => import("@/components/PowerMa/PowerMaBuMen"),
+            }, {
+              path: "/PowerMaZhiWei",
+              name: "PowerMaZhiWei",
+              component: () => import("@/components/PowerMa/PowerMaZhiWei"),
+            }, {
+              path: "/PowerMaYuanGong",
+              name: "PowerMaYuanGong",
+              component: () => import("@/components/PowerMa/PowerMaYuanGong"),
+            }, {
+              path: "/PowerMaMoKuai",
+              name: "PowerMaMoKuai",
+              component: () => import("@/components/PowerMa/PowerMaMoKuai"),
+            }, {
+              path: "/PowerMaGongNeng",
+              name: "PowerMaGongNeng",
+              component: () => import("@/components/PowerMa/PowerMaGongNeng"),
+            }, {
+              path: "/PowerMaZiYuan",
+              name: "PowerMaZiYuan",
+              component: () => import("@/components/PowerMa/PowerMaZiYuan"),
             }
           ]
         },
@@ -247,3 +271,252 @@ export default new Router({
     },
   ]
 });
+
+{
+// [
+//   {
+//     "id": "1",
+//     "title": "借贷管理",
+//     "isOpen": false,
+//     "children": [
+//       {
+//         "id": "1-1",
+//         "title": "新增借贷",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/NewLoans"
+//       },
+//       {
+//         "id": "1-2",
+//         "title": "新标维护",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/NewStence"
+//       },
+//       {
+//         "id": "1-3",
+//         "title": "借贷审核",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/LoanAuid"
+//       },
+//       {
+//         "id": "1-4",
+//         "title": "新标上架",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/BidFrame"
+//       },
+//       {
+//         "id": "1-5",
+//         "title": "进行中标的管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/TenderingManage"
+//       },
+//       {
+//         "id": "1-6",
+//         "title": "满标审核",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/TenderFullReview"
+//       },
+//       {
+//         "id": "1-7",
+//         "title": "所有借款标",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/TenderAll"
+//       },
+//       {
+//         "id": "1-8",
+//         "title": "投资记录",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/InvestRecord"
+//       },
+//       {
+//         "id": "1-9",
+//         "title": "借款标类别",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/TenderCategory"
+//       }
+//     ],
+//     "url": ""
+//   },
+//   {
+//     "id": "2",
+//     "title": "还款管理",
+//     "isOpen": false,
+//     "children": [
+//       {
+//         "id": "2-1",
+//         "title": "还款管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/RepaymentManagement"
+//       },
+//       {
+//         "id": "2-2",
+//         "title": "还款记录",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/RepaymentHistory"
+//       }
+//     ],
+//     "url": ""
+//   },
+//   {
+//     "id": "3",
+//     "title": "资金管理",
+//     "isOpen": false,
+//     "children": [
+//       {
+//         "id": "3-1",
+//         "title": "充值记录",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/RechargeRecord"
+//       },
+//       {
+//         "id": "3-2",
+//         "title": "提现记录",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/WithdrawRecord"
+//       },
+//       {
+//         "id": "3-3",
+//         "title": "提现审核",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/WithdrawReview"
+//       },
+//       {
+//         "id": "3-4",
+//         "title": "用户资金",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/UserCapital"
+//       },
+//       {
+//         "id": "3-5",
+//         "title": "资金日志",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/CapitalJournal"
+//       },
+//       {
+//         "id": "3-6",
+//         "title": "平台资金",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/Platformfunds"
+//       }
+//     ],
+//     "url": ""
+//   },
+//   {
+//     "id": "4",
+//     "title": "会员管理",
+//     "isOpen": false,
+//     "children": [
+//       {
+//         "id": "4-1",
+//         "title": "新增用户",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/AddUser"
+//       },
+//       {
+//         "id": "4-2",
+//         "title": "投资用户管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/InvUser"
+//       },
+//       {
+//         "id": "4-2",
+//         "title": "借款用户管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/BorrowUserHome"
+//       }
+//     ],
+//     "url": ""
+//   },
+//   {
+//     "id": "5",
+//     "title": "权限管理",
+//     "isOpen": true,
+//     "children": [
+//       {
+//         "id": "5-1",
+//         "title": "部门管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/PowerMaBuMen"
+//       },
+//       {
+//         "id": "5-2",
+//         "title": "员工管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/PowerMaYuanGong"
+//       },
+//       {
+//         "id": "5-3",
+//         "title": "职位管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/PowerMaZhiWei"
+//       },
+//       {
+//         "id": "5-4",
+//         "title": "角色管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/PowerMaJueSe"
+//       },
+//       {
+//         "id": "5-5",
+//         "title": "模块管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/PowerMaMoKuai"
+//       },
+//       {
+//         "id": "5-6",
+//         "title": "功能管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/PowerMaGongNeng"
+//       },
+//       {
+//         "id": "5-7",
+//         "title": "资源管理",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/PowerMaZiYuan"
+//       }
+//     ],
+//     "url": "/"
+//   },
+//   {
+//     "id": "6",
+//     "title": "系统设置",
+//     "isOpen": false,
+//     "children": [
+//       {
+//         "id": "6-1",
+//         "title": "系统设置",
+//         "isOpen": false,
+//         "children": [],
+//         "url": "/Config"
+//       }
+//     ],
+//     "url": "/Config"
+//   }
+// ]
+}
