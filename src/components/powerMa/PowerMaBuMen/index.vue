@@ -37,7 +37,7 @@
           </div> -->
 
           <div>
-            <p>搜索：</p>
+            <p class="bumensearch">部门搜索：</p>
             <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input21"></el-input>
           </div>
         </div>
@@ -56,7 +56,7 @@
           <el-table-column prop="powerInfo" label="部门描述" show-overflow-tooltip></el-table-column>
           <el-table-column prop="do" label="操作" show-overflow-tooltip>
             <template slot-scope="scope">
-              <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
               <el-button size="mini" icon="el-icon-delete" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </template>
           </el-table-column>
@@ -167,6 +167,7 @@
 </script>
 
 <style lang="stylus">
-  
+  .bumensearch
+    width 110px !important 
 </style>
 

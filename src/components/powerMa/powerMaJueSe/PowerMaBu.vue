@@ -52,7 +52,7 @@
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column prop="numberId"  label="角色编号" width="120"></el-table-column>
           <el-table-column prop="title" label="角色名称" width="120"></el-table-column>
-          <el-table-column prop="bumen" label="所属部门" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="bumen" label="所属职位" show-overflow-tooltip></el-table-column>
           <el-table-column prop="powerInfo" label="权限描述" show-overflow-tooltip></el-table-column>
           <el-table-column prop="do" label="操作" show-overflow-tooltip>
             <template slot-scope="scope">
@@ -108,32 +108,32 @@
           {
             numberId: '99921',
             title: '审核专员',
-            bumen: '运营部',
+            bumen: '审核',
             powerInfo: '主要负责新标审核'
           },{
             numberId: '99921',
             title: '审核专员',
-            bumen: '运营部',
+            bumen: '审核',
             powerInfo: '主要负责新标审核'
           },{
             numberId: '99921',
             title: '审核专员',
-            bumen: '运营部',
+            bumen: '审核',
             powerInfo: '主要负责新标审核'
           },{
             numberId: '99921',
             title: '审核专员',
-            bumen: '运营部',
+            bumen: '审核',
             powerInfo: '主要负责新标审核'
           },{
             numberId: '99921',
             title: '审核专员',
-            bumen: '运营部',
+            bumen: '审核',
             powerInfo: '主要负责新标审核'
           },{
             numberId: '99921',
             title: '审核专员',
-            bumen: '运营部',
+            bumen: '审核',
             powerInfo: '主要负责新标审核'
           },
           ],
