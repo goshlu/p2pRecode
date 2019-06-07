@@ -20,7 +20,7 @@
             </el-dropdown>
           </div>
             
-          <div>
+          <!-- <div>
             <p>角色筛选：</p>
             <el-dropdown>
               <el-button class="el-dropdown-link">
@@ -34,7 +34,7 @@
                 <el-dropdown-item>客户专员</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>      
-          </div>
+          </div> -->
 
           <div>
             <p>搜索：</p>
@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="btns">
-          <el-button type="primary">新增角色</el-button>
+          <el-button type="primary">新增员工</el-button>
           <el-button type="danger">批量删除</el-button>
         </div>
       </div>
@@ -50,10 +50,11 @@
       <div class="table">
         <el-table :stripe="true" :border="false" ref="multipleTable" :data="tableData3" tooltip-effect="dark" style="width: 100%"  @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="numberId"  label="角色编号" width="120"></el-table-column>
-          <el-table-column prop="title" label="角色名称" width="120"></el-table-column>
-          <el-table-column prop="bumen" label="所属部门" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="powerInfo" label="权限描述" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="numberId"  label="编号" width="120"></el-table-column>
+          <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+          <el-table-column prop="gender" label="性别" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="time" label="入职时间" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="zhiwei" label="职位" show-overflow-tooltip></el-table-column>
           <el-table-column prop="do" label="操作" show-overflow-tooltip>
             <template slot-scope="scope">
               <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -102,39 +103,33 @@
     data(){
       return{
         DetailAlertId:"",
-        navArr:['权限管理','角色管理'],
+        navArr:['权限管理','部门管理'],
         input21:"",
         tableData3: [
           {
             numberId: '99921',
-            title: '审核专员',
-            bumen: '运营部',
-            powerInfo: '主要负责新标审核'
+            name: '李大钊',
+            gender: '男',
+            time:'2019-01-03',
+            zhiwei:'经理',
           },{
             numberId: '99921',
-            title: '审核专员',
-            bumen: '运营部',
-            powerInfo: '主要负责新标审核'
+            name: '李大钊',
+            gender: '男',
+            time:'2019-01-03',
+            zhiwei:'经理',
           },{
             numberId: '99921',
-            title: '审核专员',
-            bumen: '运营部',
-            powerInfo: '主要负责新标审核'
+            name: '李大钊',
+            gender: '男',
+            time:'2019-01-03',
+            zhiwei:'经理',
           },{
             numberId: '99921',
-            title: '审核专员',
-            bumen: '运营部',
-            powerInfo: '主要负责新标审核'
-          },{
-            numberId: '99921',
-            title: '审核专员',
-            bumen: '运营部',
-            powerInfo: '主要负责新标审核'
-          },{
-            numberId: '99921',
-            title: '审核专员',
-            bumen: '运营部',
-            powerInfo: '主要负责新标审核'
+            name: '李大钊',
+            gender: '男',
+            time:'2019-01-03',
+            zhiwei:'经理',
           },
           ],
           multipleSelection: [],
