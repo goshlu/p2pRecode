@@ -1,54 +1,71 @@
 @import "./public.styl"
 .PowerMa
   background-color: #fff
-  .PowerMaBu
-    .seleAndBtn
+  position relative
+  .seleAndBtn
+    width: 100%
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+    .selects,.btns
+      height: 30px
+      padding: 20px
       display: flex
+      // border-bottom: 1px solid $cTBorder
+      align-items: center
       flex-flow: row nowrap
-      justify-content: space-between
-      .selects,.btns
-        height: 30px
-        padding: 20px
+      &.selects>div
         display: flex
-        // border-bottom: 1px solid $cTBorder
         align-items: center
         flex-flow: row nowrap
-        &.selects>div
-          display: flex
-          align-items: center
-          flex-flow: row nowrap
-          &:last-child>p
-            width: 63px
-          p
-            margin-right: 10px
-            font-weight 600
-            color:#333
-        &.btns button 
-          margin: 0 0 0 20px
-          // margin-left: 0
-        button 
-          margin-right: 30px
-    .table
-      padding: 20px
-      table th
-          background-color: $cTheadbg
-          color: $cTheadft
-        // border-color: $cTBorder
-    .pages
-      height: 30px
-      padding: 20px 10px 10px
-      display: flex
-      flex-flow: row nowrap
-      justify-content: space-between
-      .totalNum
-        width: 100px
-        height: 26px
-        font-size: 13px
-        text-align: center
-        line-height: 26px
-        margin-left: 10px
-        border-radius: 4px
-        color: #606266
-        border: 1px solid #ddd
-      // align-items: center
-        
+        &:last-child>p
+          width: 63px
+        p
+          margin-right: 10px
+          font-weight 600
+          color:#333
+      &.btns button 
+        margin: 0 0 0 20px
+        // margin-left: 0
+      button 
+        margin-right: 30px
+  .table
+    padding: 20px
+    table th
+        background-color: $cTheadbg
+        color: $cTheadft
+      // border-color: $cTBorder
+  .pages
+    height: 30px
+    padding: 20px 10px 10px
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+    .totalNum
+      width: 100px
+      height: 26px
+      font-size: 13px
+      text-align: center
+      line-height: 26px
+      margin-left: 10px
+      border-radius: 4px
+      color: #606266
+      border: 1px solid #ddd
+    // align-items: center
+  .AlertBoxBox
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100vh
+    z-index: 101
+    background-color: rgba(0,0,0,0.3)
+    .alertBox
+      position: absolute
+      top: 50%
+      left 50%
+      transform: translate(-50%,-50%)
+      box-shadow: 2px 2px 20px rgba(0,0,0,0.2)
+      
+    
+          

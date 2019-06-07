@@ -1,10 +1,9 @@
 <template>
-
   <div
     class="block"
-    style="width: 240px; margin-top: 15px; margin-left: 30px;display: inline-block;"
+    style="width: 325px; margin-top: 15px; margin-left: 30px;display: inline-block;"
   >
-  <p>日期筛选：</p>
+    <p>日期筛选：</p>
     <el-date-picker
       v-model="value7"
       type="daterange"
@@ -64,7 +63,7 @@ export default {
 .block > .el-date-editor {
   width: 240px;
 }
-p {
-  /* display: inline-block; */
+.block > p {
+  display: inline-block;
 }
 </style>

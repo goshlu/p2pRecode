@@ -1,5 +1,4 @@
 <template>
-  <!-- 表格 -->
   <div class="wrapper">
     <div class="wrapper-content">
       <Title :navArr="navArr"/>
@@ -37,7 +36,6 @@
         :border="false"
         ref="multipleTable"
         tooltip-effect="dark"
-        style="width:100%"
         :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}"
       >
         <el-table-column type="selection" width="55"></el-table-column>
@@ -54,13 +52,11 @@
           <template slot-scope="scope">
             <el-button
               @click="handleClick(scope.row)"
-              algin="center"
               type="primary"
+              icon="el-icon-edit"
               size="mini"
-              icon="el-icon-view"
-            >
-              审核
-            </el-button>
+            >编辑</el-button>
+            <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -86,7 +82,7 @@
 import Title from "./../../commonComponents/headerTitle";
 
 export default {
-  name: "Auid",
+  name: "Stence",
   components: {
     Title
   },
@@ -101,24 +97,23 @@ export default {
         page_sizes: [5, 10, 15, 20], //每页显示多少条
         layout: "total, sizes, prev, pager, next" // 翻页属性
       },
-      navArr: ["贷款管理", "借款审核"],
+      navArr: ["贷款管理", "新标维护"],
       modeOpt: [
         { value: 1, label: "新标待审核" },
         { value: 2, label: "新增草稿" },
         { value: 3, label: "初审不通过" }
       ],
       modeSel: "",
-      input5:"",
-      select: "",
+      input5: "",
+      select: ""
     };
   },
-
-  beforeMount() {
+  created() {
     this.getTableList();
   },
   methods: {
     handleClick(row) {
-      this.$router.push({path:'/LoanAuid/Examine',params:{}})
+      this.$router.push({ path: "/NewStence/Edit", params: {} });
     },
     getTableList() {
       this.Axios.get("https://5cf615c346583900149cb2b9.mockapi.io/Loans").then(
@@ -159,14 +154,17 @@ export default {
     }
   }
 };
-</script>
+</script>  
 
 <style scoped>
+table {
+  border-spacing: 0;
+}
 .wrapper {
   width: 100%;
-  /* padding-top: 20px; */
   margin: 0 auto;
 }
+
 .wrapper-content {
   width: 100%;
   margin: 0 auto;
@@ -194,11 +192,13 @@ export default {
   padding: 20px 20px 0 20px;
 }
 
+
 h2 {
   color: #fff;
-  margin-left: 10px;
   line-height: 40px;
+  margin-left: 10px;
 }
+/* 分页 */
 .pagination {
   text-align: right;
   padding-top: 20px;
