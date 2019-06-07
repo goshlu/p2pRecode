@@ -90,31 +90,58 @@ export default new Router({
           ]
         },
         //充值记录页面路由
-        {
-          path: '/RechargeRecord',
-          name: 'RechargeRecord',
-          component: () => import('@/components/RecordMa/RechargeRecord.vue'),
+        { // 充值路由 Recharge
+          path: '/Recharge',
+          redirect: '/RechargeRecord',
+          component: () => import('@/components/RecordMa/Recharge.vue'),
+          children: [{ // 充值记录 RechargeRecord
+            path: '/RechargeRecord',
+            name: 'RechargeRecord',
+            component: () => import('@/components/RecordMa/RechargeRecord.vue'),
+          },
+          { // 详情子路由 Details
+            path: 'Details',
+            name: 'Details',
+            component: () => import('@/components/RecordMa/Details.vue'),
+          }
+          ]
         },
         //提现记录页面路由
-        {
-          path: '/WithdrawRecord',
-          name: 'WithdrawRecord',
-          component: () => import('@/components/RecordMa/WithdrawRecord.vue'),
+        { // 提现路由 Withdraw
+          path: '/Withdraw',
+          redirect: '/WithdrawRecord',
+          component: () => import('@/components/RecordMa/Withdraw.vue'),
+          children: [{ // 提现记录 WithdrawRecord
+            path: '/WithdrawRecord',
+            name: 'WithdrawRecord',
+            component: () => import('@/components/RecordMa/WithdrawRecord.vue'),
+          },
+          { // 详情子路由 Details
+            path: 'Details',
+            name: 'Details',
+            component: () => import('@/components/RecordMa/Details.vue'),
+          }
+          ]
         },
         //提现审核页面路由
-        {
-          path: '/WithdrawReview',
-          redirect: '/Withdraw',
-          component: () => import('@/components/RecordMa/Withdraw.vue'),
-          children: [{
-            path: '/Withdraw',
-            name: 'Withdraw',
+        { // 审核路由 Review
+          path: '/Review',
+          redirect: '/WithdrawReview',
+          component: () => import('@/components/RecordMa/Review.vue'),
+          children: [{ // 提现审核 WithdrawReview
+            path: '/WithdrawReview',
+            name: 'WithdrawReview',
             component: () => import('@/components/RecordMa/WithdrawReview.vue'),
           },
-          { // 提现审核详情子路由
+          { // 提现审核详情子路由 Reviewdetails
             path: 'Reviewdetails',
             name: 'Reviewdetails',
             component: () => import('@/components/RecordMa/Reviewdetails.vue'),
+          },
+          { // 详情子路由 Details
+            path: 'Details',
+            name: 'Details',
+            component: () => import('@/components/RecordMa/Details.vue'),
           }
           ]
         },
