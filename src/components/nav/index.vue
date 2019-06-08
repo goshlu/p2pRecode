@@ -21,7 +21,7 @@
           </div>
           <div class="moreBoxBox" v-if="isShowMoreBox">
             <ul class="moreBox">
-              <li>消息(2)</li>
+              <li @click="getMessage">消息(2)</li>
               <li>个人资料</li>
               <li>修改密码</li>
               <li>退出</li>
@@ -109,6 +109,11 @@ export default {
         document.exitFullscreen();
       }
       this.isFullScreen = !this.isFullScreen
+    },
+    getMessage(){
+      this.$router.push({
+        name:"Message",
+      })
     }
   },
 

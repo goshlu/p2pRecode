@@ -301,6 +301,12 @@ export default new Router({
         path: '/Config',
         name: 'Config',
         component: () => import('@/components/config/config.vue'),
+      },
+      //消息中心
+      {
+        path:"/Message",
+        name:"Message",
+        component: () => import('@/components/Message'),
       }
     ],
   }, ]
