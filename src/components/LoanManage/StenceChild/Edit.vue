@@ -134,7 +134,7 @@
       <el-divider></el-divider>
       <div class="CheakBtn">
         <el-row>
-          <el-button type="primary">提交</el-button>
+          <el-button type="primary" @click="handleUpdate">提交</el-button>
           <el-button>返回</el-button>
         </el-row>
       </div>
@@ -144,6 +144,7 @@
 
 <script>
 import Title from "./../../commonComponents/headerTitle"
+import baseUrl from "../../../api/baseUrl";
 export default {
   name: "NewLoans",
   components: {
@@ -182,7 +183,20 @@ export default {
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
-    }
+    },
+
+    //确定编辑
+    handleUpdate(){
+      let row = this.$route.query.row;
+      console.log(row);
+      //删除
+      this.Axios.post(baseUrl.BASE_URL+'/element/elements',row).then(res => {
+        console.log(res);
+        // this.tableData = res.data.data;
+        // 总页数
+        // this.paginations.total = this.tableData.length;
+      }).catch((err)=>{console.log(err)});
+    },
   }
 };
 </script>
