@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/student.css">
+    <script src="js/ajaxFn.js"></script>
+
+
+</head>
+<body id="body">
+<p>
+    <img src="img/avatar1_small.jpg" alt="" class="img-circle">
+   <span class="text-danger"><%- userName %></span>
+</p>
+<div class="box">
+    <div class="box_top"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class=" col-md-12 col-sm-12" style="background-color: #eff0f4; padding-top: 50px;padding-bottom: 50px">
+                <div class=" " style="background-color:white;padding-top: 20px;padding-left: 15px;padding-right: 15px">
+                    <div style=" border-bottom: 1px solid #bbb;">
+                        <div class="row lay_out">
+                            <div class="col-xs-12 add_lay_out">
+                                <button data-toggle="modal" data-target="#myModalAdd" id="btnAddMod"
+                                        class="btn btn-info btn-add col-xs-7 btnPw ">添加
+                                </button>
+
+                            </div>
+                            <form class="formQue">
+                            <div class="col-xs-2 add_lay_out">
+                                <button id="btnQueMod"
+                                        class="btn btn-info btn-add col-xs-7 btnPw " type="button">查询
+                                </button>
+                            </div>
+                                <div class="col-xs-4 add_lay_out">
+                                     <input type="text" class="form-control" name="user" placeholder="user">
+                                </div>
+                                <div class="col-xs-4 add_lay_out">
+                                    <select name="sexSel" id="" class="form-control">
+                                        <option value="-1">All</option>
+                                        <option value="0">女</option>
+                                        <option value="1">男</option>
+                                    </select>
+                                </div>
+                                </form>
+                            </div>
+                        <div >
+                            <div class="row lay_out_b ">
+
+                                <div class="col-xs-12">
+                                    <div class="table-responsive ">
+                                        <table class="table table-hover  table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>编号</th>
+                                                <th>名称</th>
+                                                <th>所在岗位</th>
+                                                <th>入职时间</th>
+                                                <th>状态</th>
+                                                <th>创建人</th>
+                                                <th>创建时间</th>
+                                                <th>操作</th>
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+                                <!--<div class="row lay_out_b_re">-->
+                                <!--<div class="col-xs-3 col-md-offset-9">-->
+                                <!--<button data-toggle="modal" data-target="#myModalRe"-->
+                                <!--class="btn btn-default col-md-offset-2 ">添加回访记录-->
+                                <!--</button>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                            </div>
+
+                        </div>
+                        <div class="pageCover"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Add Modal -->
+            <div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalAddLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">添加学生信息</h4>
+                        </div>
+                        <div class="modal-body" style="height:420px;">
+                            <form class="form-horizontal has-feedback" id="formAdd">
+                                <div class="form-group">
+
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >员工名称:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <input class="input-sm inputPw form-control" type="text"
+                                                       aria-describedby="inputNameGroup1" name="staffName">
+                                                <span class="glyphicon  form-control-feedback text-info"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >员工账号:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <input class="input-sm inputPw form-control" type="text"
+                                                       aria-describedby="inputNameGroup1" name="staffUser">
+                                                <span class="glyphicon  form-control-feedback text-info"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >用户密码:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <input class="input-sm inputPw form-control" type="text"
+                                                       aria-describedby="inputNameGroup1" name="pwd">
+                                                <span class="glyphicon  form-control-feedback text-info"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >岗位编号:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <select name="jobId" id="" class="form-control">
+                                                    <option value="1">总经理</option>
+                                                    <option value="2">经理</option>
+                                                    <option value="3">职员</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >入职时间:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <input class="input-sm inputPw form-control" type="date"
+                                                       aria-describedby="inputNameGroup1" name="hiredate">
+                                                <span class="glyphicon  form-control-feedback text-info"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >状态:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <select name="state" id="" class="form-control">
+                                                    <option value="1">启用</option>
+                                                    <option value="0">禁用</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >创建时间:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <input class="input-sm inputPw form-control" type="date"
+                                                       aria-describedby="inputNameGroup1" name="createDate">
+                                                <span class="glyphicon  form-control-feedback text-info"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="modAddClose" data-dismiss="modal">确认
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Rev Modal -->
+            <div class="modal fade" id="myModalRev" tabindex="-1" role="dialog" aria-labelledby="myModalAddLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">修改学生信息</h4>
+                        </div>
+                        <div class="modal-body" style="height:420px;">
+                            <form class="form-horizontal has-feedback" id="formRev">
+                                <div class="form-group">
+
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >员工名称:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <input class="input-sm inputPw form-control" type="text"
+                                                       aria-describedby="inputNameGroup1" name="staffName">
+                                                <span class="glyphicon  form-control-feedback text-info"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >员工账号:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <input class="input-sm inputPw form-control" type="text"
+                                                       aria-describedby="inputNameGroup1" name="staffUser">
+                                                <span class="glyphicon  form-control-feedback text-info"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >用户密码:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <input class="input-sm inputPw form-control" type="text"
+                                                       aria-describedby="inputNameGroup1" name="pwd">
+                                                <span class="glyphicon  form-control-feedback text-info"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >岗位编号:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <select name="jobId" id="" class="form-control">
+                                                    <option value="1">总经理</option>
+                                                    <option value="2">经理</option>
+                                                    <option value="3">职员</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >入职时间:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <input class="input-sm inputPw form-control" type="date"
+                                                       aria-describedby="inputNameGroup1" name="hiredate">
+                                                <span class="glyphicon  form-control-feedback text-info"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >状态:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <select name="state" id="" class="form-control">
+                                                    <option value="1">启用</option>
+                                                    <option value="0">禁用</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6   col-xs-12">
+                                        <label class="col-md-5 col-xs-4 control-label text-info"
+                                        >创建时间:</label>
+                                        <div class="col-md-7 col-xs-4">
+                                            <div class="input-group">
+                                                <input class="input-sm inputPw form-control" type="date"
+                                                       aria-describedby="inputNameGroup1" name="createDate">
+                                                <span class="glyphicon  form-control-feedback text-info"
+                                                      aria-hidden="true"></span>
+                                                <span class="sr-only"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="btnRevClose" data-dismiss="modal">确认
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="box_bottom"></div>
+    </div>
+</div>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/js.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

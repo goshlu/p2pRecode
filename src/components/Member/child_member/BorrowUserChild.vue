@@ -1,8 +1,7 @@
   <template>
   <el-container>
-    
     <el-header></el-header>
-        <!-- <el-row>
+    <!-- <el-row>
 <el-col :span="8">
         <div class="grid-content bg-purple"></div>
       </el-col>
@@ -19,7 +18,7 @@
       <el-col :span="2">
         <div class="grid-content bg-purple-light"></div>
       </el-col>
-      </el-row> -->
+    </el-row>-->
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
@@ -27,13 +26,13 @@
       <el-col :span="2">
         <div class="grid-content bg-purple-light">状态</div>
       </el-col>
-    <el-col :span="6">
-        <div class="grid-content bg-purple"  @change="radioFun1">
+      <el-col :span="6">
+        <div class="grid-content bg-purple" @change="radioFun1">
           <el-radio v-model="radio" label="1">锁定</el-radio>
           <el-radio v-model="radio" label="2">正常</el-radio>
         </div>
       </el-col>
-      </el-row>
+    </el-row>
     <el-row>
       <el-col :span="24">
         <!-- <div class="grid-content bg-purple-dark">基本信息</div> -->
@@ -48,7 +47,7 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <el-input v-model="input1" label="" v-if="disabled" placeholder="请输入内容"></el-input>
+          <el-input v-model="input1" label v-if="disabled" placeholder="请输入内容"></el-input>
         </div>
       </el-col>
     </el-row>
@@ -61,12 +60,10 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <el-input v-model="input1" label="" v-if="disabled" placeholder="请输入内容"></el-input>
+          <el-input v-model="input1" label v-if="disabled" placeholder="请输入内容"></el-input>
         </div>
       </el-col>
     </el-row>
-
-
 
     <el-row>
       <el-col :span="8">
@@ -78,14 +75,13 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input2"  v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="input2" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
-      
     </el-row>
     <el-row>
-<el-col :span="8">
+      <el-col :span="8">
         <div class="grid-content bg-purple-light"></div>
       </el-col>
       <el-col :span="2">
@@ -98,7 +94,7 @@
           </div>
         </div>
       </el-col>
-      </el-row>
+    </el-row>
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
@@ -113,10 +109,9 @@
           </div>
         </div>
       </el-col>
-      
     </el-row>
     <el-row>
-<el-col :span="8">
+      <el-col :span="8">
         <div class="grid-content bg-purple-light"></div>
       </el-col>
       <el-col :span="2">
@@ -129,13 +124,12 @@
           </div>
         </div>
       </el-col>
-      </el-row>
+    </el-row>
     <el-row>
       <el-col :span="24">
         <!-- <div class="grid-content bg-purple-dark">操作</div> -->
       </el-col>
     </el-row>
-  
 
     <!-- <el-row>
       <el-col :span="8">
@@ -149,18 +143,23 @@
           <el-input type="textarea" :rows="3" v-if="disabled" placeholder="请输入内容" v-model="textarea"></el-input>
         </div>
       </el-col>
-    </el-row> -->
-<el-row>
-  </el-row>
+    </el-row>-->
+    <el-row></el-row>
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
       </el-col>
       <el-col :span="4">
-        <div class="grid-content bg-purple-light"><el-button type="primary" @click="open2">保存修改</el-button></div>
+        <div class="grid-content bg-purple-light">
+          <el-button type="primary" @click="open2">保存修改</el-button>
+        </div>
       </el-col>
       <el-col :span="3">
-        <div class="grid-content bg-purple"><el-button><router-link to="/BorrowUserHome" @click="Pathto">返回</router-link></el-button></div>
+        <div class="grid-content bg-purple">
+          <el-button>
+            <router-link to="/BorrowUserHome" @click="Pathto">返回</router-link>
+          </el-button>
+        </div>
       </el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light"></div>
@@ -171,18 +170,15 @@
 
 <script>
 export default {
-
   name: "BorrowUserChild",
   components: {},
 
-  created(){
-    this.datasthis.$route.params
-
+  created() {
+    this.datasthis.$route.params;
   },
   data() {
     return {
-
-      datas:"",
+      datas: "",
       input1: "",
       input2: "",
       input3: "",
@@ -193,48 +189,44 @@ export default {
       radio: "2",
       radio1: "2",
       textarea: "",
-      disabled:"false"
+      disabled: "false"
     };
   },
-      methods: {
-        radioFun1(msg){
-          if(msg==2){
-            this.disabled = false;
-          }else{
-            this.disabled = true;
-          }
-        },
-        radioFun2(msg){
-          if(msg == 2){
-
-          }
-        },
-        open2() {
-            this.$confirm('您将修改此内容，确定将会永久更改?', '修改提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            })
-            .then(
-                () => {
-                    this.$message({
-                        type: 'success',
-                        message: '保存成功!'
-                    });
-            })
-            .catch(
-                () => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消修改'
-                    });          
-                });
-        },
-        Pathto(){
-            this.$router.push('/InvUser')   
-        }
+  methods: {
+    radioFun1(msg) {
+      if (msg == 2) {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
+    },
+    radioFun2(msg) {
+      if (msg == 2) {
+      }
+    },
+    open2() {
+      this.$confirm("您将修改此内容，确定将会永久更改?", "修改提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "保存成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消修改"
+          });
+        });
+    },
+    Pathto() {
+      this.$router.push("/InvUser");
     }
-
+  }
 };
 </script>
 
