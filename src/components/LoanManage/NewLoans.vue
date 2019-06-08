@@ -25,8 +25,9 @@
             </el-select>
           </el-form-item>
           <!-- *借款方： -->
-          <el-form-item label="*借款方：">
-            <el-input v-model="debtor"></el-input>
+          <el-form-item label="*借款方：" >
+            <input type="text" style="display: inline-block">
+            <el-button type="primary" style="display: inline-block" @click="showModal">选择</el-button>
           </el-form-item>
           <!-- *借款总金额： -->
           <el-form-item label="*借款总金额：">
@@ -115,7 +116,7 @@
             <el-radio v-model="radio4" label="2">车贷</el-radio>
             <el-radio v-model="radio4" label="3">民品抵</el-radio>
           </el-form-item>
-          <!-- 抵押物材料 -->
+          <!--&lt;!&ndash; 抵押物材料 &ndash;&gt;
           <el-form-item label="抵押物材料：">
             <el-upload
               action="https://jsonplaceholder.typicode.com/posts/"
@@ -128,7 +129,7 @@
             <el-dialog :visible.sync="dialogVisible">
               <img width="100%" :src="dialogImageUrl" alt>
             </el-dialog>
-          </el-form-item>
+          </el-form-item>-->
         </el-form>
       </div>
       <el-divider></el-divider>
@@ -138,6 +139,29 @@
           <el-button>返回</el-button>
         </el-row>
       </div>
+    </div>
+<!--    选择弹出框-->
+    <div class="modal" v-show="isShowModal">
+      <div class="modal-content">
+        <div class="title">
+          <span>选择借款人</span>
+          <i class="el-icon-close" style="cursor: pointer;font-size: 30px;" @click="showModal"></i>
+        </div>
+        <div class="main">
+          <el-input v-model="SName" placeholder="搜索借款人姓名：" icon="el-icon-search"></el-input>
+          <template>
+            <el-table :data="tableData" height="350" border style="width: 100%">
+              <el-table-column prop="name" label="真实姓名" width="180"></el-table-column>
+              <el-table-column prop="phone" label="手机号码/用户名" width="180"></el-table-column>
+              <el-table-column prop="status" label="用户状态"></el-table-column>
+              <el-table-column prop="type" label="身份类型"></el-table-column>
+              <el-table-column prop="time" label="添加时间"></el-table-column>
+              <el-table-column label="操作"></el-table-column>
+            </el-table>
+          </template>
+          </div>
+        </div>
+
     </div>
   </div>
 </template>
@@ -172,17 +196,24 @@ export default {
       radio3: "0",
       radio4: "0",
       dialogImageUrl: "",
-      dialogVisible: false
+      dialogVisible: false,
+      isShowModal:false,
+      SName:"",
+      tableData:[{
+        name:"",
+        phone:"",
+        status:"",
+        type:"",
+        time:"",
+      }]
     };
   },
   methods: {
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+
+    showModal() {
+      this.isShowModal = !this.isShowModal;
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    }
+
   }
 };
 </script>
@@ -241,5 +272,49 @@ input {
  text-align: center;
  padding-top:20px;
  padding-bottom: 20px;
+}
+/*  选择*/
+input{
+  border: 1px solid #DCDFE6;
+  height: 40px;
+  width: 50%;
+  border-radius:4px;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(66, 66, 66, .5);
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+}
+.modal .modal-content {
+  width: 800px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+}
+
+.modal .modal-content {
+  box-shadow: 2px 2px 5px #adadad;
+}
+.modal .modal-content .title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  background-color: rgba(242, 242, 242, 1);
+  font-size: 20px;
+  color: #555555;
+  border-bottom: 1px solid #d5d5d5;
+}
+.modal .modal-content .el-input{
+  width: 30%;
+  margin: 10px 10px;
 }
 </style>

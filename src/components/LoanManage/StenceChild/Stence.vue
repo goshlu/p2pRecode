@@ -90,6 +90,7 @@ export default {
     return {
       tableData: [],
       allTableData: [],
+      value:"",
       paginations: {
         page_index: 1, // 当前位于哪页
         total: 0, // 总数

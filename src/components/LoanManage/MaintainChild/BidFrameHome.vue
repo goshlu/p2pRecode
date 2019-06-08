@@ -93,6 +93,7 @@ export default {
       select: "",
       tableDataList: [],
       tableData: [],
+      value:"",
       navArr:['借贷管理','标的上架']
     };
   },
