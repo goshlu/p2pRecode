@@ -194,8 +194,18 @@
 			},
 			value(){
 				this.axiosFun();
-			}},
+			},
+			exportvalue(){
+				if(this.exportvalue==1){
+					this.tableToExcel();
+				}
+			}
+			},
 		methods: {
+				tableToExcel() {
+				 let data=this.tableData;
+					this.JSONToExcelConvertor(data,"sheet");
+			},
 			axiosFun(){
 				this.Axios.get('http://19h4o94140.51mypc.cn/platformfunds',{
 					params:{
