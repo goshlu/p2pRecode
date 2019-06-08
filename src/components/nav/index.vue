@@ -15,9 +15,9 @@
         <div class="mine">
           <span @click="getMoreBox">李大钊</span>
           <span class="el-icon-caret-bottom" @click="getMoreBox"></span>
-          <div class="imgBox">
+          <div class="imgBox" @click="getMoreBox">
             <span></span>
-            <img src="" alt="" @click="getMoreBox">
+            <img src="" alt="">
           </div>
           <div class="moreBoxBox" v-if="isShowMoreBox">
             <ul class="moreBox">
