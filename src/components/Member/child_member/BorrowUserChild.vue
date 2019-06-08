@@ -176,12 +176,12 @@ export default {
   components: {},
 
   created(){
-    this.datasthis.$route.params
-
+    this.datas=this.$route.params
+console.log(this.datas)
   },
   data() {
     return {
-
+      name:'datas.username',
       datas:"",
       input1: "",
       input2: "",
@@ -217,7 +217,10 @@ export default {
             })
             .then(
                 () => {
-                  this.Axios.get("http://172.16.6.60:8080/member/borrow/members");
+                  // get在浏览器上输入地址能直接显示，post则不直接显示
+                  this.Axios.get("http://172.16.6.60:8080/member/borrow/members",{
+                    name:'username'
+                  });
                     this.$message({
                         
                         type: 'success',

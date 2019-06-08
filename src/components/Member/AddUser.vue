@@ -87,7 +87,7 @@
         <div class="grid-content bg-purple-light"></div>
       </el-col>
       <el-col :span="2">
-        <div class="grid-content bg-purple">*税务登记证号</div>
+        <div class="grid-content bg-purple">{{nameType3}}</div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
@@ -163,19 +163,20 @@ export default {
   methods: {
     radioFun(msg) {
       if (msg == 3) {
-        this.nameType="*企业名称:";
+        this.nameType = "*企业名称:";
         // console.log(this.per_type);
-        this.nameType2="*法人姓名:";
+        this.nameType2 = "*法人姓名:";
         this.show = true;
 
         // console.log(msg);
       } else {
-        this.nameType="*个人姓名:";
-        this.nameType2="";
+        this.nameType = "*个人姓名:";
+        this.nameType2 = "";
+        this.nameType3 = "*税务登记证号"
         this.show = false;
       }
     },
-    
+
     Add() {
       this.$confirm("是否确认增加?", "修改提示", {
         confirmButtonText: "确定",
@@ -187,6 +188,23 @@ export default {
             type: "success",
             message: "保存成功!"
           });
+
+          this.Axios({
+            methods: "post",
+            url: "http://172.16.6.60:8080/member/info",
+            data: {
+              phone: this.input1,
+              type: this.input2,
+              enterprise: this.input3,
+              number: this.input4,
+              name: this.input5,
+              email: this.input6,
+              password: this.input7
+            }
+            // headers: {
+            //   "Content-Type": "application/json"
+            // }
+          });
         })
         .catch(() => {
           this.$message({
@@ -196,31 +214,14 @@ export default {
         });
     }
   },
-  Add() {
-    this.Axios.get("http://rap2api.taobao.org/app/mock/177576/user", {
-      parmas: {
-        input1: "",
-        input2: "",
-        input3: "",
-        input4: "",
-        input5: "",
-        input6: "",
-        input7: ""
-      }
-    })
-      .then(res => {
-        console.log(this.parmas);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  },
+
   data() {
     return {
-      nameType:"*企业名称:",
-      nameType2:"*法人姓名:",
-      per_type:true,
-      show:"true",
+      nameType: "*企业名称:",
+      nameType2: "*法人姓名:",
+      nameType3:"*税务登记证号",
+      per_type: true,
+      show: "true",
       input1: "",
       input2: "",
       input3: "",
