@@ -1,35 +1,31 @@
 <template>
   <div class="block">
-      
+    <p>共100条</p>
     <el-pagination
       background
       @size-change="handleSizeChange"
-      
       :current-page.sync="currentPage1"
       :page-sizes="[100, 200, 300, 400]"
       :page-size="100"
-      layout="sizes, total, prev, pager, next" jumper :total="500">
+      layout="sizes, prev, pager, next" jumper :total="500">
     </el-pagination>
   </div>
 </template>
 
 <style>
+.block{
+  padding:20px;
+  height:40px;
+}
 #pages{
    display: flex;
    justify-content: center;
-   margin: 25px;
 }
-.el-pagination .el-pagination__total{
-    border: 1px solid #e0e0e0;
-    padding: 0px 25px;
-    border-radius: 5px;
-    float: left;
-    margin-right: 50%;
+p{
+  float:left;
 }
-.el-pagination {
-    margin: 20px 0px;
-    margin-left: 5%;
-    
+.el-pagination{
+  float: right;
 }
 
 </style>

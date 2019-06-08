@@ -1,7 +1,7 @@
 <template>
 <!-- 搜索 -->
   <div id="search">
-    <div style="padding: 10px 0px">
+    <div >
       <el-input v-model="input2" class="input-with-select">
         <el-select v-model="select" slot="prepend">
           <el-option label="借款方" value="1"></el-option>
@@ -30,7 +30,7 @@
 #search{
   display: flex;
   justify-content: space-between;
-  margin: 5px 20px;
+  padding:20px 20px 0px 20px;
 }
 .el-select{
   width: 120px;

@@ -1,7 +1,7 @@
 
 <template>
   <div id="table">
-    <el-table :data="data" :stripe="true" style="width: 100%" :fit="true">
+    <el-table :data="data" :stripe="true" :fit="true">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="rep_state" label="借款方"></el-table-column>
       <el-table-column prop="rep_method" label="还款方式"></el-table-column>
@@ -42,7 +42,8 @@
 
 <style>
 #table{
-  width: 100%;
+  padding: 20px 20px 0px 20px;
+  width:1218px;
 }
 .dialog{
   width: 500px;
