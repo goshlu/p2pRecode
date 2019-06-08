@@ -1,8 +1,8 @@
 <template>
   <el-container>
     <el-header></el-header>
-<el-row>
-    <el-col :span="8">
+    <el-row>
+      <el-col :span="8">
         <div class="grid-content bg-purple-light"></div>
       </el-col>
       <el-col :span="2">
@@ -11,12 +11,12 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-radio-group v-model="radio" @change="radioFun">
-            <el-radio :label="3" >企业用户</el-radio>
-            <el-radio :label="6" >个人用户</el-radio>
+            <el-radio :label="3">企业用户</el-radio>
+            <el-radio :label="6">个人用户</el-radio>
           </el-radio-group>
         </div>
       </el-col>
-      </el-row>
+    </el-row>
     <el-row>
       <el-col :span="24" :offset="2">
         <div class="grid-content bg-purple-dark"></div>
@@ -33,7 +33,7 @@
         <div class="grid-content bg-purple">
           <el-input v-model="input1" placeholder="请输入内容"></el-input>
         </div>
-      </el-col> 
+      </el-col>
     </el-row>
 
     <el-row>
@@ -57,7 +57,7 @@
         <div class="grid-content bg-purple"></div>
       </el-col>
       <el-col :span="2">
-        <div class="grid-content bg-purple-light" >{{nameType2}}</div>
+        <div class="grid-content bg-purple-light">{{nameType2}}</div>
       </el-col>
       <el-col :span="6" v-if="show">
         <div class="grid-content bg-purple">
@@ -172,7 +172,10 @@ export default {
       } else {
         this.nameType = "*个人姓名:";
         this.nameType2 = "";
+<<<<<<< HEAD
         this.nameType3 = "*税务登记证号"
+=======
+>>>>>>> 93ef49ee179fec6588144aec121de081010e08d4
         this.show = false;
       }
     },
@@ -219,7 +222,10 @@ export default {
     return {
       nameType: "*企业名称:",
       nameType2: "*法人姓名:",
+<<<<<<< HEAD
       nameType3:"*税务登记证号",
+=======
+>>>>>>> 93ef49ee179fec6588144aec121de081010e08d4
       per_type: true,
       show: "true",
       input1: "",

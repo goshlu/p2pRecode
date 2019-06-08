@@ -1,8 +1,7 @@
   <template>
   <el-container>
-    
     <el-header></el-header>
-        <!-- <el-row>
+    <!-- <el-row>
 <el-col :span="8">
         <div class="grid-content bg-purple"></div>
       </el-col>
@@ -19,7 +18,7 @@
       <el-col :span="2">
         <div class="grid-content bg-purple-light"></div>
       </el-col>
-      </el-row> -->
+    </el-row>-->
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
@@ -27,13 +26,13 @@
       <el-col :span="2">
         <div class="grid-content bg-purple-light">状态</div>
       </el-col>
-    <el-col :span="6">
-        <div class="grid-content bg-purple"  @change="radioFun1">
+      <el-col :span="6">
+        <div class="grid-content bg-purple" @change="radioFun1">
           <el-radio v-model="radio" label="1">锁定</el-radio>
           <el-radio v-model="radio" label="2">正常</el-radio>
         </div>
       </el-col>
-      </el-row>
+    </el-row>
     <el-row>
       <el-col :span="24">
         <!-- <div class="grid-content bg-purple-dark">基本信息</div> -->
@@ -48,7 +47,11 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
+<<<<<<< HEAD
           <el-input v-model="datas.id" label="" v-if="disabled" placeholder="请输入内容"></el-input>
+=======
+          <el-input v-model="input1" label v-if="disabled" placeholder="请输入内容"></el-input>
+>>>>>>> 93ef49ee179fec6588144aec121de081010e08d4
         </div>
       </el-col>
     </el-row>
@@ -61,12 +64,14 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
+<<<<<<< HEAD
           <el-input v-model="datas.phone" label="" v-if="disabled" placeholder="请输入内容"></el-input>
+=======
+          <el-input v-model="input1" label v-if="disabled" placeholder="请输入内容"></el-input>
+>>>>>>> 93ef49ee179fec6588144aec121de081010e08d4
         </div>
       </el-col>
     </el-row>
-
-
 
     <el-row>
       <el-col :span="8">
@@ -78,14 +83,17 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
+<<<<<<< HEAD
             <el-input v-model="datas.username"  v-if="disabled" placeholder="请输入内容"></el-input>
+=======
+            <el-input v-model="input2" v-if="disabled" placeholder="请输入内容"></el-input>
+>>>>>>> 93ef49ee179fec6588144aec121de081010e08d4
           </div>
         </div>
       </el-col>
-      
     </el-row>
     <el-row>
-<el-col :span="8">
+      <el-col :span="8">
         <div class="grid-content bg-purple-light"></div>
       </el-col>
       <el-col :span="2">
@@ -98,7 +106,7 @@
           </div>
         </div>
       </el-col>
-      </el-row>
+    </el-row>
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
@@ -113,10 +121,9 @@
           </div>
         </div>
       </el-col>
-      
     </el-row>
     <el-row>
-<el-col :span="8">
+      <el-col :span="8">
         <div class="grid-content bg-purple-light"></div>
       </el-col>
       <el-col :span="2">
@@ -129,13 +136,12 @@
           </div>
         </div>
       </el-col>
-      </el-row>
+    </el-row>
     <el-row>
       <el-col :span="24">
         <!-- <div class="grid-content bg-purple-dark">操作</div> -->
       </el-col>
     </el-row>
-  
 
     <!-- <el-row>
       <el-col :span="8">
@@ -149,18 +155,23 @@
           <el-input type="textarea" :rows="3" v-if="disabled" placeholder="请输入内容" v-model="textarea"></el-input>
         </div>
       </el-col>
-    </el-row> -->
-<el-row>
-  </el-row>
+    </el-row>-->
+    <el-row></el-row>
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
       </el-col>
       <el-col :span="4">
-        <div class="grid-content bg-purple-light"><el-button type="primary" @click="open2">保存修改</el-button></div>
+        <div class="grid-content bg-purple-light">
+          <el-button type="primary" @click="open2">保存修改</el-button>
+        </div>
       </el-col>
       <el-col :span="3">
-        <div class="grid-content bg-purple"><el-button><router-link to="/BorrowUserHome" @click="Pathto">返回</router-link></el-button></div>
+        <div class="grid-content bg-purple">
+          <el-button>
+            <router-link to="/BorrowUserHome" @click="Pathto">返回</router-link>
+          </el-button>
+        </div>
       </el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light"></div>
@@ -171,10 +182,10 @@
 
 <script>
 export default {
-
   name: "BorrowUserChild",
   components: {},
 
+<<<<<<< HEAD
   created(){
     this.datas=this.$route.params
 console.log(this.datas)
@@ -183,6 +194,14 @@ console.log(this.datas)
     return {
       name:'datas.username',
       datas:"",
+=======
+  created() {
+    this.datasthis.$route.params;
+  },
+  data() {
+    return {
+      datas: "",
+>>>>>>> 93ef49ee179fec6588144aec121de081010e08d4
       input1: "",
       input2: "",
       input3: "",
@@ -193,9 +212,10 @@ console.log(this.datas)
       radio: "2",
       radio1: "2",
       textarea: "",
-      disabled:"false"
+      disabled: "false"
     };
   },
+<<<<<<< HEAD
       methods: {
         radioFun1(msg){
           if(msg==2){
@@ -238,8 +258,43 @@ console.log(this.datas)
         Pathto(){
             this.$router.push('/InvUser')   
         }
+=======
+  methods: {
+    radioFun1(msg) {
+      if (msg == 2) {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
+    },
+    radioFun2(msg) {
+      if (msg == 2) {
+      }
+    },
+    open2() {
+      this.$confirm("您将修改此内容，确定将会永久更改?", "修改提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "保存成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消修改"
+          });
+        });
+    },
+    Pathto() {
+      this.$router.push("/InvUser");
+>>>>>>> 93ef49ee179fec6588144aec121de081010e08d4
     }
-
+  }
 };
 </script>
 
