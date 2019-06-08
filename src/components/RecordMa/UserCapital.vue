@@ -48,7 +48,7 @@
 				</el-table-column>
 				<el-table-column prop="cumulative_investment" label="累计投资" align="center">
 				</el-table-column>
-				<el-table-column prop="accumulated_return_investment" width="100" label="累计投资收益" align="center">
+				<el-table-column prop="accumulated_return_investment" width="110" label="累计投资收益" align="center">
 				</el-table-column>
 				<el-table-column prop="accumulated_loan" label="累计借款" align="center">
 				</el-table-column>
@@ -58,33 +58,7 @@
 				</el-table-column>
 
 			</el-table>
-			<!-- 		<el-table hidden="true" id="moneyTableExport" stripe style="font-size: 11px;" :data="tableData" :header-cell-style="getRowClass" :cell-style="{'text-align':'center'}">
-				<el-table-column prop="id" width="130" label="用户ID" align="center">
-				</el-table-column>
-				<el-table-column prop="username" label="姓名" align="center">
-				</el-table-column>
-				<el-table-column prop="personageMemberInfoPhone" width="130" label="用户手机" align="center">
-				</el-table-column>
-				<el-table-column prop="money" label="总资产" align="center">
-				</el-table-column>
-				<el-table-column prop="money" label="可用余额" align="center">
-				</el-table-column>
-				<el-table-column prop="smallmoney" label="冻结金额" align="center">
-				</el-table-column>
-				<el-table-column prop="smallmoney" label="待收金额" align="center">
-				</el-table-column>
-				<el-table-column prop="maxmoney" label="累计投资" align="center">
-				</el-table-column>
-				<el-table-column prop="maxmoney" width="100" label="累计投资收益" align="center">
-				</el-table-column>
-				<el-table-column prop="smallmoney" label="累计借款" align="center">
-				</el-table-column>
-				<el-table-column prop="smallmoney" label="累计还款" align="center">
-				</el-table-column>
-				<el-table-column prop="smallmoney" label="借还款差额" align="center">
-				</el-table-column>
-				
-			</el-table> -->
+			
 
 		</el-main>
 		<el-footer style="margin:20px 0 10px">
@@ -157,8 +131,8 @@
 		methods: {
 		
 			tableToExcel() {
-			 let data3=this.tableData;
-				this.JSONToExcelConvertor(data3,"sheet");
+			 let data=this.tableData;
+				this.JSONToExcelConvertor(data,"sheet");
 		},
 	UserSearch() {
 			this.inputdatacheck();
