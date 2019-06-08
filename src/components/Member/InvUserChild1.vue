@@ -59,17 +59,24 @@
           <template slot-scope="scope" style="display:flex">
             <el-button
               @click="dialogForm(scope.row)"
-              :bind="dialogFormVisible"
               type="primary"
               icon="el-icon-edit"
               size="mini"
             >编辑</el-button>
             <el-button
               @click="update(scope.row)"
-              type="primary"
+              v-if="scope.row.status == 0"
+              :type="btn_type"
               icon="el-icon-s-custom"
               size="mini"
-            >密码</el-button>
+            >锁定</el-button>
+            <el-button
+              @click="update(scope.row)"
+              v-if="scope.row.status == 1"
+              :type="btn_type01"
+              icon="el-icon-s-custom"
+              size="mini"
+            >可用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -91,14 +98,16 @@
     </div>
 
     <!-- 
+    =============================
     弹出模态框，
+    ============================
     -->
-    <el-dialog title="编辑信息" :visible.sync="dialogFormVisible">
-      <!-- 
-        ROW的信息存在From上，form绑定在编辑模态框
-      -->
 
-      <el-form :model="form">
+    <!-- <el-dialog title="编辑信息" :visible.sync="dialogFormVisible"> -->
+    <!-- 
+        ROW的信息存在From上，form绑定在编辑模态框
+    -->
+    <!-- <el-form :model="form">
         <el-form-item label="姓名" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
@@ -113,8 +122,8 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="close(form)">取 消</el-button>
         <el-button type="primary" @click="submit_msg">确 定</el-button>
-      </div>
-    </el-dialog>
+    </div>-->
+    <!-- </el-dialog> -->
   </el-container>
 </template>
 
@@ -149,19 +158,40 @@ export default {
       ],
       value: "",
 
-      tableData: [],
+      tableData: [
+        {
+          value: "选项2",
+          label: "正常",
+          status: 1
+        },
+        {
+          value: "2",
+          label: "222",
+          status: 0
+        },
+        {
+          value: "选项2",
+          label: "正常",
+          status: 1
+        },
+        {
+          value: "2",
+          label: "222",
+          status: 0
+        }
+      ],
       rows: {},
+      // 状态框
+      btn_type: "info",
+      btn_type01: "warning",
 
-      /*
-      ===================================================
-      数据
-    */
-      dialogFormVisible: false,
+      /*===============
+      数据*/
+      //   dialogFormVisible: false,
       form: {},
       // 操作的数据
       newform: {},
       formLabelWidth: "120px",
-
       //   url
       url: "http://172.16.6.62:8080/investment/investments"
     };
@@ -171,11 +201,12 @@ export default {
   created() {
     this.Axios.get(this.url)
       .then(response => {
-        console.log(response);
-
+        // console.log(response);
         // 存起来
         this.tableData = response.data.data;
         this.total = this.tableData.length;
+
+        // 判断状态
       })
       .catch(error => {
         console.log(error);
@@ -183,10 +214,35 @@ export default {
   },
 
   methods: {
+    //  状态按钮
     update(row) {
-      window.sessionStorage.setItem("rows", JSON.stringify(row));
-      this.$router.push("/inv_pwd");
+      var up_status = row.status;
+      if (up_status == 0) {
+        row.status = 1;
+      } else {
+        row.status = 0;
+      }
+
+      /*  
+      传数据更改; 
+      */
+
+      let sub_updata = {
+        id: row.id,
+        status: up_status
+      };
+      //  请求
+      this.Axios({
+        methods: "post",
+        url: this.url,
+        data: sub_updata,
+        header: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      });
     },
+
+    // 分页
     current_change: function(currentPage) {
       this.currentPage = currentPage;
     },
@@ -197,88 +253,99 @@ export default {
       this.multipleSelection = val;
     },
 
+    // 路由传值===>编辑页面
+    dialogForm(row) {
+      this.$router.push({
+        name: "inv_update01",
+        // params:
+        params: {
+          id: "id",
+          name: "name"
+        }
+      });
+    }
     /*
     ==========================================
     编辑数据操作
     */
 
     //  显示模态框，编辑
-    dialogForm(row) {
-      // 显示模态框
-      this.dialogFormVisible = true;
 
-      // 使用for in 深拷贝，解除双向
-      let obj = {};
-      for (let key in row) {
-        obj[key] = row[key];
-      }
+    //   // 显示模态框
+    // //   this.dialogFormVisible = true;
 
-      // row存到from中
-      this.form = obj;
-    },
+    //   // 使用for in 深拷贝，解除双向
+    //   let obj = {};
+    //   for (let key in row) {
+    //     obj[key] = row[key];
+    //   }
 
-    // 取消关闭模态框
-    close(f_row) {
-      this.dialogFormVisible = false;
-      this.$message("取消编辑");
-    },
+    //   // row存到from中
+    //   this.form = obj;
+    // },
 
-    // 提交编辑
-    submit_msg() {
-      // 取到from数据
-      let submit_All = this.form;
+    // // 取消关闭模态框
+    // close(f_row) {
+    //   this.dialogFormVisible = false;
+    //   this.$message("取消编辑");
+    // },
 
-      /*
-      ==========================================================
-      需要传的数据
-      */
+    // // 提交编辑
+    // submit_msg() {
+    //   // 取到from数据
+    //   let submit_All = this.form;
 
-      let sub_data = {
-        id: submit_All.id,
-        eptMoney: 1555555555555
-      };
+    //   /*
+    //   ==========================================================
+    //   需要传的数据
+    //   */
 
-      // 发起axios请求，更改数据
-      this.Axios({
-        methods: "post",
-        url: this.url,
-        data: sub_data,
-        header: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-        .then(res => {
-          //发送编辑成功，前台重新渲染数据
-          if (res.status == 200) {
-            // 提示给用户
-            this.$message("编辑成功，后台处理中");
-            //重新加载数据
-            this.Axios.get(this.url)
-              .then(res_success => {
-                // 成功重新渲染
-                this.tableData = res_success.data.data;
-                this.total = this.tableData.length;
-                console.log(`请求成功，已经重新渲染数据为：${this.tableData}`);
-                // 提示用户
-                this.$message("数据重新渲染成功");
-              })
-              .catch(err_fasle => {
-                console.log(`编辑成功，但是重新渲染时，出现${err_fasle}错误`);
-                // 提示用户
-                this.$message("数据请求成功，但是重新渲染数据时出现问题~~");
-              });
-          } else {
-            console.log(`提交修改出现${res.status}错误`);
-          }
-        })
-        .catch(err => {
-          // 提示给用户
-          this.$message("编辑请求出现问题，请检查");
-          console.log(`请求出现错误${err}`);
-        });
-      // 关闭模态框
-      this.dialogFormVisible = false;
-    }
+    //   let sub_data = {
+    //     id: submit_All.id,
+    //     eptMoney: 1555555555555
+    //   };
+
+    //   // 发起axios请求，更改数据
+    //   this.Axios({
+    //     methods: "post",
+    //     url: this.url,
+    //     data: sub_data,
+    //     header: {
+    //       "Content-Type": "application/x-www-form-urlencoded"
+    //     }
+    //   })
+    //     .then(res => {
+    //       //发送编辑成功，前台重新渲染数据
+    //       if (res.status == 200) {
+    //         // 提示给用户
+    //         this.$message("编辑成功，后台处理中");
+    //         //重新加载数据
+    //         this.Axios.get(this.url)
+    //           .then(res_success => {
+    //             // 成功重新渲染
+    //             this.tableData = res_success.data.data;
+    //             this.total = this.tableData.length;
+    //             console.log(`请求成功，已经重新渲染数据为：${this.tableData}`);
+    //             // 提示用户
+    //             this.$message("数据重新渲染成功");
+    //           })
+    //           .catch(err_fasle => {
+    //             console.log(`编辑成功，但是重新渲染时，出现${err_fasle}错误`);
+    //             // 提示用户
+    //             this.$message("数据请求成功，但是重新渲染数据时出现问题~~");
+    //           });
+    //       } else {
+    //         console.log(`提交修改出现${res.status}错误`);
+    //       }
+    //     })
+    //     .catch(err => {
+    //       // 提示给用户
+    //       this.$message("编辑请求出现问题，请检查");
+    //       console.log(`请求出现错误${err}`);
+    //     });
+    //   // 关闭模态框
+    //   this.dialogFormVisible = false;
+    // }
   }
 };
 </script>
