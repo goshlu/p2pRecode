@@ -11,15 +11,18 @@
   .top
     box-sizing: border-box
     width: 100%
-    color: #ffffff
+    color: #eee
     height: 60px
     background-color: $cNavtopDeep
     padding: 0 20px
     font-size: 17px
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-between
+    align-items: center
     .left
       display: flex
       flex-flow: row nowrap
-      align-items: center
       align-items: center
       .now
         font-weight: 600
@@ -34,7 +37,77 @@
           font-weight: 600
           color: $cTip
           // box-shadow: 0 -4px 0 $cTip inset
-        
+    .right
+      height: 100%
+      display: flex
+      flex-flow: row nowrap
+      align-items: center
+      .mine
+        position relative
+        height: 100%
+        margin: 0 20px
+        display: flex
+        font-size: 15px
+        flex-flow: row nowrap
+        align-items: center
+        color: #eee
+        >span 
+          margin: 0 2px
+          cursor: pointer
+          // &::before
+          //   font-size: 15px
+        .imgBox
+          position relative
+          margin-left: 10px
+          cursor: pointer
+          span 
+            position: absolute
+            top: 0
+            right: 0
+            width: 12px
+            height: 12px
+            border-radius: 12px
+            background-color: red
+          img
+            display: block
+            width: 32px
+            height: 32px
+            border-radius: 32px
+            background-color: #fff
+        .moreBoxBox
+          position absolute          
+          width: 100%
+          top 100%
+          z-index 10
+          .moreBoxBg
+            position: fixed
+            top: 0
+            left 0
+            width: 100vw
+            height: 100vh
+            z-index 0
+          .moreBox
+            position absolute
+            width: 100%
+            color: #000
+            z-index 20
+            background-color: #fff
+            border: 1px solid #ccc
+            border-radius: 4px
+            box-shadow: 1px 1px 6px rgba(0,0,0,0.2)
+            li
+              cursor: pointer
+              padding: 10px 0
+              text-align: center
+              border-bottom: 1px solid #eee
+              &:last-child
+                border-bottom: none 
+              &:hover
+                background-color: #e9e9eb
+      .fullScreen::before,.outFullScreen::before
+        font-size: 20px
+        cursor pointer
+        color: rgba(255,255,255,1)
 
   .bottom
     // font-size: 15px

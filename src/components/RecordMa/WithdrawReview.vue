@@ -152,7 +152,7 @@ export default {
     handleView: function(row) {
       window.sessionStorage.setItem("rows", JSON.stringify(row));
       console.log(this.$router);
-      this.$router.push("/Review/Details");
+      this.$router.push({name:"Details",params:{navArr: ["资金管理", "提现审核", "审核记录详情"]}});
     },
     // 审核
     handleClick: function(row) {

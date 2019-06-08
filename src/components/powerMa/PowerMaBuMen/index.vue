@@ -42,19 +42,19 @@
           </div>
         </div>
         <div class="btns">
-          <el-button type="primary">新增部门</el-button>
-          <el-button type="danger">批量删除</el-button>
+          <el-button type="primary" plain>新增部门</el-button>
+          <el-button type="danger" plain>批量删除</el-button>
         </div>
       </div>
 
       <div class="table">
         <el-table :stripe="true" :border="false" ref="multipleTable" :data="tableData3" tooltip-effect="dark" style="width: 100%"  @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="numberId"  label="部门编号" width="120"></el-table-column>
-          <el-table-column prop="title" label="部门名称" width="120"></el-table-column>
-          <el-table-column prop="fuzheren" label="负责人" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="numberId"  label="部门编号" width="220"></el-table-column>
+          <el-table-column prop="title" label="部门名称" width="220"></el-table-column>
+          <el-table-column prop="fuzheren" label="负责人" width="220"></el-table-column>
           <el-table-column prop="powerInfo" label="部门描述" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="do" label="操作" show-overflow-tooltip>
+          <el-table-column prop="do" label="操作" width="260">
             <template slot-scope="scope">
               <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
               <el-button size="mini" icon="el-icon-delete" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>

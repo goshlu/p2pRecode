@@ -221,7 +221,7 @@ export default {
     handleView: function(row) {
       window.sessionStorage.setItem("rows", JSON.stringify(row));
       console.log(this.$router);
-      this.$router.push("/Withdraw/Details");
+      this.$router.push({name:"Details",params:{navArr: ["资金管理", "提现记录", "提现记录详情"]}});
     },
     // 筛选列 显示隐藏
     toggle() {

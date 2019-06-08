@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <router-view></router-view>
   </div>
 </template>
@@ -7,6 +7,9 @@
 <script>
 export default {
   name: 'App',
+  methods: {
+    
+  },
 }
 </script>
 
@@ -24,7 +27,12 @@ export default {
   color: #fff;
   font-size: 17px;
 }
-
+.outFullScreen::before{
+  font-family: iconfont;
+  content: "\e61f";
+  color: #fff;
+  font-size: 17px;
+}
 .skin::before {
   font-family: iconfont;
   content: "\e7e8";
@@ -41,7 +49,7 @@ export default {
 
 .message::before {
   font-family: iconfont;
-  content: "\e62c";
+  content: "\e60e";
   color: #fff;
   font-size: 17px;
 }
