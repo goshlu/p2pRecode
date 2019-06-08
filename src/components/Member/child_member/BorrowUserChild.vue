@@ -48,7 +48,7 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <el-input v-model="input1" label="" v-if="disabled" placeholder="请输入内容"></el-input>
+          <el-input v-model="datas.id" label="" v-if="disabled" placeholder="请输入内容"></el-input>
         </div>
       </el-col>
     </el-row>
@@ -61,7 +61,7 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <el-input v-model="input1" label="" v-if="disabled" placeholder="请输入内容"></el-input>
+          <el-input v-model="datas.phone" label="" v-if="disabled" placeholder="请输入内容"></el-input>
         </div>
       </el-col>
     </el-row>
@@ -78,7 +78,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input2"  v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.username"  v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -94,7 +94,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input3" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.register_time" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -104,12 +104,12 @@
         <div class="grid-content bg-purple"></div>
       </el-col>
       <el-col :span="2">
-        <div class="grid-content bg-purple-light">最近</div>
+        <div class="grid-content bg-purple-light">最近登录</div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input4" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.login_time" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -125,7 +125,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input5" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.description" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -217,7 +217,9 @@ export default {
             })
             .then(
                 () => {
+                  this.Axios.get("http://172.16.6.60:8080/member/borrow/members");
                     this.$message({
+                        
                         type: 'success',
                         message: '保存成功!'
                     });

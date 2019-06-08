@@ -155,21 +155,21 @@ export default {
 					}
 			},
 
-  // axiosFun(){
-  //   this.Axios.get("http://172.16.6.60:8080/member/borrow/members",{
-  //     params:{
-  //       username:this.username,
-  //       per_phone:this.per_name,
-  //     }
-  //   }).then(response => {
-	// 					this.tableData = response.data;
-	// 					this.total = this.tableData.length;
-	// 				})
-	// 				.catch(function(error) {
-	// 					console.log(error);
-	// 				});
+  axiosFun(){
+    this.Axios.get("http://172.16.6.60:8080/member/borrow/members",{
+      params:{
+        username:this.username,
+        per_phone:this.per_name,
+      }
+    }).then(response => {
+						this.tableData = response.data;
+						this.total = this.tableData.length;
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
 
-  // },
+  },
   searchFun() {
 				this.total = this.tableData.length;
 				this.axiosFun();
