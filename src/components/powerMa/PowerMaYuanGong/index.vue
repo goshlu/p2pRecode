@@ -37,28 +37,28 @@
           </div> -->
 
           <div>
-            <p>搜索：</p>
+            <p class="nameSearch">姓名搜索：</p>
             <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input21"></el-input>
           </div>
         </div>
         <div class="btns">
-          <el-button type="primary">新增员工</el-button>
-          <el-button type="danger">批量删除</el-button>
+          <el-button type="primary" plain>新增员工</el-button>
+          <el-button type="danger" plain>批量删除</el-button>
         </div>
       </div>
 
       <div class="table">
         <el-table :stripe="true" :border="false" ref="multipleTable" :data="tableData3" tooltip-effect="dark" style="width: 100%"  @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="numberId"  label="编号" width="120"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-          <el-table-column prop="gender" label="性别" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="time" label="入职时间" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="bumem" label="所属部门" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="zhiwei" label="职位" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="do" label="操作" show-overflow-tooltip>
+          <el-table-column prop="numberId"  label="编号"></el-table-column>
+          <el-table-column prop="name" label="姓名"></el-table-column>
+          <el-table-column prop="gender" label="性别"></el-table-column>
+          <el-table-column prop="zhiwei" label="职位"></el-table-column>
+          <el-table-column prop="bumem" label="所属部门" ></el-table-column>
+          <el-table-column prop="time" label="入职时间" ></el-table-column>
+          <el-table-column prop="do" label="操作" width="260">
             <template slot-scope="scope">
-              <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
               <el-button size="mini" icon="el-icon-delete" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </template>
           </el-table-column>
@@ -104,7 +104,7 @@
     data(){
       return{
         DetailAlertId:"",
-        navArr:['权限管理','部门管理'],
+        navArr:['权限管理','员工管理'],
         input21:"",
         tableData3: [
           {
@@ -177,6 +177,7 @@
 </script>
 
 <style lang="stylus">
-  
+  .nameSearch
+    width 110px !important 
 </style>
 
