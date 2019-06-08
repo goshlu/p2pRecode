@@ -5,35 +5,16 @@
   <template>
   <el-container>
     <el-header></el-header>
-
-    <div v-for="(infos,index) in information" :key="index">
-      <el-row>
-        <el-col :span="8">
-          <div class="grid-content bg-purple"></div>
-        </el-col>
-        <el-col :span="2">
-          <div class="grid-content bg-purple-light">{{infos.name}}</div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple">
-            <el-input v-model="infos.value" placeholder="请输入内容"></el-input>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
       </el-col>
       <el-col :span="2">
-        <div class="grid-content bg-purple-light">状态</div>
+        <div class="grid-content bg-purple-light">用户编号：</div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <!-- @change="radioFun1" -->
-          <el-radio label="1">锁定</el-radio>
-          <el-radio label="2">正常</el-radio>
+          <el-input placeholder="请输入内容" disabled v-model="params_data.id"></el-input>
         </div>
       </el-col>
     </el-row>
@@ -42,6 +23,105 @@
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
       </el-col>
+      <el-col :span="2">
+        <div class="grid-content bg-purple-light">姓名</div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple">
+            <el-input placeholder="请输入内容" v-model="params_data.username"></el-input>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="8">
+        <div class="grid-content bg-purple"></div>
+      </el-col>
+      <el-col :span="2">
+        <div class="grid-content bg-purple-light">手机：</div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple">
+          <el-input placeholder="请输入内容" v-model="params_data.phone"></el-input>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row>
+      <el-col :span="8">
+        <div class="grid-content bg-purple"></div>
+      </el-col>
+      <el-col :span="2">
+        <div class="grid-content bg-purple-light">身份证号</div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple">
+            <el-input placeholder="请输入内容"></el-input>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row>
+      <el-col :span="8">
+        <div class="grid-content bg-purple-light"></div>
+      </el-col>
+      <el-col :span="2">
+        <div class="grid-content bg-purple">注册时间</div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple">
+            <el-input placeholder="请输入内容" autosize type="text" v-model="params_data.register_time"></el-input>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row>
+      <el-col :span="8">
+        <div class="grid-content bg-purple"></div>
+      </el-col>
+      <el-col :span="2">
+        <div class="grid-content bg-purple-light">最近</div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple">
+            <el-input placeholder="请输入内容"></el-input>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row>
+      <el-col :span="8">
+        <div class="grid-content bg-purple-light"></div>
+      </el-col>
+      <el-col :span="2">
+        <div class="grid-content bg-purple">用户来源</div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple">
+            <el-input placeholder="请输入内容"></el-input>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
+        <!-- <div class="grid-content bg-purple-dark">操作</div> -->
+      </el-col>
+    </el-row>
+
+    <el-row>
+      <el-col :span="8">
+        <div class="grid-content bg-purple"></div>
+      </el-col>
+
       <el-col :span="4">
         <div class="grid-content bg-purple-light">
           <el-button type="primary" @click="open2">保存修改</el-button>
@@ -74,7 +154,7 @@ export default {
       // 存储路由传过来的数值，需要和修改的输入框绑定
       params_data: "",
       // 请求url
-      url: "http://172.16.6.62:8080/investment/investments"
+      url: "http://172.16.6.60:8080/member/investment/members"
     };
   },
 
@@ -85,39 +165,6 @@ export default {
       obj[key] = this.$route.params[key];
     }
     this.params_data = obj;
-
-    // 页面数据
-    let infoArr = [
-      {
-        name: "用户编号",
-        value: this.params_data.id
-      },
-      {
-        name: "姓名",
-        value: this.params_data.name
-      },
-      {
-        name: "手机",
-        value: this.params_data.phone
-      },
-      {
-        name: "身份证号",
-        value: this.params_data.IdCrid
-      },
-      {
-        name: "性别",
-        value: this.params_data.sex
-      },
-      {
-        name: "银行卡",
-        value: this.params_data.blankCrid
-      },
-      {
-        name: "最近操作",
-        value: this.params_data.time
-      }
-    ];
-    this.information = infoArr;
   },
 
   /*
