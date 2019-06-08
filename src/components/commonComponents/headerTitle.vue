@@ -8,6 +8,8 @@
 </template>
 
 <script>
+
+
   export default {
     data(){
       return{
@@ -26,10 +28,10 @@
     height 80px
     position relative
     div
-      width calc(100% - 20px)
+      width calc(100% - 40px)
       height 40px
       // margin 20px 10px
-      left 10px
+      left 20px
       top 20px
       // z-index 1
       box-sizing border-box

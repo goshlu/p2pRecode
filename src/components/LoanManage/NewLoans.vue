@@ -238,9 +238,8 @@ input {
 
 /* 按钮 */
 .el-row {
- text-align: right;
+ text-align: center;
  padding-top:20px;
  padding-bottom: 20px;
- margin-right:420px;
 }
 </style>

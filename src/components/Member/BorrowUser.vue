@@ -1,72 +1,69 @@
 <template>
-   <el-container>
-     <h1>BorrowUser</h1>
+  <el-container>
+    <h1>BorrowUser</h1>
+
     <el-header>
-      <el-row :gutter="15">
-        <el-col :span="3">
-          <div class="grid-content bg-purple">
-            <el-input
-              size="mini"
-              v-model="input_phone1"
-              suffix-icon="el-icon-search"
-              placeholder="搜索姓名"
-            ></el-input>
-          </div>
-        </el-col>
-        <el-col :span="3">
-          <div class="grid-content bg-purple">
-            <el-input
-              size="mini"
-              v-model="input_phone2"
-              suffix-icon="el-icon-search"
-              placeholder="搜索手机/用户名"
-            ></el-input>
-          </div>
-        </el-col>
-        <el-col :span="3">
-          <el-select size="mini" v-model="value1" filterable placeholder="全部状态">
-            <el-option
+      <div class="nav">
+        <el-input
+          placeholder="请输入内容"
+          v-model="input"
+          class="input-with-select"
+          style="width:350px"
+        >
+          <el-select v-model="value1" slot="prepend" placeholder="请选择" style="width:120px">
+            <el-option  
               v-for="item in options1"
               :key="item.value1"
               :label="item.label"
-              :value="item.value1"
-            ></el-option>
+              :value="item.value1"></el-option>
           </el-select>
-        </el-col>
-        <el-col :span="3" :offset="16">
-          <el-select size="mini" v-model="value2" filterable placeholder="导出">
-            <el-option
-              v-for="item in options2"
-              :key="item.value2"
-              :label="item.label"
-              :value="item.value2"
-            ></el-option>
-          </el-select>
-        </el-col>
-      </el-row>
+          <el-button slot="append" icon="el-icon-search" class="but"></el-button>
+        </el-input>
+
+        <el-select  v-model="value2" filterable placeholder="导出" class="Export">
+          <el-option
+            v-for="item in options2"
+            :key="item.value2"
+            :label="item.label"
+            :value="item.value2"
+          ></el-option>
+        </el-select>
+        
+      </div>
+      
     </el-header>
     <el-main>
-      <el-table :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" border @selection-change="handleSelectionChange" style="width: 100%">
+      <el-table
+        :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+        border
+        @selection-change="handleSelectionChange"
+        style="width: 100%"
+      >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="act_number" label="用户编号" width="120"></el-table-column>
-        <el-table-column prop="per_name" label="姓名/公司名称" width="120"></el-table-column>
-        <el-table-column prop="per_phone" label="手机/用户名" width="120"></el-table-column>
-        <el-table-column prop="borrower_email" label="借款人邮箱" width="120"></el-table-column>
-        <el-table-column prop="act_state" label="锁定状态" width="120"></el-table-column>
-        <el-table-column prop="reg_time" label="注册时间" width="160"></el-table-column>
-        <el-table-column prop="register" label="最近登录" width="160"></el-table-column>
-        <el-table-column prop="user_source" label="用户来源" width="120"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
-          <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">
-              <router-link to="/BorrowUserHome/BorrowUserChild">查看</router-link>
+        <el-table-column prop="id" label="用户编号" width="140"></el-table-column>
+        <el-table-column prop="username" label="姓名/公司名称" width="140"></el-table-column>
+        <el-table-column prop="per_phone" label="手机" width="140"></el-table-column>
+        <el-table-column prop="borrower_email" label="借款人邮箱" width="140"></el-table-column>
+        <el-table-column prop="status" label="锁定状态" width="120"></el-table-column>
+        <el-table-column prop="register_time" label="注册时间" width="180"></el-table-column>
+        <el-table-column prop="login _time" label="最近登录" width="180"></el-table-column>
+        <el-table-column prop="description" label="用户来源" width="160"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="200">
+          <template slot-scope="scope" styly="display:flex">
+            <el-button
+              @click="handleClick(scope.row)"
+              type="primary"
+              size="small"
+              icon="el-icon-edit" 
+            >
+              编辑
             </el-button>
-            <el-button type="text" size="small" @click="update(scope.row)">编辑</el-button>
+            <el-button type="primary" size="small"  icon="el-icon-search">锁定</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-main>
-    
+
     <el-footer style="margin:20px 0 10px">
       <el-row>
         <el-col style="float:right">
@@ -83,7 +80,6 @@
         </el-col>
       </el-row>
     </el-footer>
-    
   </el-container>
 </template>
 
@@ -91,41 +87,22 @@
 export default {
   name: "BorrowUser",
   components: {},
-  methods: {
-    handleClick(row) {
-      console.log(row);
-    },
-    current_change: function(currentPage) {
-      this.currentPage = currentPage;
-    },
-    handleSizeChange(pagesize) {
-      this.pagesize = pagesize;
-    },
-    handleSelectionChange(val) {
-        this.multipleSelection = val;
-      },
-    update(row) {
-      window.sessionStorage.setItem("rows", JSON.stringify(row));
-      this.$router.push("/inv_pwd");
-    }
-  },
-  data() {
+    data() {
     return {
-      input1: "",
-      input2: "",
-      input_phone1:"",
-      input_phone2:"",
+      input: "",
+      per_phone:"",
+      username:"",
       total: 0, //默认数据总数
-			pagesize: 5, //每页的数据条数
-			currentPage: 1, //当前页
+      pagesize: 5, //每页的数据条数
+      currentPage: 1, //当前页
       options1: [
         {
-          value1: "选项1",
-          label: "锁定"
+          value1: "0",
+          label: "搜索手机号"
         },
         {
-          value1: "选项2",
-          label: "正常"
+          value1: "1",
+          label: "搜索用户名"
         }
       ],
       options2: [
@@ -138,73 +115,140 @@ export default {
           label: "全部导出"
         }
       ],
+      
       value1: "",
       value2: "",
+      value3: "",
       // input_phone: "17765929883",
-      tableData: [
-        {
-
-        },
-       
-      ]
+      tableData: [{}]
     };
   },
+  methods: {
+    handleClick(row) {
+      this.$router.push({name:'BorrowUserChild',params:row})
+      console.log(row);
+    },
+    current_change: function(currentPage) {
+      this.currentPage = currentPage;
+    },
+    handleSizeChange(pagesize) {
+      this.pagesize = pagesize;
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    // update(row) {
+    //   window.sessionStorage.setItem("rows", JSON.stringify(row));
+    //   this.$router.push("/inv_pwd");
+    // },
+    UserSearch(){
+				this.inputdatacheck();
+				this.axiosFun();
+      },
+    inputdatacheck(){
+					if(this.value1==1){
+						this.input_phone="";
+						this.input_name=this.input_name;
+					}else{
+						this.input_name=""
+						this.input_phone=this.input_phone;
+					}
+			},
 
-  // 设置监听，搜索
-  watch:{
-    value1(){
-      
-    },
-    value2(){
+  // axiosFun(){
+  //   this.Axios.get("http://172.16.6.60:8080/member/borrow/members",{
+  //     params:{
+  //       username:this.username,
+  //       per_phone:this.per_name,
+  //     }
+  //   }).then(response => {
+	// 					this.tableData = response.data;
+	// 					this.total = this.tableData.length;
+	// 				})
+	// 				.catch(function(error) {
+	// 					console.log(error);
+	// 				});
 
-    },
-    input_phone1(){
-      this.Axios.get("http://rap2api.taobao.org/app/mock/177576/user",{
-        params:{
-          per_name:this.input_phone1
-        }
-      }).then(res=>{
-           // 成功过后对表格内容进行重新赋值
-           this.tableData = res.data;
-           this.total = this.tableData.length;
-      })
-      .catch(error=>{
-        console.log(error)
-      })
-    },
-    input_phone2(){
-      this.Axios.get("http://rap2api.taobao.org/app/mock/177576/user",{
-        params:{
-          per_phone:this.input_phone2
-        }
-      }).then(res => {
-        // 成功过后对表格内容进行重新赋值
-           this.tableData = res.data;
-           this.total = this.tableData.length;
-      })
-      .catch(res => {
-        console.log(error)
-      })
-    }
+  // },
+  searchFun() {
+				this.total = this.tableData.length;
+				this.axiosFun();
+      },
   },
 
+watch: {
+			value(){
+				this.inputdatacheck();
+				this.axiosFun();
+			}
+		},
+  // 设置监听，搜索
+  // watch:{
+  //   value1(){
+
+  //   },
+  //   value2(){
+
+  //   },
+  //   input_phone1(){
+  //     this.Axios.get("http://rap2api.taobao.org/app/mock/177576/user",{
+  //       params:{
+  //         per_name:this.input_phone1
+  //       }
+  //     }).then(res=>{
+  //          // 成功过后对表格内容进行重新赋值
+  //          this.tableData = res.data;
+  //          this.total = this.tableData.length;
+  //     })
+  //     .catch(error=>{
+  //       console.log(error)
+  //     })
+  //   },
+  //   input_phone2(){
+  //     this.Axios.get("http://rap2api.taobao.org/app/mock/177576/user",{
+  //       params:{
+  //         per_phone:this.input_phone2
+  //       }
+  //     }).then(res => {
+  //       // 成功过后对表格内容进行重新赋值
+  //          this.tableData = res.data;
+  //          this.total = this.tableData.length;
+  //     })
+  //     .catch(res => {
+  //       console.log(error)
+  //     })
+  //   }
+  // },
+
   created() {
-    this.Axios.get("http://rap2api.taobao.org/app/mock/177576/user")
+    this.Axios.get("http://172.16.6.60:8080/member/borrow/members")
       .then(res => {
-       // 成功过后对表格内容进行重新赋值
-        this.tableData = res.data.datas.data;
-        this.total=this.tableData.length;
-        console.log(this.tableData);
+         console.log(res);
+        // 成功过后对表格内容进行重新赋值
+        this.tableData = res.data.data;
+        this.total = this.tableData.length;
+        // console.log(this.tableData);
       })
       .catch(error => {
         console.log(error);
       });
   }
-}
+};
 </script>
 
 
 <style scoped>
+.nav{
+  margin-top: 15px;
+  width: 100%;
+  overflow: hidden;
+
+}
+.Export{
+  width: 150px;
+  float: right;
+}
+
 
 </style>
 

@@ -4,8 +4,11 @@
 			<el-row :gutter="15">
 				<el-col :span="4">
 					<div class="grid-content bg-purple">
-						<el-input size="small" v-model="id" suffix-icon="el-icon-search" placeholder="搜索流水号"></el-input>
+						<el-input size="small" v-model="id" placeholder="搜索流水号">
+							<el-button @click="searchFun" slot="append" icon="el-icon-search"></el-button>
+						</el-input>
 					</div>
+					
 				</el-col>
 				<el-col :span="4">
 					<el-select size="small" v-model="valuetype" filterable placeholder="请选择">
@@ -19,11 +22,11 @@
 						</el-option>
 					</el-select>
 				</el-col>
-				<el-col :span="4">
-					<el-button @click="searchFun"  size="small" plain>搜索</el-button>
-				</el-col>
-				<el-col :span="2" :offset="7">
-					<el-button plain size="small">导出</el-button>
+				<el-col :span="3" :offset="10">
+					<el-select size="small" v-model="exportvalue" filterable placeholder="请选择">
+						<el-option v-for="item in exportoptions" :key="item.exportvalue" :label="item.label" :value="item.exportvalue">
+						</el-option>
+					</el-select>
 				</el-col>
 			</el-row>
 		</el-header>
@@ -47,7 +50,7 @@
 		</el-header>
 		<el-main>
 			<el-table id="moneyTable" 
-			stripe style="font-size: 11px;"
+			stripe style="font-size: 14px;"
 			:header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}"
 			 :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
 			  :cell-style="{'text-align':'center'}"
@@ -127,6 +130,14 @@
 				currentPage: 1, //当前页
 				id: '',
 				input_name: '',
+				exportoptions:[{
+					exportvalue:0,
+					label:"导出选中"
+				},{
+					exportvalue:1,
+					label:"导出全部"
+				}],
+				exportvalue:0,
 				options: [{
 					value: 0,
 					label: '出入帐'
@@ -204,23 +215,7 @@
 					});
 			},
 			searchFun(){
-					this.total=this.tableData.length;
-				this.Axios.get('http://19h4o94140.51mypc.cn/platformfunds',{
-					params:{
-						type:this.valuetype,
-						account_type:this.value,
-						id:this.id
-					}
-				}).then(
-						(response) => {
-							console.log(response.data);
-							this.tableData = response.data;
-							this.total = this.tableData.length;
-							
-						})
-					.catch(function(error) {
-						console.log(error);
-					});
+				this.axiosFun();
 			},
 			datacheck(){
 				for(let i=0;i<this.tableData.length;i++){

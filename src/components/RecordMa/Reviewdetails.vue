@@ -1,15 +1,12 @@
 <template>
   <div id="details_app">
     <!-- 标题 -->
-    <div class="tilte">
-      <h2>提现审核详情</h2>
-    </div>
-
+    <Title :navArr="navArr"/>
     <!-- 内容 -->
-    <div class="de_app_content">
+    <div class="app_content">
       <!-- 提现信息 -->
       <div class="from1">
-        <div class="title1">
+        <div class="basicInfo">
           <h4>提现信息</h4>
         </div>
         <el-form ref="from1" label-width="150px">
@@ -45,11 +42,10 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-divider></el-divider>
 
       <!-- 用户资产 -->
       <div class="from2">
-        <div class="title1">
+        <div class="userAssets">
           <h4>用户资产</h4>
         </div>
         <el-form ref="from1" label-width="150px">
@@ -67,11 +63,10 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-divider></el-divider>
 
       <!-- 提现记录 -->
       <div class="from3">
-        <div class="title1">
+        <div class="withdrawalsRecord">
           <h4>最近提现记录</h4>
         </div>
         <el-form ref="from1" label-width="150px">
@@ -85,11 +80,10 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-divider></el-divider>
 
       <!-- 审核 -->
       <div class="from4">
-        <div class="title1">
+        <div class="review">
           <h4>审核</h4>
         </div>
         <el-form ref="form" :model="form" label-width="150px">
@@ -105,21 +99,26 @@
             <el-input type="textarea" v-model="form.desc"></el-input>
           </el-form-item>
           <!-- 分割线 -->
-          <el-divider></el-divider>
+        </el-form>
+        <el-divider></el-divider>
           <!-- 按钮 -->
-          <el-form-item style="padding-top: 20px;">
+          <el-row>
             <el-button type="primary" @click="open">提交</el-button>
             <el-button @click="goBack">返回</el-button>
-          </el-form-item>
-        </el-form>
+          </el-row>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Title from "./../commonComponents/headerTitle";
+
 export default {
   name: "Reviewdetails",
+  components: {
+    Title
+  },
   data() {
     return {
       tableData: [
@@ -137,7 +136,8 @@ export default {
       form: {
         resource: "",
         desc: ""
-      }
+      },
+      navArr: ["资金管理", "提现审核", "提现审核详情"]
     };
   },
   methods: {
@@ -178,36 +178,52 @@ export default {
 </script>
 
 <style scoped>
-.de_app_content {
+.app_content {
   background-color: #fff;
 }
-h4 {
-  margin-top: 20px;
-}
-#details_app >>> .title {
+span {
+  display: inline-block;
+  width: 70%;
   height: 40px;
-  background-color: #006d75;
-  padding: 10px;
+  border-radius: 4px;
+  padding: 0 15px;
+  color: #888;
+  border: 1px solid #dcdfe6;
 }
 #details_app >>> .el-table--enable-row-hover .el-table__body tr:hover > td {
   background-color: #fff;
 }
 .el-form {
-  margin-top: 30px;
+  width: 70%;
+  margin: 0 auto;
+  padding-top: 20px;
 }
 .el-form-item {
   display: inline-block;
-  width: 49%;
+  width: 48%;
+  color: #222;
+  /* width: 49%; */
+}
+.basicInfo,
+.userAssets,
+.withdrawalsRecord,
+.review {
+  padding: 20px 0 10px 280px;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+.el-row {
+ text-align: right;
+ padding-top:20px;
+ padding-bottom: 20px;
+ margin-right:360px;
 }
 .from3 .el-form-item {
   display: inline-block;
   width: 80%;
 }
-.de_app_content {
-  padding-bottom: 70px;
-}
 .from4 .el-form-item {
   display: block;
-  width: 80%;
+  width: 48%;
 }
 </style>

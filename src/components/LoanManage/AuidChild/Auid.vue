@@ -2,19 +2,45 @@
   <!-- 表格 -->
   <div class="wrapper">
     <div class="wrapper-content">
-      <div class="title">
-        <h2>借款审核</h2>
+      <Title :navArr="navArr"/>
+      <div class="searchWrap">
+        <div style="margin-top: 20px;margin-left: 20px">
+          <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
+            <el-select v-model="select" slot="prepend" placeholder="请选择">
+              <el-option label="借款方" value="1"></el-option>
+              <el-option label="借款方手机" value="2"></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </div>
+        <div style="margin-top: 20px;margin-left: 20px">
+          <el-select v-model="modeSel" placeholder="状态筛选" class="selectWidth">
+            <el-option
+              v-for="item in modeOpt"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </div>
+        <!-- 导出 -->
+        <div class="export" style>
+          <el-select v-model="value" placeholder="批量导出" class="exportWidth">
+            <el-option label="导出全部" value="1"></el-option>
+            <el-option label="导出选中" value="2"></el-option>
+          </el-select>
+        </div>
       </div>
-      <search></search>
       <el-table
         :data="tableData"
         :stripe="true"
         :border="false"
         ref="multipleTable"
         tooltip-effect="dark"
-        align="center"
         style="width:100%"
+        :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}"
       >
+        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="id" label="编号" align="center"></el-table-column>
         <el-table-column prop="loan_user" label="借款方" align="center"></el-table-column>
         <el-table-column prop="loan_phone" label="借款人手机" align="center"></el-table-column>
@@ -24,10 +50,16 @@
         <el-table-column prop="payments_mode" label="还款方式" align="center"></el-table-column>
         <el-table-column prop="loan_deadline" label="期限" align="center"></el-table-column>
         <el-table-column prop="state" label="状态" align="center"></el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" algin="center" size="small">
-              <router-link :to="{name:'Examine'}">审核</router-link>
+            <el-button
+              @click="handleClick(scope.row)"
+              algin="center"
+              type="primary"
+              size="mini"
+              icon="el-icon-view"
+            >
+              审核
             </el-button>
           </template>
         </el-table-column>
@@ -51,9 +83,13 @@
 </template>
 
 <script>
-import search from "../Child/search";
+import Title from "./../../commonComponents/headerTitle";
+
 export default {
   name: "Auid",
+  components: {
+    Title
+  },
   data() {
     return {
       tableData: [],
@@ -64,18 +100,25 @@ export default {
         page_size: 5, // 1页显示多少条
         page_sizes: [5, 10, 15, 20], //每页显示多少条
         layout: "total, sizes, prev, pager, next" // 翻页属性
-      }
+      },
+      navArr: ["贷款管理", "借款审核"],
+      modeOpt: [
+        { value: 1, label: "新标待审核" },
+        { value: 2, label: "新增草稿" },
+        { value: 3, label: "初审不通过" }
+      ],
+      modeSel: "",
+      input5:"",
+      select: "",
     };
   },
-  components: {
-    search
-  },
+
   beforeMount() {
     this.getTableList();
   },
   methods: {
     handleClick(row) {
-      this.$router.push("/NewLoans");
+      this.$router.push({path:'/LoanAuid/Examine',params:{}})
     },
     getTableList() {
       this.Axios.get("https://5cf615c346583900149cb2b9.mockapi.io/Loans").then(
@@ -128,21 +171,38 @@ export default {
   width: 100%;
   margin: 0 auto;
 }
-.el-table {
+/* 搜索 */
+.searchWrap {
+  display: flex;
+}
+.searchWrap > div {
+  flex-basis: 30%;
+}
+.searchWrap >>> .el-select .el-input {
+  width: 130px;
+}
+.searchWrap >>> .input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
+.export{
+  display: inline-block;
+  text-align: right;
   margin-top: 20px;
+  margin-left: 90px
 }
-.title {
-  width: 100%;
-  height: 40px;
-  background-color: #006d75;
+.el-table {
+  padding: 20px 20px 0 20px;
 }
+
 h2 {
   color: #fff;
   margin-left: 10px;
   line-height: 40px;
 }
-.pagination{
-  text-align: left;
-  margin-top:10px;
+.pagination {
+  text-align: right;
+  padding-top: 20px;
+  padding-right: 10px;
+  padding-bottom: 10px;
 }
 </style>
