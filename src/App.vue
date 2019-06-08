@@ -41,7 +41,7 @@ export default {
 
 .message::before {
   font-family: iconfont;
-  content: "\e62c";
+  content: "\e60e";
   color: #fff;
   font-size: 17px;
 }
