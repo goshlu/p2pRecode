@@ -4,14 +4,14 @@
     <Title :navArr="this.$route.params.navArr"/>
     <!-- 内容 -->
     <div class="app_content">
-      <!-- 提现信息 -->
+      <!-- 详细信息 -->
       <div class="from1">
         <div class="basicInfo">
           <h4>提现信息</h4>
         </div>
         <el-form ref="from1" label-width="150px">
           <el-form-item label="提现单号：">
-            <span>1231231</span>
+            <span>{{formData.id}}</span>
           </el-form-item>
           <el-form-item label="用户手机号码：">
             <span>13800000001</span>
@@ -64,6 +64,7 @@ export default {
   props: ["navArr"],
   data() {
     return {
+      formData: "",
       tableData: [
         {
           date: "2016-05-02",
@@ -118,7 +119,9 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.query);
+    let formData = this.$route.params.formArr;
+    console.log(typeof formData);
+    console.log(formData);
   }
 };
 </script>
