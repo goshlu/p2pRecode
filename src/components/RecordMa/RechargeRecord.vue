@@ -201,7 +201,7 @@ export default {
     handleView: function(row) {
       window.sessionStorage.setItem("rows", JSON.stringify(row));
       console.log(this.$router);
-      this.$router.push("/Recharge/Details");
+      this.$router.push({name:"Details",params:{navArr: ["资金管理", "充值记录", "充值记录详情"]}});
     },
     // 全选
     handleSelectionChange(val) {
