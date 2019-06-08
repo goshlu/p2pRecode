@@ -56,7 +56,7 @@
               icon="el-icon-edit"
               size="mini"
             >编辑</el-button>
-            <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+            <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -80,6 +80,7 @@
 
 <script>
 import Title from "./../../commonComponents/headerTitle";
+import baseUrl from "../../../api/baseUrl";
 
 export default {
   name: "Stence",
@@ -111,18 +112,38 @@ export default {
   },
   created() {
     this.getTableList();
+
   },
   methods: {
     handleClick(row) {
-      this.$router.push({ path: "/NewStence/Edit", params: {} });
+      this.$router.push({ path: "/NewStence/Edit", query: {row:row} });
+    },
+    handleDelete(id){
+      //删除
+      this.Axios.delete(baseUrl.BASE_URL+'/borrow/Info/'+id).then(res => {
+        console.log(res);
+        this.tableData = res.data.data;
+        // 总页数
+        this.paginations.total = this.tableData.length;
+      }).catch((err)=>{console.log(err)});
     },
     getTableList() {
-      this.Axios.get("https://5cf615c346583900149cb2b9.mockapi.io/Loans").then(
+      /*this.Axios.get("https://5cf615c346583900149cb2b9.mockapi.io/Loans").then(
         res => {
           this.allTableData = res.data;
           this.setPaginations();
         }
-      );
+      );*/
+
+      // 获取列表 status=1&page=1&limit=5 sName sPhone
+      this.Axios.get(baseUrl.BASE_URL+'/borrow/borrows?page=1&limit=5').then(res => {
+        console.log(res);
+        this.tableData = res.data.data;
+        // 总页数
+        this.paginations.total = this.tableData.length;
+      }).catch((err)=>{console.log(err)});
+
+
     },
     handleCurrentChange(page) {
       // 当前页
