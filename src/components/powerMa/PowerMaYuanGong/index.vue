@@ -54,6 +54,7 @@
           <el-table-column prop="name" label="姓名" width="120"></el-table-column>
           <el-table-column prop="gender" label="性别" show-overflow-tooltip></el-table-column>
           <el-table-column prop="time" label="入职时间" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="bumem" label="所属部门" show-overflow-tooltip></el-table-column>
           <el-table-column prop="zhiwei" label="职位" show-overflow-tooltip></el-table-column>
           <el-table-column prop="do" label="操作" show-overflow-tooltip>
             <template slot-scope="scope">
@@ -111,24 +112,28 @@
             name: '李大钊',
             gender: '男',
             time:'2019-01-03',
+            bumem:'运营部',
             zhiwei:'经理',
           },{
             numberId: '99921',
             name: '李大钊',
             gender: '男',
             time:'2019-01-03',
+            bumem:'运营部',
             zhiwei:'经理',
           },{
             numberId: '99921',
             name: '李大钊',
             gender: '男',
             time:'2019-01-03',
+            bumem:'运营部',
             zhiwei:'经理',
           },{
             numberId: '99921',
             name: '李大钊',
             gender: '男',
             time:'2019-01-03',
+            bumem:'运营部',
             zhiwei:'经理',
           },
           ],

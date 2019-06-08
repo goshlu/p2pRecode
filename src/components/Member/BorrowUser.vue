@@ -40,25 +40,25 @@
         style="width: 100%"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="act_number" label="用户编号" width="140"></el-table-column>
-        <el-table-column prop="per_name" label="姓名/公司名称" width="140"></el-table-column>
-        <el-table-column prop="per_phone" label="手机/用户名" width="140"></el-table-column>
+        <el-table-column prop="id" label="用户编号" width="140"></el-table-column>
+        <el-table-column prop="username" label="姓名/公司名称" width="140"></el-table-column>
+        <el-table-column prop="per_phone" label="手机" width="140"></el-table-column>
         <el-table-column prop="borrower_email" label="借款人邮箱" width="140"></el-table-column>
-        <el-table-column prop="act_state" label="锁定状态" width="120"></el-table-column>
-        <el-table-column prop="reg_time" label="注册时间" width="180"></el-table-column>
-        <el-table-column prop="register" label="最近登录" width="180"></el-table-column>
-        <el-table-column prop="user_source" label="用户来源" width="160"></el-table-column>
+        <el-table-column prop="status" label="锁定状态" width="120"></el-table-column>
+        <el-table-column prop="register_time" label="注册时间" width="180"></el-table-column>
+        <el-table-column prop="login _time" label="最近登录" width="180"></el-table-column>
+        <el-table-column prop="description" label="用户来源" width="160"></el-table-column>
         <el-table-column fixed="right" label="操作" width="200">
           <template slot-scope="scope" styly="display:flex">
             <el-button
               @click="handleClick(scope.row)"
               type="primary"
               size="small"
-              icon="el-icon-search"
+              icon="el-icon-edit" 
             >
-              <router-link to="/BorrowUserHome/BorrowUserChild">查看</router-link>
+              编辑
             </el-button>
-            <el-button type="primary" size="small" @click="update(scope.row)" icon="el-icon-edit">编辑</el-button>
+            <el-button type="primary" size="small"  icon="el-icon-search">锁定</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -91,7 +91,7 @@ export default {
     return {
       input: "",
       per_phone:"",
-      per_name:"",
+      username:"",
       total: 0, //默认数据总数
       pagesize: 5, //每页的数据条数
       currentPage: 1, //当前页
@@ -125,6 +125,7 @@ export default {
   },
   methods: {
     handleClick(row) {
+      this.$router.push({name:'BorrowUserChild',params:row})
       console.log(row);
     },
     current_change: function(currentPage) {
@@ -136,15 +137,15 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    update(row) {
-      window.sessionStorage.setItem("rows", JSON.stringify(row));
-      this.$router.push("/inv_pwd");
-    },
+    // update(row) {
+    //   window.sessionStorage.setItem("rows", JSON.stringify(row));
+    //   this.$router.push("/inv_pwd");
+    // },
     UserSearch(){
 				this.inputdatacheck();
 				this.axiosFun();
       },
-  inputdatacheck(){
+    inputdatacheck(){
 					if(this.value1==1){
 						this.input_phone="";
 						this.input_name=this.input_name;
@@ -154,28 +155,33 @@ export default {
 					}
 			},
 
-  axiosFun(){
-    this.Axios.get("",{
-      params:{
-        per_name:this.per_name,
-        per_phone:this.per_name,
-      }
-    }).then(response => {
-						this.tableData = response.data;
-						this.total = this.tableData.length;
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
+  // axiosFun(){
+  //   this.Axios.get("http://172.16.6.60:8080/member/borrow/members",{
+  //     params:{
+  //       username:this.username,
+  //       per_phone:this.per_name,
+  //     }
+  //   }).then(response => {
+	// 					this.tableData = response.data;
+	// 					this.total = this.tableData.length;
+	// 				})
+	// 				.catch(function(error) {
+	// 					console.log(error);
+	// 				});
 
-  },
+  // },
   searchFun() {
 				this.total = this.tableData.length;
 				this.axiosFun();
       },
   },
 
-
+watch: {
+			value(){
+				this.inputdatacheck();
+				this.axiosFun();
+			}
+		},
   // 设置监听，搜索
   // watch:{
   //   value1(){
@@ -215,12 +221,13 @@ export default {
   // },
 
   created() {
-    this.Axios.get("http://rap2api.taobao.org/app/mock/177576/user")
+    this.Axios.get("http://172.16.6.60:8080/member/borrow/members")
       .then(res => {
+         console.log(res);
         // 成功过后对表格内容进行重新赋值
-        this.tableData = res.data.datas.data;
+        this.tableData = res.data.data;
         this.total = this.tableData.length;
-        console.log(this.tableData);
+        // console.log(this.tableData);
       })
       .catch(error => {
         console.log(error);
