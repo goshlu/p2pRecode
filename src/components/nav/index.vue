@@ -15,9 +15,9 @@
         <div class="mine">
           <span @click="getMoreBox">李大钊</span>
           <span class="el-icon-caret-bottom" @click="getMoreBox"></span>
-          <div class="imgBox">
+          <div class="imgBox" @click="getMoreBox">
             <span></span>
-            <img src="" alt="" @click="getMoreBox">
+            <img src="" alt="">
           </div>
           <div class="moreBoxBox" v-if="isShowMoreBox">
             <ul class="moreBox">
@@ -29,7 +29,7 @@
             <div class="moreBoxBg" @click="getMoreBox"></div>
           </div>
         </div>
-        <div class="fullScreen"></div>
+        <div :class="!isFullScreen?'fullScreen':'outFullScreen'" @click="getFullScreen"></div>
       </li>
     </ul>
     <div class="bottom" v-if="openChildren">
@@ -72,7 +72,8 @@ export default {
       input:"",
       openTitle:"",
       openChild:"",
-      openChildren:[]
+      openChildren:[],
+      isFullScreen:false,
     }
   },
 
@@ -99,6 +100,15 @@ export default {
     },
     getMoreBox(){
       this.isShowMoreBox = !this.isShowMoreBox;
+    },
+    getFullScreen(){
+      if(!this.isFullScreen){
+        // console.log(document.getElementById("app"));
+        document.getElementById("app").requestFullscreen();
+      }else{
+        document.exitFullscreen();
+      }
+      this.isFullScreen = !this.isFullScreen
     }
   },
 

@@ -39,13 +39,13 @@
 				</el-table-column>
 				<el-table-column prop="operating_amount" label="操作金额" align="center">
 				</el-table-column>
-				<el-table-column prop="before_operaing" width='100' label="操作前可用金额" align="center">
+				<el-table-column prop="before_operaing" width='120' label="操作前可用金额" align="center">
 				</el-table-column>
-				<el-table-column prop="after_operaing" width='100' label="操作后可用金额" align="center">
+				<el-table-column prop="after_operaing" width='120' label="操作后可用金额" align="center">
 				</el-table-column>
-				<el-table-column prop="before_freezing" width='100' label="操作前冻结金额" align="center">
+				<el-table-column prop="before_freezing" width='120' label="操作前冻结金额" align="center">
 				</el-table-column>
-				<el-table-column prop="after_freezing" width='100' label="操作后冻结金额" align="center">
+				<el-table-column prop="after_freezing" width='120' label="操作后冻结金额" align="center">
 				</el-table-column>
 				<el-table-column width='100' prop="message" label="备注" align="center">
 				</el-table-column>
@@ -161,6 +161,11 @@
 			value() {
 				this.inputdatacheck();
 				this.axiosFun();
+			},
+			exportvalue(){
+				if(this.exportvalue==1){
+					this.tableToExcel();
+				}
 			}
 		},
 		methods: {
@@ -232,24 +237,9 @@
 			getRowClass() {
 				return 'background:#f2f2f2'
 			},
-			exportExcel() {
-				/* generate workbook object from table */
-				var wb = XLSX.utils.table_to_book(document.querySelector('#moneyTableExport'))
-				// console.log(wb);
-				/* get binary string as output */
-				var wbout = XLSX.write(wb, {
-					bookType: 'xlsx',
-					bookSST: true,
-					type: 'array'
-				})
-				try {
-					FileSaver.saveAs(new Blob([wbout], {
-						type: 'application/octet-stream'
-					}), 'sheetjs.xlsx')
-				} catch (e) {
-					if (typeof console !== 'undefined') console.log(e, wbout)
-				}
-				return wbout
+				tableToExcel() {
+				 let data=this.tableData;
+					this.JSONToExcelConvertor(data,"sheet");
 			},
 			current_change: function(currentPage) {
 				this.currentPage = currentPage;

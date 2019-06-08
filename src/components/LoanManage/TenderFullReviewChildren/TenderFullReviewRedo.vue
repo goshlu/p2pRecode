@@ -83,54 +83,33 @@
           <h4>标的信息</h4>
         </div>
         <el-form ref="from2" :model="from2" label-width="150px">
-          <el-form-item label="*标名：">
-            <el-input v-model="input" :disabled="true"></el-input>
+          <el-form-item label="标名：">
+            <span>新手1号</span>
           </el-form-item>
-
-          <el-form-item label="*标的类型：">
-            <el-select v-model="LoanType" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
+          <el-form-item label="标的类型：">
+            <span>新手1号</span>
           </el-form-item>
-          <el-form-item label="*最低起投金额：">
-            <el-input placeholder="请输入0-99999的整数" v-model="Minimum"></el-input>
+          <el-form-item label="最低起投金额：">
+            <span>新手1号</span>
           </el-form-item>
-          <el-form-item label="*递增金额：">
-            <el-select v-model="Incremental" placeholder="请选择">
-              <el-option
-                v-for="item in option"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
+          <el-form-item label="递增金额：">
+            <span>新手1号</span>
           </el-form-item>
           <!-- *最大可投金额： -->
-          <el-form-item label="*最大可投金额：">
-            <el-input placeholder="请输入>=最小可投且<=借款总额的正整数" v-model="Maximum"></el-input>
+          <el-form-item label="最大可投金额：">
+            <span>新手1号</span>
           </el-form-item>
           <!-- *募集时间： -->
-          <el-form-item label="*募集时间：">
-            <div class="block">
-              <el-date-picker v-model="Raise" type="date" placeholder="选择日期"></el-date-picker>
-            </div>
+          <el-form-item label="募集时间：">
+            <span>新手1号</span>
           </el-form-item>
           <!-- *上架时间： -->
-          <el-form-item label="*上架时间：">
-            <div class="block">
-              <el-date-picker v-model="Shelf" type="date" placeholder="选择日期"></el-date-picker>
-            </div>
+          <el-form-item label="上架时间：">
+            <span>新手1号</span>
           </el-form-item>
           <!-- *开售时间： -->
-          <el-form-item label="*开售时间：">
-            <div class="block">
-              <el-date-picker v-model="Opening" type="date" placeholder="选择日期"></el-date-picker>
-            </div>
+          <el-form-item label="开售时间：">
+            <span>新手1号</span>
           </el-form-item>
         </el-form>
       </div>

@@ -109,14 +109,14 @@
           </el-form-item>
 
           <!-- 抵押类型： -->
-          <el-form-item label="抵押类型：">
+          <!--<el-form-item label="抵押类型：">
             <el-radio v-model="radio4" label="0">无</el-radio>
             <el-radio v-model="radio4" label="1">房贷</el-radio>
             <el-radio v-model="radio4" label="2">车贷</el-radio>
             <el-radio v-model="radio4" label="3">民品抵</el-radio>
-          </el-form-item>
+          </el-form-item>-->
           <!-- 抵押物材料 -->
-          <el-form-item label="抵押物材料：">
+          <!--<el-form-item label="抵押物材料：">
             <el-upload
               action="https://jsonplaceholder.typicode.com/posts/"
               list-type="picture-card"
@@ -128,13 +128,13 @@
             <el-dialog :visible.sync="dialogVisible">
               <img width="100%" :src="dialogImageUrl" alt>
             </el-dialog>
-          </el-form-item>
+          </el-form-item>-->
         </el-form>
       </div>
       <el-divider></el-divider>
       <div class="CheakBtn">
         <el-row>
-          <el-button type="primary">提交</el-button>
+          <el-button type="primary" @click="handleAdd">提交</el-button>
           <el-button>返回</el-button>
         </el-row>
       </div>
@@ -144,10 +144,27 @@
 
 <script>
 import Title from "./../commonComponents/headerTitle"
+import baseUrl from "../../api/baseUrl";
+
 export default {
   name: "NewLoans",
   components: {
     Title,
+  },
+  created(){
+    // 获取列表 status=1&page=1&limit=5 sName sPhone
+    this.Axios.get(baseUrl.BASE_URL+'/investment/type?page=1&limit=5').then(res => {
+      console.log(res);
+      this.tableData = res.data;
+
+    }).catch((err)=>{console.log(err)});
+
+
+    // 借款方列表 /member/borrow/members
+    /*this.Axios.get(baseUrl.BASE_URL+'/investment/type?page=1&limit=5').then(res => {
+      console.log(res);
+      this.tableData = res.data;
+    }).catch((err)=>{console.log(err)});*/
   },
   data() {
     return {
@@ -182,6 +199,25 @@ export default {
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
+    },
+    handleAdd(){
+      let params = {
+        iName:"家具制造项目",// 标名
+        mId:1,//借款方id
+        bId:1,//借款类型id： 1 个人贷款；2 集体企业贷款；3 私营企业贷款；4 国有企业贷款
+        rsId:1,//还款来源id：
+        rId:1,//起息方式id
+        rkId:1,//风险等级id
+        balance:1988,//借款金额
+        rtId:1,//还款方式id
+        uId:1,//资金用途id
+        deadline:10,//借款时间：xx月/天
+        coId:1,//担保机构id
+        isConId:1,//是否担保 1是，0否
+      };
+      this.Axios.post(baseUrl.BASE_URL+'/borrow/Info',params).then(res => {
+        console.log(res);
+      }).catch((err)=>{console.log(err)});
     }
   }
 };
