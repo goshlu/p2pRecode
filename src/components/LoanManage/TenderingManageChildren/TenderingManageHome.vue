@@ -105,7 +105,7 @@
           label="已投金额"
           align="center">
           <template slot-scope="scope">
-            {{scope.row.finishMoney}}元
+            ￥{{scope.row.finishMoney}}
           </template>
         </el-table-column>
         <!--<el-table-column
@@ -120,7 +120,8 @@
         </el-table-column>
         <el-table-column
             label="操作"
-            align="center">
+            align="center"
+        >
           <template slot-scope="scope">
             <!--<router-link :to="{name:'TenderingManageModify',params:{}}">
               <el-button type="primary" icon="el-icon-edit" size="mini">
