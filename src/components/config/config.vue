@@ -102,6 +102,7 @@ export default {
   },
   data() {
     return {
+      host_url: "", //==============================================更改主机地址
       // 标题导航
       navArr: ["系统设置", "系统设置"],
       // 联动菜单
@@ -274,8 +275,7 @@ export default {
 
   // 加载默认请求账户状态数据
   created() {
-    this.Axios.get(`http://主机地址/account/status`).then(respon => {
-      //======================================================================================== 更改 主机地址
+    this.Axios.get(`http://${host_url}/account/status`).then(respon => {
       this.refund_type = respon.data.data;
     });
   },
@@ -362,12 +362,10 @@ export default {
           break;
       }
       this.All_Url = PAGE_url;
-      this.Axios.get(`http://主机地址${this.All_Url}`).then(respon => {
-        //======================================================================================== 更改 主机地址
+
+      this.Axios.get(`http://${host_url}${this.All_Url}`).then(respon => {
         this.refund_type = respon.data.data;
       });
-
-      //   c
     },
 
     // 添加 和编辑判断
@@ -523,11 +521,10 @@ export default {
 
         // 请求成功确认后删除;
         this.Axios.delete(
-          `http://http://主机地址${this.All_Url}/${row.id}` //==========================================更改 主机地址
+          `http://http://${host_url}${this.All_Url}/${row.id}`
         ).then(res => {
           if (res.status == 200) {
-            this.Axios.get(`http://主机地址${this.All_Url}`).then(res => {
-              //   ===========sssssssss================================================================= 更改 主机地址
+            this.Axios.get(`http://${host_url}${this.All_Url}`).then(res => {
               this.refund_type = res.data.data;
             });
           }

@@ -101,6 +101,7 @@ export default {
   data() {
     return {
       // 导航
+      host_url: "", //============================================== 更改 主机地址
       navArr: ["会员管理", "投资用户管理"],
       // 数据
       input1: "",
@@ -205,8 +206,7 @@ export default {
       var up_status = row.status;
       if (up_status == "可用") {
         //  请求
-        this.Axios.delete(`http://主机地址/member/info/${row.id}`, {
-          //==============================================================================主机地址
+        this.Axios.delete(`http://${host_url}/member/info/${row.id}`, {
           header: {
             "Content-Type": "application/x-www-form-urlencoded"
           }
@@ -225,8 +225,7 @@ export default {
           // 存起来
         });
       } else if (up_status == "不可用") {
-        this.Axios.put(`http://主机地址/member/info/${row.id}`, {
-          //=============================================================================================主机地址
+        this.Axios.put(`http://${host_url}/member/info/${row.id}`, {
           header: {
             "Content-Type": "application/x-www-form-urlencoded"
           }
