@@ -17,8 +17,8 @@
         <div class="two">
           <!-- 选择充值方式 -->
           <Mode :modeOpt="modeOpt"/>
-          <!-- 选择状态 -->
-          <Status :statusOpt="statusOpt"/>
+          <!-- 选择状态
+          <Status :statusOpt="statusOpt"/> -->
           <!-- 日期选择器 -->
           <DatePicke/>
           <!-- 自定义列 -->
@@ -58,14 +58,14 @@
             style="width: 100%"
           >
             <el-table-column type="selection"></el-table-column>
-            <el-table-column prop="loan_id" label="提现单号" ></el-table-column>
-            <!-- <el-table-column prop="loan_money" label="用户手机" ></el-table-column> -->
-            <el-table-column prop="loan_money" label="真实姓名" ></el-table-column>
+            <el-table-column prop="payNumber" label="提现单号" ></el-table-column>
+            <el-table-column prop="pePhone" label="用户手机" ></el-table-column>
+            <el-table-column prop="username" label="真实姓名" ></el-table-column>
             <!-- <el-table-column prop="loan_ deadline" label="用户类型" ></el-table-column> -->
-            <el-table-column prop="loan_money" label="提现金额" ></el-table-column>
-            <el-table-column prop="loan_money" label="提现手续费" ></el-table-column>
-            <el-table-column prop="loan_money" label="到账金额"  ></el-table-column>
-            <el-table-column prop="loan_money" label="银行账号" ></el-table-column>
+            <el-table-column prop="orMoney" label="提现金额" ></el-table-column>
+            <!-- <el-table-column prop="loan_money" label="提现手续费" ></el-table-column> -->
+            <!-- <el-table-column prop="loan_money" label="到账金额"  ></el-table-column> -->
+            <!-- <el-table-column prop="loan_money" label="银行账号" ></el-table-column> -->
             <!-- <el-table-column prop="loan_money" label="银行名称" ></el-table-column> -->
             <!-- <el-table-column prop="loan_money" label="银行流水号" ></el-table-column> -->
             <!-- <el-table-column label="提交时间" width="160">
@@ -73,10 +73,10 @@
                 <p>{{ scope.row.loan_date | dateFormat }}</p>
               </template>
             </el-table-column> -->
-            <el-table-column prop="loan_money" label="审核人"></el-table-column>
+            <el-table-column prop="adName" label="审核人"></el-table-column>
             <el-table-column label="审核时间" width="160px">
               <template slot-scope="scope">
-                <p>{{ scope.row.loan_date | dateFormat }}</p>
+                <p>{{ scope.row.oraTime | dateFormat }}</p>
               </template>
             </el-table-column>
             <!-- <el-table-column label="到账时间" width="160">
@@ -84,7 +84,7 @@
                 <p>{{ scope.row.loan_date | dateFormat }}</p>
               </template>
             </el-table-column> -->
-            <el-table-column prop="status" label="状态"></el-table-column>
+            <el-table-column label="状态">提现成功</el-table-column>
             <el-table-column prop="do" label="操作" show-overflow-tooltip>
               <template slot-scope="scope">
                 <el-button type="primary" icon="el-icon-view" size="mini"
@@ -277,9 +277,10 @@ export default {
   },
 
   created() {
-    this.Axios.get("http://rap2api.taobao.org/app/mock/177576/borrow")
+    this.Axios.get("http://172.16.6.60:8080/order/orders/info")
       .then(res => {
-        this.tableData = res.data.datas.data;
+        this.tableData = res.data.data;
+        console.log(this.tableData);
         this.total = this.tableData.length;
       })
       .catch(err => {

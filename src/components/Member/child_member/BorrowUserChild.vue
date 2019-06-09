@@ -47,7 +47,7 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <el-input v-model="input1" label v-if="disabled" placeholder="请输入内容"></el-input>
+          <el-input v-model="datas.id" label="" v-if="disabled" placeholder="请输入内容"></el-input>
         </div>
       </el-col>
     </el-row>
@@ -60,7 +60,7 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <el-input v-model="input1" label v-if="disabled" placeholder="请输入内容"></el-input>
+          <el-input v-model="datas.phone" label="" v-if="disabled" placeholder="请输入内容"></el-input>
         </div>
       </el-col>
     </el-row>
@@ -75,7 +75,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input2" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.username"  v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -90,7 +90,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input3" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.register_time" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -100,12 +100,12 @@
         <div class="grid-content bg-purple"></div>
       </el-col>
       <el-col :span="2">
-        <div class="grid-content bg-purple-light">最近</div>
+        <div class="grid-content bg-purple-light">最近登录</div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input4" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.login_time" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -120,7 +120,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input5" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.description" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -173,12 +173,14 @@ export default {
   name: "BorrowUserChild",
   components: {},
 
-  created() {
-    this.datasthis.$route.params;
+  created(){
+    this.datas=this.$route.params
+console.log(this.datas)
   },
   data() {
     return {
-      datas: "",
+      name:'datas.username',
+      datas:"",
       input1: "",
       input2: "",
       input3: "",
@@ -192,42 +194,51 @@ export default {
       disabled: "false"
     };
   },
-  methods: {
-    radioFun1(msg) {
-      if (msg == 2) {
-        this.disabled = false;
-      } else {
-        this.disabled = true;
-      }
-    },
-    radioFun2(msg) {
-      if (msg == 2) {
-      }
-    },
-    open2() {
-      this.$confirm("您将修改此内容，确定将会永久更改?", "修改提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "保存成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消修改"
-          });
-        });
-    },
-    Pathto() {
-      this.$router.push("/InvUser");
+      methods: {
+        radioFun1(msg){
+          if(msg==2){
+            this.disabled = false;
+          }else{
+            this.disabled = true;
+          }
+        },
+        radioFun2(msg){
+          if(msg == 2){
+
+          }
+        },
+        open2() {
+            this.$confirm('您将修改此内容，确定将会永久更改?', '修改提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+            .then(
+                () => {
+                  // get在浏览器上输入地址能直接显示，post则不直接显示
+                  this.Axios.get("http://172.16.6.60:8080/member/borrow/members",{
+                    name:'username'
+                  });
+                    this.$message({
+                        
+                        type: 'success',
+                        message: '保存成功!'
+                    });
+            })
+            .catch(
+                () => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消修改'
+                    });          
+                });
+        },
+        Pathto(){
+            this.$router.push('/InvUser')   
+        }
     }
   }
-};
+
 </script>
 
 <style scoped>

@@ -91,6 +91,7 @@ export default {
     return {
       tableData: [],
       allTableData: [],
+      value:"",
       paginations: {
         page_index: 1, // 当前位于哪页
         total: 0, // 总数
@@ -121,9 +122,9 @@ export default {
       //删除
       this.Axios.delete(baseUrl.BASE_URL+'/borrow/Info/'+id).then(res => {
         console.log(res);
-        // this.tableData = res.data.data;
+        this.tableData = res.data.data;
         // 总页数
-        // this.paginations.total = this.tableData.length;
+        this.paginations.total = this.tableData.length;
       }).catch((err)=>{console.log(err)});
     },
     getTableList() {

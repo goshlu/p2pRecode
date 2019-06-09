@@ -87,7 +87,7 @@
         <div class="grid-content bg-purple-light"></div>
       </el-col>
       <el-col :span="2">
-        <div class="grid-content bg-purple">*税务登记证号</div>
+        <div class="grid-content bg-purple">{{nameType3}}</div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
@@ -166,12 +166,14 @@ export default {
         this.nameType = "*企业名称:";
         // console.log(this.per_type);
         this.nameType2 = "*法人姓名:";
+        this.nameType3 = "*税务登记证号"
         this.show = true;
 
         // console.log(msg);
       } else {
         this.nameType = "*个人姓名:";
         this.nameType2 = "";
+        this.nameType3 = "*身份证号"
         this.show = false;
       }
     },
@@ -189,7 +191,7 @@ export default {
           });
 
           this.Axios({
-            methods: "post",
+            method: "post",
             url: "http://172.16.6.60:8080/member/info",
             data: {
               phone: this.input1,
@@ -199,10 +201,10 @@ export default {
               name: this.input5,
               email: this.input6,
               password: this.input7
+            },
+            headers: {
+              "Content-Type": "application/json"
             }
-            // headers: {
-            //   "Content-Type": "application/json"
-            // }
           });
         })
         .catch(() => {
@@ -218,6 +220,7 @@ export default {
     return {
       nameType: "*企业名称:",
       nameType2: "*法人姓名:",
+      nameType3:"*税务登记证号",
       per_type: true,
       show: "true",
       input1: "",
