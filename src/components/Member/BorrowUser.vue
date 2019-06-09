@@ -49,7 +49,7 @@
         <el-table-column prop="description" label="用户来源" width="160"></el-table-column>
         <el-table-column prop="cad" label="身份证/税务登记证号" width="180"></el-table-column>
         <el-table-column fixed="right" label="操作" width="200">
-          <template slot-scope="scope" styly="display:flex">
+          <!-- <template slot-scope="scope" styly="display:flex">
             <el-button
               @click="handleClick(scope.row)"
               type="primary"
@@ -58,7 +58,28 @@
             >
             编辑
             </el-button>
-            <el-button type="primary" size="small"  icon="el-icon-search">锁定</el-button>
+          </template> -->
+          <template slot-scope="scope" style="display:flex">
+            <el-button
+              @click="handleClick(scope.row)"
+              type="primary"
+              icon="el-icon-edit"
+              size="mini"
+            >编辑</el-button>
+            <el-button
+              @click="update(scope.row)"
+              v-if="scope.row.status == '不可用'"
+              :type="btn_type"
+              icon="el-icon-s-custom"
+              size="mini"
+            >锁定</el-button>
+            <el-button
+              @click="update(scope.row)"
+              v-if="scope.row.status == '可用'"
+              :type="btn_type01"
+              icon="el-icon-s-custom"
+              size="mini"
+            >可用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -66,16 +87,18 @@
 
     <el-footer style="margin:20px 0 10px">
       <el-row>
+        <div class="footer_num">共{{this.total}}条</div>
         <el-col style="float:right">
-          <el-pagination
+          <el-pagination class="feny"
             background
-            layout="total,prev, pager, next,sizes"
+            layout="prev, pager, next,sizes"
             :page-sizes="[5,10, 25, 50, 100]"
             :page-size="pagesize"
-            :total="total"
+            
             :current-page="currentPage"
             @size-change="handleSizeChange"
             @current-change="current_change"
+            :total="total"
           ></el-pagination>
         </el-col>
       </el-row>
@@ -116,12 +139,39 @@ export default {
           label: "全部导出"
         }
       ],
+       tableData: [
+        {
+          value: "选项2",
+          label: "正常",
+          status: "可用"
+        },
+        {
+          value: "2",
+          label: "222",
+          status: "不可用"
+        },
+        {
+          value: "选项2",
+          label: "正常",
+          status: "不可用"
+        },
+        {
+          value: "2",
+          label: "222",
+          status: "可用"
+        }
+      ],
+      rows: {},
+      // 状态框
+      btn_type: "info",
+      btn_type01: "primary",
+
       
       value1: "",
       value2: "",
       value3: "",
       // input_phone: "17765929883",
-      tableData: [{}]
+      // tableData: [{}]
     };
   },
   methods: {
@@ -177,6 +227,51 @@ export default {
 				this.axiosFun();
       },
   },
+   //  状态按钮
+    update(row) {
+      var up_status = row.status;
+      if (up_status == "可用") {
+        //  请求
+        this.Axios.delete(`http://主机地址/member/info/${row.id}`, {
+          //==============================================================================主机地址
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        }).then(res => {
+          this.Axios.get(this.url)
+            .then(response => {
+              // 存起来
+              this.tableData = response.data.data;
+              this.total = this.tableData.length;
+
+              // 判断状态
+            })
+            .catch(error => {
+              console.log(error);
+            });
+          // 存起来
+        });
+      } else if (up_status == "不可用") {
+        this.Axios.put(`http://主机地址/member/info/${row.id}`, {
+          //=============================================================================================主机地址
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        }).then(() => {
+          this.Axios.get(this.url)
+            .then(response => {
+              // 存起来
+              this.tableData = response.data.data;
+              this.total = this.tableData.length;
+
+              // 判断状态
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
+      }
+    },
 
 watch: {
       value1(){
@@ -249,7 +344,21 @@ watch: {
   width: 150px;
   float: right;
 }
-
+.feny{
+  float:right;
+}
+.footer_num {
+    width: 100px;
+    height: 28px;
+    margin-top: 5px;
+    text-align: center;
+    line-height: 28px;
+    margin-left: 20px;
+    font-size: 16px;
+    color: #888;
+    width: 140px;
+    border: 1px solid #dcdfe6;
+  }
 
 </style>
 

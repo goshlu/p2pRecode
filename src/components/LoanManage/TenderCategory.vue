@@ -106,6 +106,7 @@
 <script>
   import Title from "./../commonComponents/headerTitle";
   // import {getCategoryList} from '../../api'
+  import baseUrl from "../../api/baseUrl";
 
   export default {
     name: "TenderCategory",
@@ -114,10 +115,12 @@
     },
     created(){
       //禁用/启用
-      this.Axios.get('http://19h4o94140.51mypc.cn/tendercategory').then(res => {
+
+      // 获取列表 status=1&page=1&limit=5 sName sPhone
+      this.Axios.get(baseUrl.BASE_URL+'/investment/type?page=1&limit=5').then(res => {
         console.log(res);
-        this.allTableData = res.data;
-        this.setPaginations();
+        this.tableData = res.data;
+
       }).catch((err)=>{console.log(err)});
     },
     methods: {

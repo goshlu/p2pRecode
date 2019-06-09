@@ -65,7 +65,7 @@
       </div>
 
       <!-- 提现记录 -->
-      <div class="from3">
+      <!-- <div class="from3">
         <div class="withdrawalsRecord">
           <h4>最近提现记录</h4>
         </div>
@@ -79,7 +79,7 @@
             </el-table>
           </el-form-item>
         </el-form>
-      </div>
+      </div>-->
 
       <!-- 审核 -->
       <div class="from4">
@@ -95,17 +95,21 @@
             </el-radio-group>
           </el-form-item>
           <!-- 备注 -->
-          <el-form-item label="备注：" required style="padding-bottom: 20px;">
+          <!-- <el-form-item label="备注：" required style="padding-bottom: 20px;">
             <el-input type="textarea" v-model="form.desc"></el-input>
+          </el-form-item> -->
+          <el-form-item label="备注：" required>
+            <textarea name="notes" id="notes" cols="95" rows="4" style="resize: none;border-radius:4px;padding:10px;border: 1px solid #dcdfe6;"></textarea>
           </el-form-item>
+
           <!-- 分割线 -->
         </el-form>
         <el-divider></el-divider>
-          <!-- 按钮 -->
-          <el-row>
-            <el-button type="primary" @click="open">提交</el-button>
-            <el-button @click="goBack">返回</el-button>
-          </el-row>
+        <!-- 按钮 -->
+        <el-row>
+          <el-button type="primary" @click="open">提交</el-button>
+          <el-button @click="goBack">返回</el-button>
+        </el-row>
       </div>
     </div>
   </div>
@@ -121,6 +125,7 @@ export default {
   },
   data() {
     return {
+      formData: "",
       tableData: [
         {
           date: "2016-05-02",
@@ -141,6 +146,8 @@ export default {
     };
   },
   methods: {
+    // 修改 (pageSize, currentPage)
+    edit() {},
     handleCommand(command) {
       this.$message("click on item " + command);
     },
@@ -161,6 +168,21 @@ export default {
           setTimeout(() => {
             this.$router.back();
           }, 500);
+          var val = this.form.resource === "通过"?1:2;
+          console.log(val);
+          this.Axios.put("http://172.16.6.60:8080/order/audit?id="+val+"&aId="+val,{
+            header:{
+              ['Content-Type'] : 'application/x-www-form-urlencoded'
+            }
+          })
+            .then(res => {
+              console.log(res);
+              console.log("object");
+            })
+            .catch(err => {
+              console.log(err);
+              console.log("err");
+            });
         })
         .catch(action => {
           this.$message({
@@ -173,6 +195,17 @@ export default {
     onSubmit() {
       console.log("submit!");
     }
+  },
+  beforeCreate () {
+    this.formData = {
+      ...this.$route.params.formArr
+    };
+
+  },
+  created() {
+    // let formData = this.$route.params.formArr;
+    console.log("this.formData");
+    console.log(this.formData);
   }
 };
 </script>
@@ -213,10 +246,10 @@ span {
   letter-spacing: 2px;
 }
 .el-row {
- text-align: right;
- padding-top:20px;
- padding-bottom: 20px;
- margin-right:360px;
+  text-align: right;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-right: 360px;
 }
 .from3 .el-form-item {
   display: inline-block;
@@ -224,6 +257,6 @@ span {
 }
 .from4 .el-form-item {
   display: block;
-  width: 48%;
+  /* width: 739px; */
 }
 </style>

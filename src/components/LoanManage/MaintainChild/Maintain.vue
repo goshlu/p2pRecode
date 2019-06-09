@@ -187,7 +187,7 @@
       </div>
       <el-divider></el-divider>
       <el-row>
-        <el-button type="primary">提交</el-button>
+        <el-button type="primary" @click="getadd">提交</el-button>
         <el-button>保存</el-button>
       </el-row>
     </div>
@@ -196,6 +196,7 @@
 
 <script>
 import Title from "./../../commonComponents/headerTitle"
+import baseUrl from "../../../api/baseUrl";
 
 export default {
   name: "Maintain",
@@ -270,9 +271,38 @@ export default {
   methods: {
     handleCommand(command) {
       this.$message("click on item " + command);
-    }
+    },
+    //修改
+    getadd(){
+      console.log('1111');
+      let params = {
+        id:294,
+        name:"电器制造项目112",// 标名
+        number:'1',//借款方id
+        totalMoney:1,//借款类型id： 1 个人贷款；2 集体企业贷款；3 私营企业贷款；4 国有企业贷款
+        deadline:1,//还款来源id：
+        finishMoney:1,//起息方式id
+        esPo:1,//风险等级id
+        iftPo:1,//借款金额
+        maxFund:1,//还款方式id
+        minFund:1,//资金用途id
+        isChoiceness:20,//借款时间：xx月
+        isNewEnjoy:1,//担保机构id
+        descripble:1,//是否担保 1是，0否
+        riskControl:"1",
+        miPo:1,
+        description:'1',
+        etPo:1
+      };
+      this.Axios.put(baseUrl.BASE_URL+'/element/update',params).then(res => {
+        console.log(res);
+        // this.tableData = res.data.data;
+        // 总页数
+        // this.paginations.total = this.tableData.length;
+      }).catch((err)=>{console.log(err)});
+    },
   }
-};
+}
 </script>
 
 <style scoped>
