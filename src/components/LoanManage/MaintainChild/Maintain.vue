@@ -83,11 +83,11 @@
           <h4>标的信息</h4>
         </div>
         <el-form ref="from2" :model="from2" label-width="150px">
-          <el-form-item label="*标名：">
+          <el-form-item label="标名：" required>
             <el-input v-model="input" :disabled="true"></el-input>
           </el-form-item>
 
-          <el-form-item label="*标的类型：">
+          <el-form-item label="标的类型：" required>
             <el-select v-model="LoanType" placeholder="请选择">
               <el-option
                 v-for="item in options"
@@ -97,10 +97,10 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="*最低起投金额：">
+          <el-form-item label="最低起投金额：" required>
             <el-input placeholder="请输入0-99999的整数" v-model="Minimum"></el-input>
           </el-form-item>
-          <el-form-item label="*递增金额：">
+          <el-form-item label="递增金额：" required>
             <el-select v-model="Incremental" placeholder="请选择">
               <el-option
                 v-for="item in option"
@@ -111,51 +111,53 @@
             </el-select>
           </el-form-item>
           <!-- *最大可投金额： -->
-          <el-form-item label="*最大可投金额：">
+          <el-form-item label="最大可投金额：" required>
             <el-input placeholder="请输入>=最小可投且<=借款总额的正整数" v-model="Maximum"></el-input>
           </el-form-item>
-          <!-- *募集时间： -->
-          <el-form-item label="*募集时间：">
-            <div class="block">
-              <el-date-picker v-model="Raise" type="date" placeholder="选择日期"></el-date-picker>
-            </div>
-          </el-form-item>
           <!-- *上架时间： -->
-          <el-form-item label="*上架时间：">
+          <el-form-item label="上架时间：" required>
             <div class="block">
-              <el-date-picker v-model="Shelf" type="date" placeholder="选择日期"></el-date-picker>
+              <el-date-picker v-model="Shelf" type="date" placeholder="选择日期" ></el-date-picker>
             </div>
           </el-form-item>
           <!-- *开售时间： -->
-          <el-form-item label="*开售时间：">
+          <el-form-item label="开售时间：" required>
             <div class="block">
               <el-date-picker v-model="Opening" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
+          <!-- *结束时间： -->
+          <el-form-item label="结束时间：" required>
+            <div class="block">
+              <el-date-picker v-model="Raise" type="date" placeholder="选择日期"></el-date-picker>
+            </div>
+          </el-form-item>
           <!-- *投资计息方式： -->
-          <el-form-item label="*投资计息方式：">
-            <el-radio v-model="radio1" label="0">成交日</el-radio>
-            <el-radio v-model="radio1" label="1">T+1</el-radio>
-            <el-radio v-model="radio1" label="2">T+2</el-radio>
-            <el-radio v-model="radio1" label="3">成立计息</el-radio>
+          <el-form-item label="投资计息方式：" required>
+            <el-radio v-model="type" label="0">成交日</el-radio>
+            <el-radio v-model="type" label="1">T+1</el-radio>
+            <el-radio v-model="type" label="2">T+2</el-radio>
+            <el-radio v-model="type" label="3">成立计息</el-radio>
           </el-form-item>
           <!-- *上架渠道： -->
-          <el-form-item label="*上架渠道：">
-            <el-checkbox v-model="PC">PC</el-checkbox>
-            <el-checkbox v-model="APP">APP</el-checkbox>
+          <el-form-item label="上架渠道：" required>
+            <el-checkbox-group v-model="channel">
+              <el-checkbox label="PC"></el-checkbox>
+              <el-checkbox label="APP"></el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
           <!-- *设置精选： -->
-          <el-form-item label="*设置精选：">
-            <el-radio v-model="radio2" label="0">否</el-radio>
-            <el-radio v-model="radio2" label="1">是</el-radio>
+          <el-form-item label="设置精选：" required>
+            <el-radio v-model="Selected" label="0">否</el-radio>
+            <el-radio v-model="Selected" label="1">是</el-radio>
           </el-form-item>
           <!-- *新手专享： -->
-          <el-form-item label="*设置精选：">
-            <el-radio v-model="radio3" label="0">否</el-radio>
-            <el-radio v-model="radio3" label="1">是</el-radio>
+          <el-form-item label="新手专享：" required>
+            <el-radio v-model="Novice" label="0">否</el-radio>
+            <el-radio v-model="Novice" label="1">是</el-radio>
           </el-form-item>
           <!-- 标签 -->
-          <el-form-item label="*标签：">
+          <el-form-item label="标签：" required>
             <el-checkbox-group v-model="checkList">
               <el-checkbox label="高收益"></el-checkbox>
               <el-checkbox label="低风险"></el-checkbox>
@@ -187,7 +189,7 @@
       </div>
       <el-divider></el-divider>
       <el-row>
-        <el-button type="primary" @click="getadd">提交</el-button>
+        <el-button type="primary" @click="getUpdate">提交</el-button>
         <el-button>保存</el-button>
       </el-row>
     </div>
@@ -205,9 +207,11 @@ export default {
   },
   data() {
     return {
+      navArr:['借贷管理','标的上架','标的上架维护'],
       isShow: true,
       isGuarantee: true,
       checkList: ["高收益"],
+      channel:['PC'],
       from1: {},
       from2:{},
       introduce:"",
@@ -221,13 +225,10 @@ export default {
       Raise: "",
       Shelf: "",
       Opening: "",
-      textarea: "",
       radio: "0",
-      radio1:"0",
-      radio2:"0",
-      radio3:"0",
-      APP: "",
-      PC: "",
+      type:"0",
+      Selected:"0",
+      Novice:"0",
       value: "",
       options: [
         {
@@ -264,8 +265,7 @@ export default {
           value: "选项4",
           label: "1000元"
         }
-      ],
-      navArr:['借贷管理','标的上架','标的上架维护']
+      ]
     };
   },
   methods: {
@@ -273,22 +273,21 @@ export default {
       this.$message("click on item " + command);
     },
     //修改
-    getadd(){
-      console.log('1111');
+    getUpdate(){
       let params = {
         id:294,
         name:"电器制造项目112",// 标名
-        number:'1',//借款方id
-        totalMoney:1,//借款类型id： 1 个人贷款；2 集体企业贷款；3 私营企业贷款；4 国有企业贷款
-        deadline:1,//还款来源id：
-        finishMoney:1,//起息方式id
-        esPo:1,//风险等级id
-        iftPo:1,//借款金额
-        maxFund:1,//还款方式id
-        minFund:1,//资金用途id
-        isChoiceness:20,//借款时间：xx月
-        isNewEnjoy:1,//担保机构id
-        descripble:1,//是否担保 1是，0否
+        number:'1',
+        totalMoney:1,
+        deadline:1,
+        finishMoney:1,
+        esPo:1,
+        iftPo:1,
+        maxFund:1,
+        minFund:1,
+        isChoiceness:20,
+        isNewEnjoy:1,
+        descripble:1,
         riskControl:"1",
         miPo:1,
         description:'1',

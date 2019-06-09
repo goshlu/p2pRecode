@@ -196,7 +196,16 @@
       }
     },
     beforeCreate(){
-
+      //获取数据，渲染
+      this.Axios.get("http://172.16.6.72:8080/admin/info?page=1&limit=3").then(
+          res => {
+            console.log(res.data);
+            
+          }).catch(
+          error=>{
+            console.log(error);
+            
+      })
     },
   }
 </script>
