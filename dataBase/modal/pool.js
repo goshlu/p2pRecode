@@ -7,7 +7,8 @@ module.exports.sqlpool=()=>{
         config:{
             host:"localhost",
             user:"root",
-            password:"12345678a",
+            // password:"12345678a",
+            password:"root",
             port:3306,
             database:"orange"
         },

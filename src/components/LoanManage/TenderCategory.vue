@@ -174,7 +174,7 @@
     },
     data() {
       //添加 排序数值校验
-      let checkSortNum = (rule, value, callback) => {
+      /*let checkSortNum = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('排序不能为空'));
         }
@@ -189,7 +189,7 @@
             }
           }
         }, 1000);
-      };
+      };*/
       let checkName = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('分类名称不能为空'));
@@ -232,7 +232,8 @@
         }],
         rules: {
           sortNum: [
-            { validator: checkSortNum, trigger: 'blur' }
+            // { validator: checkSortNum, trigger: 'blur' }
+            {required:true,message:"不能为空",trigger:'blur'}
           ],
           name: [
             { validator: checkName, trigger: 'blur' }
