@@ -166,6 +166,11 @@ function tenderall(id,account_type,type,callback) {
     pool.sqlpool().query(sql,arr, callback);
 	// console.log(arr);
 }
+//获取借款方 
+function getBorrows(callback){
+	let sql = `select * from borrower`;
+	pool.sqlpool().query(sql,callback);
+}
 module.exports={
-    usercapital,capitaljournal,platformfunds,tendercategory,tenderall
+    usercapital,capitaljournal,platformfunds,tendercategory,tenderall,getBorrows
 };

@@ -11,11 +11,15 @@
         </div>
         <el-form ref="form" :model="form" label-width="150px">
           <!-- *标名： -->
-          <el-form-item label="*标名：">
-            <el-input v-model="iName"></el-input>
+          <el-form-item label="标名：" required >
+            <el-input v-model="iName" placeholder="请输入标名"></el-input>
+          </el-form-item>
+          <!-- 借款名称： -->
+          <el-form-item label="借款名称：" required >
+            <el-input v-model="iLName" placeholder="请输入借款名称"></el-input>
           </el-form-item>
           <!-- *风险等级： -->
-          <el-form-item label="*风险等级：">
+          <el-form-item label="风险等级：" required >
             <el-select v-model="rkId" placeholder="请选择">
               <el-option label="极低" value="1"></el-option>
               <el-option label="较低" value="2"></el-option>
@@ -25,21 +29,24 @@
             </el-select>
           </el-form-item>
           <!-- *借款方： -->
-          <el-form-item label="*借款方：">
-            <!-- <input type="text" style="display: inline-block" v-model="sName"> -->
-            <span style="display:inline-block">{{sName}}</span>
+          <el-form-item label="借款方：" required style="height:40px;">
+            <span style="display:inline-block;width: 180px;height: 40px;border-radius: 4px;padding: 0 15px;color: #888;border: 1px solid #dcdfe6;">{{sName}}</span>
             <el-button type="primary" @click="showModal" style="float: right;margin-right: 71px;">选择</el-button>
           </el-form-item>
           <!-- *借款总金额： -->
-          <el-form-item label="*借款总金额：">
-            <el-input v-model="balance"></el-input>
+          <el-form-item label="借款总金额：">
+            <el-input v-model="balance" required placeholder="请输入借款总金额"></el-input>
           </el-form-item>
           <!-- *年利率： -->
-          <el-form-item label="*年利率：">
-            <el-input v-model="rate"></el-input>
+          <el-form-item label="年利率：" required>
+            <el-select v-model="rate" placeholder="请选择">
+              <el-option label="10%" value="1"></el-option>
+              <el-option label="11%" value="2"></el-option>
+              <el-option label="12%" value="3"></el-option>
+            </el-select>
           </el-form-item>
           <!-- *还款方式： -->
-          <el-form-item label="*还款方式：">
+          <el-form-item label="还款方式：" required>
             <el-select v-model="rtId" placeholder="请选择">
               <el-option value="1" label="一次性还款"></el-option>
               <el-option value="2" label="等额本息"></el-option>
@@ -49,15 +56,23 @@
           </el-form-item>
 
           <!-- *借款管理费月率： -->
-          <el-form-item label="*借款管理费月率：">
-            <el-input v-model="cost"></el-input>
+          <el-form-item label="借款管理费月率：" required>
+            <el-select v-model="cost" placeholder="请选择">
+              <el-option label="2%" value="1"></el-option>
+              <el-option label="3%" value="2"></el-option>
+              <el-option label="4%" value="3"></el-option>
+            </el-select>
           </el-form-item>
           <!-- *逾期罚息利率： -->
-          <el-form-item label="*逾期罚息利率：">
-            <el-input v-model="penalty"></el-input>
+          <el-form-item label="逾期罚息利率：" required>
+            <el-select v-model="penalty" placeholder="请选择">
+              <el-option label="0.5%" value="1"></el-option>
+              <el-option label="0.7%" value="2"></el-option>
+              <el-option label="1.2%" value="3"></el-option>
+            </el-select>
           </el-form-item>
           <!-- *借款类型： -->
-          <el-form-item label="*借款类型：">
+          <el-form-item label="借款类型：" required>
             <el-select v-model="bId" placeholder="请选择">
               <el-option value="1" label="新增"></el-option>
               <el-option value="2" label="续贷"></el-option>
@@ -79,15 +94,15 @@
             <el-input v-model="rsId"></el-input>
           </el-form-item>
           <!-- **还款方式： -->
-          <el-form-item label="*借款时间：">
+          <el-form-item label="借款时间：" required>
             <el-input v-model="deadline"></el-input>
           </el-form-item>
           <!-- *借款起息方式： -->
-          <el-form-item label="*借款起息方式：">
+          <el-form-item label="借款起息方式：" required>
             <el-radio v-model="rId" label="0">成立利息</el-radio>
           </el-form-item>
           <!-- *期限类型： -->
-          <el-form-item label="*期限类型：">
+          <el-form-item label="期限类型：" required>
             <el-radio v-model="radio1" label="0">月</el-radio>
             <el-radio v-model="radio1" label="1">天</el-radio>
           </el-form-item>
@@ -97,9 +112,9 @@
         <div class="GuaranteeTitle">
           <h4>担保信息</h4>
         </div>
-        <el-form ref="form" :model="form" label-width="150px">
+        <el-form ref="Guarantee" :model="Guarantee" label-width="150px">
           <!-- 担保机构： -->
-          <el-form-item label="*担保机构：">
+          <el-form-item label="担保机构：" required>
             <el-select v-model="coId" placeholder="请选择">
               <el-option value="1" label="上海泽润典当有限公司"></el-option>
             </el-select>
@@ -110,27 +125,6 @@
             <el-radio v-model="isConId" label="1">是</el-radio>
           </el-form-item>
 
-          <!-- 抵押类型： -->
-          <!--<el-form-item label="抵押类型：">
-            <el-radio v-model="radio4" label="0">无</el-radio>
-            <el-radio v-model="radio4" label="1">房贷</el-radio>
-            <el-radio v-model="radio4" label="2">车贷</el-radio>
-            <el-radio v-model="radio4" label="3">民品抵</el-radio>
-          </el-form-item>-->
-          <!-- 抵押物材料 -->
-          <!--<el-form-item label="抵押物材料：">
-            <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove"
-            >
-              <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="dialogImageUrl" alt>
-            </el-dialog>
-          </el-form-item>-->
         </el-form>
       </div>
       <el-divider></el-divider>
@@ -151,7 +145,7 @@
         <div class="main">
           <el-input v-model="SName" placeholder="搜索借款人姓名：" icon="el-icon-search"></el-input>
           <template>
-            <el-table :data="tableData" height="350" border style="width: 100%">
+            <el-table :data="tableData" height="350"  style="width: 100%">
               <el-table-column prop="name" label="真实姓名" width="180"></el-table-column>
               <el-table-column prop="phone" label="手机号码/用户名" width="180"></el-table-column>
               <el-table-column prop="status" label="用户状态"></el-table-column>
@@ -194,14 +188,16 @@ export default {
     /*this.Axios.get(baseUrl.BASE_URL+'/investment/type?page=1&limit=5').then(res => {
       console.log(res);
       this.tableData = res.data;
-    }).catch((err)=>{console.log(err)});*/
+    }).catch((err)=>{console.log(err)}) ;*/
   },
   data() {
     return {
-      navArr: ["贷款管理", "新增贷款"],
+      navArr: ["借贷管理", "新增贷款"],
       form: {},
-      iName: "",
+      Guarantee:{},
+      iName: "",  
       sName: "",
+      iLName: "",
       bId: "",
       rsId: "",
       value: "",
@@ -213,10 +209,10 @@ export default {
       deadline: "",
       coId: "",
       isConId: "0",
-      rate:"14%",
-      cost:"2%",
-      penalty:"",
-      radio1:"0",
+      rate: "1",
+      cost: "2",
+      penalty: "1",
+      radio1: "0",
       isShowModal: false,
       SName: "",
       tableData: [
@@ -235,8 +231,8 @@ export default {
       this.isShowModal = !this.isShowModal;
     },
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+     /* this.dialogImageUrl = file.url;
+      this.dialogVisible = true;*/
     },
     handleAdd() {
       let params = {
@@ -264,7 +260,8 @@ export default {
     handleClick(row) {
       this.mId = row.id;
       this.showModal();
-    }
+    },
+
   }
 };
 </script>
@@ -274,12 +271,6 @@ export default {
   width: 100%;
   margin: 0 auto;
 }
-
-/* .title {
-  width: 100%;
-  height: 40px;
-  background-color: #006d75;
-} */
 
 h2 {
   color: #fff;
@@ -325,14 +316,6 @@ input {
   padding-bottom: 20px;
 }
 /*  选择*/
-span {
-  width: 180px;
-  height: 40px;
-  border-radius: 4px;
-  padding: 0 15px;
-  color: #888;
-  border: 1px solid #dcdfe6;
-}
 .modal {
   position: fixed;
   top: 0;
@@ -358,14 +341,15 @@ span {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 15px;
-  background-color: rgba(242, 242, 242, 1);
+  padding: 2px 15px;
+  background-color: #646973;
   font-size: 20px;
-  color: #555555;
+  color: #fff;
+  height: 40px;
   border-bottom: 1px solid #d5d5d5;
 }
 .modal .modal-content .el-input {
   width: 20%;
-  margin: 10px 10px;
+  margin: 10px 10px
 }
 </style>
