@@ -77,7 +77,7 @@
             <el-form-item label="分类名称：" required>
               <el-input v-model="formLabelAlign.name"></el-input>
             </el-form-item>
-            <el-form-item label="排序：">
+            <el-form-item label="排序：" prop="sortNum">
               <el-input v-model.number="formLabelAlign.sortNum" style="width: 170px;"></el-input>
               <span>数值越大越靠前</span>
             </el-form-item>
@@ -117,11 +117,11 @@
       //禁用/启用
 
       // 获取列表 status=1&page=1&limit=5 sName sPhone
-      this.Axios.get(baseUrl.BASE_URL+'/investment/type?page=1&limit=5').then(res => {
+      /*this.Axios.get(baseUrl.BASE_URL+'/investment/type?page=1&limit=5').then(res => {
         console.log(res);
         this.tableData = res.data;
 
-      }).catch((err)=>{console.log(err)});
+      }).catch((err)=>{console.log(err)});*/
     },
     methods: {
       handleClick(row) {
@@ -196,6 +196,15 @@
         }
       };
       return {
+        tableData: [
+          {
+            name: "企业1号",
+            phone: "13700000000",
+            status: "正常",
+            type: "个人用户",
+            time: "2017-01-01"
+          }
+        ],
         navArr:['借贷管理','借款标类别'],
         formLabelAlign:{
           name:"",
