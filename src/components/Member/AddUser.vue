@@ -189,7 +189,7 @@ export default {
           });
 
           this.Axios({
-            methods: "post",
+            method: "post",
             url: "http://172.16.6.60:8080/member/info",
             data: {
               phone: this.input1,
@@ -199,10 +199,10 @@ export default {
               name: this.input5,
               email: this.input6,
               password: this.input7
+            },
+            headers: {
+              "Content-Type": "application/json"
             }
-            // headers: {
-            //   "Content-Type": "application/json"
-            // }
           });
         })
         .catch(() => {
@@ -218,6 +218,7 @@ export default {
     return {
       nameType: "*企业名称:",
       nameType2: "*法人姓名:",
+
       per_type: true,
       show: "true",
       input1: "",
