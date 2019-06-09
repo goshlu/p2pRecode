@@ -4,7 +4,7 @@
 
     <!-- <h1>InvUser</h1> -->
     <el-header>
-      <el-row :gutter="15">
+      <el-row class="top">
         <div style="display: inline-block;">
           <!-- 搜索选项 -->
           <el-input placeholder="请输入内容" v-model="phone" @input="search" class="input-with-select">
@@ -19,20 +19,6 @@
             <el-button @click="getSearchList" slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </div>
-
-        <!-- 搜索框
-        <el-col :span="3">
-          <div class="grid-content bg-purple">
-            <el-input
-              @input="search"
-              size="mini"
-              v-model="phone"
-              suffix-icon="el-icon-search"
-              placeholder="搜索手机/用户名"
-            ></el-input>
-          </div>
-        </el-col>-->
-
         <el-col :span="2" :offset="15" style="display:flex">
           <el-button plain size="mini">自定义导出</el-button>
           <el-button plain size="mini">导出</el-button>
@@ -103,34 +89,6 @@
         :total="total"
       ></el-pagination>
     </div>
-
-    <!-- 
-    =============================
-    弹出模态框，
-    ============================
-    -->
-
-    <!-- <el-dialog title="编辑信息" :visible.sync="dialogFormVisible"> -->
-    <!-- 
-        ROW的信息存在From上，form绑定在编辑模态框
-    -->
-    <!-- <el-form :model="form">
-        <el-form-item label="姓名" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="联系方式" :label-width="formLabelWidth">
-          <el-input v-model="form.phone" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="身份证号" :label-width="formLabelWidth">
-          <el-input v-model="form.eptMoney" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="close(form)">取 消</el-button>
-        <el-button type="primary" @click="submit_msg">确 定</el-button>
-    </div>-->
-    <!-- </el-dialog> -->
   </el-container>
 </template>
 
@@ -143,6 +101,7 @@ export default {
   data() {
     return {
       // 导航
+      host_url: "", //============================================== 更改 主机地址
       navArr: ["会员管理", "投资用户管理"],
       // 数据
       input1: "",
@@ -192,17 +151,14 @@ export default {
       rows: {},
       // 状态框
       btn_type: "info",
-      btn_type01: "warning",
+      btn_type01: "primary",
 
-      /*===============
-      数据*/
-      //   dialogFormVisible: false,
       form: {},
       // 操作的数据
       newform: {},
       formLabelWidth: "120px",
       //   url
-      url: "http://172.16.6.60:8080/member/investment/members"
+      url: "http://主机地址/member/investment/members" //======================================主机地址
     };
   },
 
@@ -248,16 +204,9 @@ export default {
     //  状态按钮
     update(row) {
       var up_status = row.status;
-      //   if (up_status == "可用") {
-      //     row.status = "不可用";
-      //   } else {
-      //     row.status = "可用";
-      //   }
-
-      //   状态更改为数字
       if (up_status == "可用") {
         //  请求
-        this.Axios.delete(`http://172.16.6.60:8080/member/info/${row.id}`, {
+        this.Axios.delete(`http://${host_url}/member/info/${row.id}`, {
           header: {
             "Content-Type": "application/x-www-form-urlencoded"
           }
@@ -276,7 +225,7 @@ export default {
           // 存起来
         });
       } else if (up_status == "不可用") {
-        this.Axios.put(`http://172.16.6.60:8080/member/info/${row.id}`, {
+        this.Axios.put(`http://${host_url}/member/info/${row.id}`, {
           header: {
             "Content-Type": "application/x-www-form-urlencoded"
           }
@@ -294,9 +243,6 @@ export default {
             });
         });
       }
-      /*  
-      传数据更改; 
-      */
     },
 
     // 分页
@@ -309,7 +255,6 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-
     // 路由传值===>编辑页面
     dialogForm(row) {
       this.$router.push({
@@ -318,96 +263,19 @@ export default {
         params: row
       });
     }
-    /*
-    ==========================================
-    编辑数据操作
-    */
-
-    //  显示模态框，编辑
-
-    //   // 显示模态框
-    // //   this.dialogFormVisible = true;
-
-    //   // 使用for in 深拷贝，解除双向
-    //   let obj = {};
-    //   for (let key in row) {
-    //     obj[key] = row[key];
-    //   }
-
-    //   // row存到from中
-    //   this.form = obj;
-    // },
-
-    // // 取消关闭模态框
-    // close(f_row) {
-    //   this.dialogFormVisible = false;
-    //   this.$message("取消编辑");
-    // },
-
-    // // 提交编辑
-    // submit_msg() {
-    //   // 取到from数据
-    //   let submit_All = this.form;
-
-    //   /*
-    //   ==========================================================
-    //   需要传的数据
-    //   */
-
-    //   let sub_data = {
-    //     id: submit_All.id,
-    //     eptMoney: 1555555555555
-    //   };
-
-    //   // 发起axios请求，更改数据
-    //   this.Axios({
-    //     methods: "post",
-    //     url: this.url,
-    //     data: sub_data,
-    //     header: {
-    //       "Content-Type": "application/x-www-form-urlencoded"
-    //     }
-    //   })
-    //     .then(res => {
-    //       //发送编辑成功，前台重新渲染数据
-    //       if (res.status == 200) {
-    //         // 提示给用户
-    //         this.$message("编辑成功，后台处理中");
-    //         //重新加载数据
-    //         this.Axios.get(this.url)
-    //           .then(res_success => {
-    //             // 成功重新渲染
-    //             this.tableData = res_success.data.data;
-    //             this.total = this.tableData.length;
-    //             console.log(`请求成功，已经重新渲染数据为：${this.tableData}`);
-    //             // 提示用户
-    //             this.$message("数据重新渲染成功");
-    //           })
-    //           .catch(err_fasle => {
-    //             console.log(`编辑成功，但是重新渲染时，出现${err_fasle}错误`);
-    //             // 提示用户
-    //             this.$message("数据请求成功，但是重新渲染数据时出现问题~~");
-    //           });
-    //       } else {
-    //         console.log(`提交修改出现${res.status}错误`);
-    //       }
-    //     })
-    //     .catch(err => {
-    //       // 提示给用户
-    //       this.$message("编辑请求出现问题，请检查");
-    //       console.log(`请求出现错误${err}`);
-    //     });
-    //   // 关闭模态框
-    //   this.dialogFormVisible = false;
-    // }
   }
 };
 </script>
 
-
-
-
 <style lang="less" scoped>
+.el-header {
+  padding: 0;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-left: -20px;
+}
 .el-select .el-input {
   width: 130px;
 }

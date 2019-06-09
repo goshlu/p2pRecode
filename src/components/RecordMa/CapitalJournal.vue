@@ -33,7 +33,7 @@
 
 				<el-table-column prop="name" label="姓名" align="center">
 				</el-table-column>
-				<el-table-column prop="phone" width="100" label="用户手机" align="center">
+				<el-table-column prop="phone" width="120" label="用户手机" align="center">
 				</el-table-column>
 				<el-table-column prop="type" label="类型" align="center">
 				</el-table-column>
@@ -79,7 +79,7 @@
 
 			</el-table>
 		</el-main>
-		<el-footer style="margin:20px 0 10px">
+		<el-footer style="margin:20px 0 10px;text-align: right;">
 			<el-row>
 				<el-col>
 					<el-pagination background layout="total,prev, pager, next,sizes" :page-sizes="[10, 25, 50, 100]" :page-size="pagesize"
