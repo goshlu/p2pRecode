@@ -33,21 +33,21 @@
             style="width: 100%"
           >
             <el-table-column type="selection"></el-table-column>
-            <el-table-column prop="loan_id" label="提现单号"></el-table-column>
-            <!-- <el-table-column prop="loan_money" label="用户手机" ></el-table-column> -->
-            <el-table-column prop="loan_money" label="真实姓名"></el-table-column>
-            <!-- <el-table-column prop="loan_ deadline" label="用户类型" ></el-table-column> -->
-            <el-table-column prop="loan_money" label="提现金额"></el-table-column>
-            <el-table-column prop="loan_money" label="提现手续费"></el-table-column>
-            <el-table-column prop="loan_money" label="预计到账金额"></el-table-column>
-            <el-table-column prop="loan_money" label="银行账号"></el-table-column>
+            <el-table-column prop="payNumber" label="提现单号" width="145px"></el-table-column>
+            <el-table-column prop="pePhone" label="用户手机" ></el-table-column>
+            <el-table-column prop="username" label="真实姓名"></el-table-column>
+            <!-- <el-table-column prop="description" label="用户类型" ></el-table-column> -->
+            <el-table-column prop="orMoney" label="提现金额"></el-table-column>
+            <!-- <el-table-column prop="loan_money" label="提现手续费"></el-table-column> -->
+            <!-- <el-table-column prop="loan_money" label="预计到账金额"></el-table-column> -->
+            <!-- <el-table-column prop="loan_money" label="银行账号"></el-table-column> -->
             <!-- <el-table-column prop="loan_money" label="银行名称" ></el-table-column> -->
             <!-- <el-table-column label="提交时间" width="160">
               <template slot-scope="scope">
                 <p>{{ scope.row.loan_date | dateFormat }}</p>
               </template>
             </el-table-column>-->
-            <el-table-column prop="status" label="状态"></el-table-column>
+            <el-table-column label="状态">待审核</el-table-column>
             <el-table-column label="操作" width="200px">
               <template slot-scope="scope">
                 <el-button size="mini" type="primary" icon="el-icon-view" 
@@ -154,11 +154,12 @@ export default {
       console.log(this.$router);
       this.$router.push({name:"Details",params:{navArr: ["资金管理", "提现审核", "审核记录详情"]}});
     },
-    // 审核
-    handleClick: function(row) {
+    // 审核跳转
+    handleClick: function(index,row) {
       window.sessionStorage.setItem("rows", JSON.stringify(row));
       console.log(this.$router);
-      this.$router.push("/Review/Reviewdetails");
+      // this.$router.push({name:"Details",params:{navArr: ["资金管理", "提现审核", "审核记录详情"]}});
+      this.$router.push({name:"Reviewdetails",params:{"formArr": row} });
     },
     current_change: function(currentPage) {
       this.currentPage = currentPage;
@@ -192,11 +193,11 @@ export default {
       return wbout;
     }
   },
-
   created() {
-    this.Axios.get("http://rap2api.taobao.org/app/mock/177576/borrow")
+    this.Axios.get("http://172.16.6.60:8080/order/audit?status=3")
       .then(res => {
-        this.tableData = res.data.datas.data;
+        this.tableData = res.data.data;
+        console.log(res.data.data);
         this.total = this.tableData.length;
       })
       .catch(err => {
