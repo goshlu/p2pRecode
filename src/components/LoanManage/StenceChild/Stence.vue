@@ -4,21 +4,21 @@
       <Title :navArr="navArr"/>
       <div class="searchWrap">
         <div style="margin-top: 20px;margin-left: 20px">
-          <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
+          <el-input placeholder="请输入内容" v-model="input5" class="input-with-select" clearable>
             <el-select v-model="select" slot="prepend" placeholder="请选择">
               <el-option label="借款方" value="1"></el-option>
               <el-option label="借款方手机" value="2"></el-option>
             </el-select>
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button slot="append" icon="el-icon-search" @click="serachShow"></el-button>
           </el-input>
         </div>
         <div style="margin-top: 20px;margin-left: 20px">
           <el-select v-model="modeSel" placeholder="状态筛选" class="selectWidth">
             <el-option
               v-for="item in modeOpt"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
             ></el-option>
           </el-select>
         </div>
@@ -123,9 +123,10 @@
         },
         navArr: ["借贷管理", "新标维护"],
         modeOpt: [
-          {value: 1, label: "新标待审核"},
-          {value: 2, label: "新增草稿"},
-          {value: 3, label: "初审不通过"}
+          {id: 0, name: "全部状态"},
+          {id: 1, name: "新标待审核"},
+          {id: 2, name: "新增草稿"},
+          {id: 3, name: "初审不通过"}
         ],
         modeSel: "",
         input5: "",
@@ -183,6 +184,7 @@
             console.log(this.getDataModule1);
             // 总页数
             this.paginations.total = res.data.total;
+          
           })
           .catch(err => {
             console.log(err);
@@ -249,6 +251,30 @@
         this.tableData = this.allTableData.filter((item, index) => {
           return index < this.paginations.page_size;
         });
+      },
+      serachShow(){
+        let name,phone,status;
+        this.paginations.page_index = 1;
+        if(this.select==1){
+          name = this.input5; 
+        }else{
+          phone= this.input5;
+        }
+        status = this.modeSel;
+        this.Axios.get(
+          baseUrl.BASE_URL +
+          `/getTenderAll?page=${this.paginations.page_index}&limit=${
+            this.paginations.page_size}&moduleTypeId=1&name=${name}&phone=${phone}&status=${status}`
+        )
+          .then(res => {
+            console.log(res);
+            this.doUpdateDataModule1(res.data);
+            // 总页数
+            this.paginations.total = res.data.total;
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
   };
