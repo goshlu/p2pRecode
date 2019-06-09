@@ -163,7 +163,6 @@
               <el-checkbox label="低风险"></el-checkbox>
               <el-checkbox label="官方标"></el-checkbox>
               <el-checkbox label="红包可用"></el-checkbox>
-              <el-checkbox label="新手专享"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-form>

@@ -40,14 +40,24 @@
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="id" label="编号" align="center"></el-table-column>
-        <el-table-column prop="loan_user" label="借款方" align="center"></el-table-column>
-        <el-table-column prop="loan_phone" label="借款人手机" align="center"></el-table-column>
-        <el-table-column prop="loan_name" label="标名" align="center"></el-table-column>
-        <el-table-column prop="loan_type" label="类型" align="center"></el-table-column>
-        <el-table-column prop="loan_money" label="借款金额" align="center"></el-table-column>
-        <el-table-column prop="payments_mode" label="还款方式" align="center"></el-table-column>
-        <el-table-column prop="loan_deadline" label="期限" align="center"></el-table-column>
-        <el-table-column prop="state" label="状态" align="center"></el-table-column>
+        <el-table-column prop="borrowName" label="借款方" align="center"></el-table-column>
+        <el-table-column prop="phone" label="借款人手机" align="center"></el-table-column>
+        <el-table-column prop="iName" label="标名" align="center"></el-table-column>
+        <el-table-column prop="borrowTypeName" label="类型" align="center"></el-table-column>
+        <el-table-column prop="balance" label="借款金额" align="center"></el-table-column>
+        <el-table-column prop="refundMethod" label="还款方式" align="center"></el-table-column>
+        <el-table-column prop="deadline" label="期限" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.deadline + scope.row.deadlineTypeName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status == 1">新标待审核</span>
+            <span v-else-if="scope.row.status == 2">新标草稿</span>
+            <span v-else>初审不通过</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" width="250">
           <template slot-scope="scope">
             <el-button
@@ -56,7 +66,12 @@
               icon="el-icon-edit"
               size="mini"
             >编辑</el-button>
-            <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row.id)">删除</el-button>
+            <el-button
+              type="danger"
+              size="mini"
+              icon="el-icon-delete"
+              @click="handleDelete(scope.row.id)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -91,11 +106,11 @@ export default {
     return {
       tableData: [
         {
-          id:"1",
+          id: "1"
         }
       ],
       allTableData: [],
-      value:"",
+      value: "",
       paginations: {
         page_index: 1, // 当前位于哪页
         total: 0, // 总数
@@ -116,20 +131,23 @@ export default {
   },
   created() {
     this.getTableList();
-
   },
   methods: {
     handleClick(row) {
-      this.$router.push({ path: "/NewStence/Edit", query: {row:row} });
+      this.$router.push({ path: "/NewStence/Edit", query: { row: row } });
     },
-    handleDelete(id){
+    handleDelete(id) {
       //删除
-      this.Axios.delete(baseUrl.BASE_URL+'/borrow/Info/'+id).then(res => {
-        console.log(res);
-        this.tableData = res.data.data;
-        // 总页数
-        this.paginations.total = this.tableData.length;
-      }).catch((err)=>{console.log(err)});
+      this.Axios.delete(baseUrl.BASE_URL + "/borrow/Info/" + id)
+        .then(res => {
+          console.log(res);
+          this.tableData = res.data.data;
+          // 总页数
+          this.paginations.total = this.tableData.length;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     getTableList() {
       /*this.Axios.get("https://5cf615c346583900149cb2b9.mockapi.io/Loans").then(
@@ -139,15 +157,22 @@ export default {
         }
       );*/
 
-      // 获取列表 status=1&page=1&limit=5 sName sPhone
-      this.Axios.get(baseUrl.BASE_URL+'/borrow/borrows?page=1&limit=5').then(res => {
-        console.log(res);
-        this.tableData = res.data.data;
-        // 总页数
-        this.paginations.total = this.tableData.length;
-      }).catch((err)=>{console.log(err)});
-
-
+      // 获取列表 status=1&page=1&limit=5 sName sPhone getTenderAll /borrow/borrows?page=1&limit=5
+      this.Axios.get(
+        baseUrl.BASE_URL +
+          `/getTenderAll?page=${this.paginations.page_index}&limit=${
+            this.paginations.page_size
+          }&moduleTypeId=1`
+      )
+        .then(res => {
+          console.log(res);
+          this.tableData = res.data;
+          // 总页数
+          this.paginations.total = this.tableData.length;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     handleCurrentChange(page) {
       // 当前页
@@ -167,6 +192,21 @@ export default {
       this.tableData = this.allTableData.filter((item, index) => {
         return index < page_size;
       });
+      this.Axios.get(
+        baseUrl.BASE_URL +
+          `/getTenderAll?page=${this.paginations.page_index}&limit=${
+            this.paginations.page_size
+          }&moduleTypeId=1`
+      )
+        .then(res => {
+          console.log(res);
+          this.tableData = res.data;
+          // 总页数
+          this.paginations.total = this.tableData.length;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     setPaginations() {
       // 总页数
@@ -208,16 +248,15 @@ table {
 .searchWrap >>> .input-with-select .el-input-group__prepend {
   background-color: #fff;
 }
-.export{
+.export {
   display: inline-block;
   text-align: right;
   margin-top: 20px;
-  margin-left: 90px
+  margin-left: 90px;
 }
 .el-table {
   padding: 20px 20px 0 20px;
 }
-
 
 h2 {
   color: #fff;
