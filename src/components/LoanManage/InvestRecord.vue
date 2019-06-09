@@ -32,7 +32,7 @@
             </el-select>
           </div>
 
-          <el-date-picker
+          <!--<el-date-picker
             v-model="dateRangeValue"
             type="daterange"
             range-separator="至"
@@ -40,7 +40,7 @@
             end-placeholder="结束日期"
             class="datePicker"
           >
-          </el-date-picker>
+          </el-date-picker>-->
         </div>
         <div class="flex-item">
           <el-button size="small">自定义列</el-button>
@@ -62,7 +62,7 @@
         </el-table-column>
         <el-table-column
           prop="id"
-          label="借款编号">
+          label="标的编号">
         </el-table-column>
         <el-table-column
           prop="name"
@@ -155,6 +155,7 @@
 
 <script>
   import Title from "./../commonComponents/headerTitle";
+  import baseUrl from "../../api/baseUrl";
 
   export default {
     name: "TenderAll",
@@ -163,10 +164,11 @@
     },
     created(){
       // this.tableDataOrigin = this.tableData;
-      this.Axios.get('http://19h4o94140.51mypc.cn/tenderall').then(res => {
+      // 获取列表 status=1&page=1&limit=5 sName sPhone
+      this.Axios.get(baseUrl.BASE_URL+'/investment/investments?page=1&limit=5').then(res => {
         console.log(res);
-        this.allTableData = res.data;
-        this.setPaginations();
+        this.tableData = res.data;
+
       }).catch((err)=>{console.log(err)});
     },
     methods: {
@@ -247,14 +249,12 @@
         ],
         allType:[
           { value: 0, label: "全部状态" },
-          { value: 1, label: "新标待审核" },
-          { value: 2, label: "初审不通过" },
-          { value: 3, label: "新标待上架" },
-          { value: 4, label: "满标待审" },
-          { value: 5, label: "还款中" },
-          { value: 6, label: "已完成" },
-          { value: 7, label: "流标" },
-          { value: 8, label: "撤标" }
+          { value: 1, label: "待回款" },
+          { value: 2, label: "已结算" },
+          { value: 3, label: "撤标" },
+          { value: 4, label: "流标" },
+          { value: 5, label: "投资中" },
+          { value: 6, label: "投资失败" }
         ],
         typeValue:0,
         tableData: [{

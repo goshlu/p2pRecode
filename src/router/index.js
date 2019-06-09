@@ -254,9 +254,9 @@ export default new Router({
             name: 'InvUserChildren1',
             component: () => import('@/components/Member/InvUserChild1.vue'),
           }, {
-            path: '/inv_update',
-            name: 'inv_update',
-            component: () => import('@/components/Member/child_member/inv_update.vue'),
+            path: '/inv_update01',
+            name: 'inv_update01',
+            component: () => import('@/components/Member/child_member/inv_update01.vue'),
           },
           {
             path: '/inv_pwd',

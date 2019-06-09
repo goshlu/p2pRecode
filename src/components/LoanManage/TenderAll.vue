@@ -145,6 +145,7 @@
 
 <script>
   import Title from "./../commonComponents/headerTitle";
+  import baseUrl from "../../api/baseUrl";
 
   export default {
     name: "TenderAll",
@@ -153,10 +154,12 @@
     },
     created(){
       // this.tableDataOrigin = this.tableData;
-      this.Axios.get('http://172.16.6.75:8080/borrow/select?status=1').then(res => {
+      // 获取列表 status=1&page=1&limit=5&sName=林又武&sPhone=
+      this.Axios.get(baseUrl.BASE_URL+'/borrow/select?status=1&page=1&limit=5&sPhone=13388080808').then(res => {
         console.log(res);
-        this.allTableData = res.data;
-        this.setPaginations();
+        this.tableData = res.data;
+        this.paginations.total = this.tableData.length;
+
       }).catch((err)=>{console.log(err)});
     },
     methods: {
