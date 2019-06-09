@@ -204,281 +204,308 @@
 </template>
 
 <script>
-import Title from "./../commonComponents/headerTitle";
-import baseUrl from "../../api/baseUrl";
+  import Title from "./../commonComponents/headerTitle";
+  import baseUrl from "../../api/baseUrl";
+  import {mapState, mapGetters, mapMutations, mapActions} from "vuex";
 
-export default {
-  name: "NewLoans",
-  components: {
-    Title
-  },
-  created() {
-    this.Axios.get(baseUrl.BASE_URL + "/getDictionaries").then(res => {
-      let resData = this.toTreeData(res.data);
-      // console.log(resData);
-      this.options = resData;
-      // console.log(this.options[2].children);
-    });
-
-    // 获取列表 status=1&page=1&limit=5 sName sPhone
-    // this.Axios.get(baseUrl.BASE_URL + "/investment/type?page=1&limit=5")
-    //   .then(res => {
-    //     console.log(res);
-    //     this.tableData = res.data;
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-    // 借款方列表 /member/borrow/members
-    /*this.Axios.get(baseUrl.BASE_URL+'/investment/type?page=1&limit=5').then(res => {
-      console.log(res);
-      this.tableData = res.data;
-    }).catch((err)=>{console.log(err)}) ;*/
-  },
-  data() {
-    return {
-      navArr: ["借贷管理", "新增贷款"],
-
-      form: {},
-      Guarantee: {},
-      iName: "",
-      sName: "",
-      mId: "",
-      iLName: "",
-      bId: "",
-      rsId: "",
-      rId: "57",
-      rkId: "",
-      balance: "",
-      rtId: "",
-      uId: "",
-      deadline: "",
-      coId: "",
-      isConId: "0",
-      rate: "",
-      cost: "",
-      penalty: "",
-      deadlineTypeId: "78",
-      status: "",
-      moduleTypeId:"",
-      isShowModal: false,
-      SName: "",
-      value: "",
-      tableData: [
-        // {
-        //   name: "企业1号",
-        //   phone: "13700000000",
-        //   status: "正常",
-        //   userTypeId: "个人用户",
-        //   registTime: "2017-01-01"
-        // }
-      ],
-      options: []
-    };
-  },
-  methods: {
-    showModal() {
-      this.isShowModal = !this.isShowModal;
-
-      this.Axios.get(baseUrl.BASE_URL + "/getBorrows").then(res => {
-        // console.log(res);
-        this.tableData = res.data;
+  export default {
+    name: "NewLoans",
+    components: {
+      Title
+    },
+    created() {
+      this.Axios.get(baseUrl.BASE_URL + "/getDictionaries").then(res => {
+        let resData = this.toTreeData(res.data);
+        // console.log(resData);
+        this.options = resData;
+        // console.log(this.options[2].children);
       });
+
+      // 获取列表 status=1&page=1&limit=5 sName sPhone
+      // this.Axios.get(baseUrl.BASE_URL + "/investment/type?page=1&limit=5")
+      //   .then(res => {
+      //     console.log(res);
+      //     this.tableData = res.data;
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
+      // 借款方列表 /member/borrow/members
+      /*this.Axios.get(baseUrl.BASE_URL+'/investment/type?page=1&limit=5').then(res => {
+        console.log(res);
+        this.tableData = res.data;
+      }).catch((err)=>{console.log(err)}) ;*/
     },
-    handlePictureCardPreview(file) {
-      /* this.dialogImageUrl = file.url;
-      this.dialogVisible = true;*/
+    data() {
+      return {
+        navArr: ["借贷管理", "新增贷款"],
+
+        form: {},
+        Guarantee: {},
+        iName: "",
+        sName: "",
+        mId: "",
+        iLName: "",
+        bId: "",
+        rsId: "",
+        rId: "57",
+        rkId: "",
+        balance: "",
+        rtId: "",
+        uId: "",
+        deadline: "",
+        coId: "",
+        isConId: "0",
+        rate: "",
+        cost: "",
+        penalty: "",
+        deadlineTypeId: "78",
+        status: "",
+        moduleTypeId: "",
+        isShowModal: false,
+        SName: "",
+        value: "",
+        tableData: [
+          // {
+          //   name: "企业1号",
+          //   phone: "13700000000",
+          //   status: "正常",
+          //   userTypeId: "个人用户",
+          //   registTime: "2017-01-01"
+          // }
+        ],
+        options: []
+      };
     },
-    serachName() {
-      let params = this.SName;
-      this.Axios.get(baseUrl.BASE_URL + "/getBorrows?name=" + params).then(
-        res => {
+    computed:{
+      ...mapGetters(['getDataModule1'])
+    },
+    methods: {
+      ...mapActions(['doUpdateDataModule1']),
+      showModal() {
+        this.isShowModal = !this.isShowModal;
+
+        this.Axios.get(baseUrl.BASE_URL + "/getBorrows").then(res => {
           // console.log(res);
           this.tableData = res.data;
-        }
-      );
-    },
-    handleAdd() {
-      this.status = 1;
-      let moduleTypeId = 1;
-      let params = {
-        iName: this.iName, // 标名
-        iLName: this.iLName, //借款名称
-        mId: this.mId, //借款方id
-        bId: this.bId, //借款类型id： 1 个人贷款；2 集体企业贷款；3 私营企业贷款；4 国有企业贷款
-        rsId: this.rsId, //还款来源id：
-        rId: this.rId, //起息方式id
-        rkId: this.rkId, //风险等级id
-        balance: this.balance, //借款金额
-        rtId: this.rtId, //还款方式id
-        uId: this.uId, //资金用途id
-        deadline: this.deadline,
-        deadlineTypeId: this.deadlineTypeId, //借款时间：xx月/天
-        coId: this.coId, //担保机构id
-        isConId: this.isConId, //是否担保 1是，0否
-        yearRateId: this.rate, //年利率
-        manageMonthRateId: this.cost, //借款管理费月率
-        overtimeRateId: this.penalty, //逾期罚息利率
-        status: this.status
-      };
-      this.Axios.post(baseUrl.BASE_URL + "/addTender", params, {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" }
-      })
-        .then(res => {
-          this.$message({
-            message: "添加成功",
-            type: "success"
-          });
-        })
-        .catch(err => {
-          console.log(err);
         });
-    },
-    handleSave() {
-      this.status = 2;
-      let moduleTypeId = 1;
-      let params = {
-        iName: this.iName, // 标名
-        iLName: this.iLName, //借款名称
-        mId: this.mId, //借款方id
-        bId: this.bId, //借款类型id： 1 个人贷款；2 集体企业贷款；3 私营企业贷款；4 国有企业贷款
-        rsId: this.rsId, //还款来源id：
-        rId: this.rId, //起息方式id
-        rkId: this.rkId, //风险等级id
-        balance: this.balance, //借款金额
-        rtId: this.rtId, //还款方式id
-        uId: this.uId, //资金用途id
-        deadline: this.deadline, //还款期限
-        deadlineTypeId: this.deadlineTypeId, //借款时间：xx月/天
-        coId: this.coId, //担保机构id
-        isConId: this.isConId, //是否担保 1是，0否
-        yearRateId: this.rate, //年利率
-        manageMonthRateId: this.cost, //借款管理费月率
-        overtimeRateId: this.penalty, //逾期罚息利率
-        status: this.status
-      };
-      this.Axios.post(baseUrl.BASE_URL + "/addTender", params, {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" }
-      })
-        .then(res => {
-          this.$message({
-            message: "保存成功",
-            type: "success"
-          });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    handleClick(row) {
-      this.mId = row.id;
-      this.sName = row.name;
-      this.showModal();
-    },
-    toTreeData(resData) {
-      // let obj = {};
-      let tree = [];
-      for (let i = 0; i < resData.length; i++) {
-        if (resData[i].parentId === 0) {
-          for (let j = 0; j < resData.length; j++) {
-            if (resData[i].id == resData[j].parentId) {
-              tree.push(resData[j]);
-            }
+      },
+      handlePictureCardPreview(file) {
+        /* this.dialogImageUrl = file.url;
+        this.dialogVisible = true;*/
+      },
+      serachName() {
+        let params = this.SName;
+        this.Axios.get(baseUrl.BASE_URL + "/getBorrows?name=" + params).then(
+          res => {
+            // console.log(res);
+            this.tableData = res.data;
           }
-          resData[i].children = tree;
-          tree = [];
+        );
+      },
+      handleAdd() {
+        this.status = 1;
+        let moduleTypeId = 1;
+        let params = {
+          iName: this.iName, // 标名
+          iLName: this.iLName, //借款名称
+          mId: this.mId, //借款方id
+          bId: this.bId, //借款类型id： 1 个人贷款；2 集体企业贷款；3 私营企业贷款；4 国有企业贷款
+          rsId: this.rsId, //还款来源id：
+          rId: this.rId, //起息方式id
+          rkId: this.rkId, //风险等级id
+          balance: this.balance, //借款金额
+          rtId: this.rtId, //还款方式id
+          uId: this.uId, //资金用途id
+          deadline: this.deadline,
+          deadlineTypeId: this.deadlineTypeId, //借款时间：xx月/天
+          coId: this.coId, //担保机构id
+          isConId: this.isConId, //是否担保 1是，0否
+          yearRateId: this.rate, //年利率
+          manageMonthRateId: this.cost, //借款管理费月率
+          overtimeRateId: this.penalty, //逾期罚息利率
+          status: this.status
+        };
+        this.Axios.post(baseUrl.BASE_URL + "/addTender", params, {
+          headers: {"Content-Type": "application/x-www-form-urlencoded"}
+        })
+          .then(res => {
+            this.$message({
+              message: "添加成功",
+              type: "success"
+            });
+
+            //请求新标维护数据列表
+            this.reqDataModule1();
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      handleSave() {
+        this.status = 2;
+        let moduleTypeId = 1;
+        let params = {
+          iName: this.iName, // 标名
+          iLName: this.iLName, //借款名称
+          mId: this.mId, //借款方id
+          bId: this.bId, //借款类型id： 1 个人贷款；2 集体企业贷款；3 私营企业贷款；4 国有企业贷款
+          rsId: this.rsId, //还款来源id：
+          rId: this.rId, //起息方式id
+          rkId: this.rkId, //风险等级id
+          balance: this.balance, //借款金额
+          rtId: this.rtId, //还款方式id
+          uId: this.uId, //资金用途id
+          deadline: this.deadline, //还款期限
+          deadlineTypeId: this.deadlineTypeId, //借款时间：xx月/天
+          coId: this.coId, //担保机构id
+          isConId: this.isConId, //是否担保 1是，0否
+          yearRateId: this.rate, //年利率
+          manageMonthRateId: this.cost, //借款管理费月率
+          overtimeRateId: this.penalty, //逾期罚息利率
+          status: this.status
+        };
+        this.Axios.post(baseUrl.BASE_URL + "/addTender", params, {
+          headers: {"Content-Type": "application/x-www-form-urlencoded"}
+        })
+          .then(res => {
+            this.$message({
+              message: "保存成功",
+              type: "success"
+            });
+
+            //请求新标维护数据列表
+            this.reqDataModule1();
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      handleClick(row) {
+        this.mId = row.id;
+        this.sName = row.name;
+        this.showModal();
+      },
+      toTreeData(resData) {
+        // let obj = {};
+        let tree = [];
+        for (let i = 0; i < resData.length; i++) {
+          if (resData[i].parentId === 0) {
+            for (let j = 0; j < resData.length; j++) {
+              if (resData[i].id == resData[j].parentId) {
+                tree.push(resData[j]);
+              }
+            }
+            resData[i].children = tree;
+            tree = [];
+          }
         }
+        return resData;
+      },
+      // 请求新标维护数据列表
+      reqDataModule1() {
+        this.Axios.get(baseUrl.BASE_URL + "/getTenderAll?page=1&limit=5&moduleTypeId=1")
+          .then(res => {
+            this.doUpdateDataModule1(res);
+            console.log("数据："+this.getDataModule1);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
-      return resData;
     }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.Loans {
-  width: 100%;
-  margin: 0 auto;
-}
+  .Loans {
+    width: 100%;
+    margin: 0 auto;
+  }
 
-h2 {
-  color: #fff;
-  margin-left: 10px;
-  line-height: 40px;
-}
+  h2 {
+    color: #fff;
+    margin-left: 10px;
+    line-height: 40px;
+  }
 
-.content {
-  background-color: #fff;
-}
+  .content {
+    background-color: #fff;
+  }
 
-.EssentialTitle,
-.GuaranteeTitle {
-  padding: 30px 0 10px 280px;
-  font-size: 20px;
-  letter-spacing: 2px;
-}
+  .EssentialTitle,
+  .GuaranteeTitle {
+    padding: 30px 0 10px 280px;
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
 
-.el-form {
-  width: 70%;
-  margin: 0 auto;
-  padding-top: 20px;
-}
-.el-form-item {
-  display: inline-block;
-  width: 48%;
-}
+  .el-form {
+    width: 70%;
+    margin: 0 auto;
+    padding-top: 20px;
+  }
 
-.el-select,
-.el-input {
-  width: 80%;
-}
+  .el-form-item {
+    display: inline-block;
+    width: 48%;
+  }
 
-select,
-input {
-  width: 100%;
-}
+  .el-select,
+  .el-input {
+    width: 80%;
+  }
 
-/* 按钮 */
-.el-row {
-  text-align: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-/*  选择*/
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(66, 66, 66, 0.5);
-  width: 100%;
-  height: 100%;
-  z-index: 99;
-}
-.modal .modal-content {
-  width: 800px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #ffffff;
-}
+  select,
+  input {
+    width: 100%;
+  }
 
-.modal .modal-content {
-  box-shadow: 2px 2px 5px #adadad;
-}
-.modal .modal-content .title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2px 15px;
-  background-color: #646973;
-  font-size: 20px;
-  color: #fff;
-  height: 40px;
-  border-bottom: 1px solid #d5d5d5;
-}
-.modal .modal-content .el-input {
-  width: 30%;
-  margin: 10px 10px;
-}
+  /* 按钮 */
+  .el-row {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  /*  选择*/
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(66, 66, 66, 0.5);
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+  }
+
+  .modal .modal-content {
+    width: 800px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+  }
+
+  .modal .modal-content {
+    box-shadow: 2px 2px 5px #adadad;
+  }
+
+  .modal .modal-content .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 15px;
+    background-color: #646973;
+    font-size: 20px;
+    color: #fff;
+    height: 40px;
+    border-bottom: 1px solid #d5d5d5;
+  }
+
+  .modal .modal-content .el-input {
+    width: 30%;
+    margin: 10px 10px;
+  }
 </style>

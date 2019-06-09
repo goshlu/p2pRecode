@@ -1,7 +1,7 @@
 const loanManageStore = {
   state:{
     //新标维护数据列表
-    dataModule1:[],
+    dataModule1:{},
   },
   getters:{
     getDataModule1(state,data){
@@ -10,7 +10,7 @@ const loanManageStore = {
   },
   mutations:{
     updateDataModule1(state,data){
-      state.operatedCount = data;
+      state.dataModule1 = data;
     }
   },
   actions:{
