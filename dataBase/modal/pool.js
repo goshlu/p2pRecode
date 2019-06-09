@@ -8,7 +8,8 @@ module.exports.sqlpool=()=>{
             host:"localhost",
             user:"root",
             // password:"12345678a",
-            password:"1528483907",
+            // password:"1528483907",
+            password:"root",
             port:3306,
             database:"orange"
         },

@@ -22,21 +22,6 @@ function usercapital(req,res,next){
        }
    });
 }
-//获取借款方
-function getBorrows(req,res,next){
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-    userModal.getBorrows(function(err,data){
-        if(!err){
-            res.send(data);
-            next();
-        }else{
-            res.send('404,联系管理员');
-        }
-    });
-
-}
 //资金日志处理程序
 function capitaljournal(req,res,next){
 	// console.log(req.query);
@@ -117,6 +102,23 @@ function tenderall(req,res,next){
            res.send("101,联系管理员");
        }
    });
+}
+
+
+//获取借款方
+function getBorrows(req,res,next){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  userModal.getBorrows(req.query,function(err,data){
+    if(!err){
+      res.send(data);
+      next();
+    }else{
+      res.send('404,联系管理员');
+    }
+  });
+
 }
 
 module.exports={

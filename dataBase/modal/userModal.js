@@ -167,9 +167,17 @@ function tenderall(id,account_type,type,callback) {
 	// console.log(arr);
 }
 //获取借款方 
-function getBorrows(callback){
-	let sql = `select * from borrower`;
-	pool.sqlpool().query(sql,callback);
+function getBorrows({name},callback){
+  let arr=[];
+	let sql = `SELECT b.*,d.name userTypeName FROM borrower b 
+	  INNER JOIN dictionary d ON b.userTypeId = d.id`;
+
+  if(name != null && name != "" && name != undefined){
+    name = "%"+name+"%";
+    sql += " and b.name like ?"
+    arr.push(name);
+  }
+	pool.sqlpool().query(sql,arr,callback);
 }
 module.exports={
     usercapital,capitaljournal,platformfunds,tendercategory,tenderall,getBorrows
