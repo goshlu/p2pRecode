@@ -20,41 +20,39 @@ function getTenderAll({name, phone, status, page, limit, moduleTypeId}, callback
   if(moduleTypeId){
     switch (moduleTypeId) {
       case "1": //新标维护模块
-        sql += " and status in (1,2,3) ORDER BY t1.addTime DESC";
+        sql += " and t1.status in (1,2,3)";
         break;
       case "2": //借贷审核模块
-        sql += " and status = 1 ORDER BY t1.addTime DESC";
+        sql += " and t1.status = 1";
         break;
       case "3": //新标上架模块
-        sql += " and status = 4 ORDER BY t1.addTime DESC";
+        sql += " and t1.status = 4";
         break;
       case "4": //进行中标的管理模块
-        sql += " and status = 5 ORDER BY t1.addTime DESC";
+        sql += " and t1.status = 5";
         break;
       case "5": //满标审核模块
-        sql += " and status = 6 ORDER BY t1.addTime DESC";
+        sql += " and t1.status = 6";
         break;
       case "6": //所有借款标模块
-        sql += " ORDER BY t1.addTime DESC";
         break;
     }
-  }else{
-    if (name) {
+  }
+  if (name != "" && name != null && name != "undefined") {
     name = "%" + name + "%";
-    sql += " and name like ? ORDER BY t1.addTime DESC";
+    sql += " and t1.borrowName like ?";
     arr.push(name);
+  }else if (phone != "" && phone != null && phone != "undefined") {
+    phone = "%" + phone + "%";
+    sql += " and t1.phone like ?";
+    arr.push(phone);
   }
-    if (phone) {
-      phone = "%" + phone + "%";
-      sql += " and id like ? ORDER BY t1.addTime DESC";
-      arr.push(phone);
-    }
-    if (status) {
-      sql += " and status = ? ORDER BY t1.addTime DESC";
-      arr.push(status);
-      // console.log(usertype);
-    }
+  if (status != "" && status != null && status != "undefined") {
+    sql += " and t1.status = ?";
+    arr.push(Number(status));
+    // console.log(usertype);
   }
+  sql += " ORDER BY t1.addTime DESC";
 
   // sql += " limit ?,?";
   // arr.push((page-1)*limit);
