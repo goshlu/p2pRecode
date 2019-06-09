@@ -7,11 +7,12 @@
           <div>
             <p class="nameSearch">模块搜索：</p>
             <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input21"></el-input>
+            <el-button slot="append" icon="el-icon-search"></el-button>
           </div>
         </div>
         <div class="btns">
-          <el-button type="primary" plain>新增模块</el-button>
-          <el-button type="danger" plain>批量删除</el-button>
+          <el-button type="primary" @click="addNew" plain>新增模块</el-button>
+          <el-button type="danger" @click="deleteMuch" plain>批量删除</el-button>
         </div>
       </div>
 
@@ -31,17 +32,7 @@
         </el-table>
       </div>
       <div class="pages">
-        <!-- <el-pagination background
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :page-sizes="[10, 20, 30, 40]"
-          :page-size="10"
-          layout="sizes"
-          :total="100">
-        </el-pagination> -->
-        <div class="totalNum">共120条</div>
-        <!-- <el-pagination background layout="prev, pager, next" :total="50">
-        </el-pagination> -->
+        <span></span>
         <el-pagination background
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -55,17 +46,27 @@
     <div class="AlertBoxBox"  v-if="isShowDetailAlertBox">
       <AlertBox @datailCancle="datailCancle" :id="DetailAlertId"/>
     </div>
+    <div class="AlertBoxBox"  v-if="isShowAddNew">
+      <AddNew  @datailCancle="datailCancle"/>
+    </div>
+    <div class="AlertBoxBox"  v-if="isShowDelete">
+      <Delete  @datailCancle="datailCancle" :id="deleteId"/>
+    </div>
   </div>
 </template>
 
 <script>
   import Title from './../../commonComponents/headerTitle';
-  import AlertBox from './AlertBox.vue';
+  import AlertBox from './AlertBox';
+  import AddNew from './addNew';
+  import Delete from './Delete';
   export default {
     name:'PowerMaBu',
     components:{
       Title,
-      AlertBox
+      AlertBox,
+      AddNew,
+      Delete
     },
     data(){
       return{
@@ -105,8 +106,10 @@
             juese:'查看、新增、编辑、审核、上架、下架'
           },
           ],
-          multipleSelection: [],
+          multipleSelection: [],   
           isShowDetailAlertBox:false,
+          isShowAddNew:false,
+          isShowDelete:false,
       }
     },
     methods:{
@@ -128,8 +131,14 @@
         this.isShowDetailAlertBox=true;
       },
       handleDelete(index, row) {
-        console.log(index, row);
-        
+        this.isShowDelete = true;
+        this.deleteId = [row.numberId]
+      },
+      deleteMuch(){
+        this.isShowDelete = true;
+        this.deleteId = this.multipleSelection.map((item)=>{
+          return item.numberId
+        });
       },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -139,6 +148,11 @@
       },
       datailCancle(type){
         this.isShowDetailAlertBox=type;
+        this.isShowAddNew=type;
+        this.isShowDelete=type;
+      },
+      addNew(){
+        this.isShowAddNew=true;
       }
     },
   }
@@ -146,6 +160,6 @@
 
 <style lang="stylus">
   .nameSearch
-    width 110px !important 
+    // width 110px !important 
 </style>
 

@@ -31,18 +31,6 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <!-- <span>模块权限：</span>
-        <div>
-          <el-checkbox-group v-model="checkList">
-            <el-checkbox label="复选框 A"></el-checkbox>
-            <el-checkbox label="复选框 B"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-          </el-checkbox-group>
-        </div> -->
       </div>
 
       <div>
@@ -56,7 +44,7 @@
       <div>
         <span></span>
         <div>
-          <el-button type="primary">确定</el-button>
+          <el-button @click="editMe" type="primary">确定</el-button>
           <el-button @click="cancle">取消</el-button>
         </div>
       </div>
@@ -111,10 +99,24 @@ export default {
   methods: {
     cancle(){
       this.$emit("datailCancle",false);
+    },
+    editMe(){
+      this.Axios.put("http://172.16.6.72:8080/role/info",{
+        id:1,
+        name:"testtt",
+      }).then(
+          res => {
+            console.log(res.data);
+            
+          }).catch(
+          error=>{
+            console.log(error);
+            
+      })
     }
   },
   created(){
-    console.log(this.id);
+    // console.log(this.id);
     
   }
 }

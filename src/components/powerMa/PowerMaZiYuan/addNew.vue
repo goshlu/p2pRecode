@@ -1,6 +1,6 @@
 <template>
   <div class="alertBox">
-    <div class="title">功能修改</div>
+    <div class="title">新增资源</div>
     <div class="box">
       <div>
         <span>功能名称：</span>
@@ -31,7 +31,7 @@
       <div>
         <span></span>
         <div>
-          <el-button @click="change" type="primary">确定</el-button>
+          <el-button type="primary" @click="addnew">确定</el-button>
           <el-button @click="cancle">取消</el-button>
         </div>
       </div>
@@ -73,22 +73,21 @@ export default {
     cancle(){
       this.$emit("datailCancle",false);
     },
-    change(){
-      this.Axios.put("http://172.16.6.72:8080/autority/info",{
-          id:6,
-          name:'test',
-          description:'tests',
-          oid:1,
-          rid:8,
-        }).then(
+    addnew(){
+      this.Axios.post("http://172.16.6.72:8080/resource/info",{
+        name:"test",
+        uri:"/test/test"
+      }).then(
         res => {
           console.log(res.data);
           
-        }).catch(
+        }
+      ).catch(
         error=>{
           console.log(error);
           
-        })
+        }
+      )
     }
   },
   created(){
