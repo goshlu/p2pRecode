@@ -6,22 +6,22 @@ let tenderControl=require("../controller/tenderControl");
 //借贷管理
 let dictionaryControl=require("../controller/dictionaryControl");
 
-mRouter.get("/usercapital",control.usercapital);
-mRouter.get("/capitaljournal",control.capitaljournal);
-mRouter.get("/platformfunds",control.platformfunds);
-mRouter.get("/tendercategory",control.tendercategory);
-mRouter.get("/tenderall",control.tenderall);
+mRouter.all("/usercapital",control.usercapital);
+mRouter.all("/capitaljournal",control.capitaljournal);
+mRouter.all("/platformfunds",control.platformfunds);
+mRouter.all("/tendercategory",control.tendercategory);
+mRouter.all("/tenderall",control.tenderall);
 
 //借贷管理
 //获取借款方列表
-mRouter.get("/getBorrows",control.getBorrows);
+mRouter.all("/getBorrows",control.getBorrows);
 //获取所有借款标列表 （搜索传：name, phone, status, page, limit）
-mRouter.get("/getTenderAll",tenderControl.getTenderAll);
+mRouter.all("/getTenderAll",tenderControl.getTenderAll);
 //获取所有借款标列表addTender
-mRouter.post("/addTender",tenderControl.addTender);
+mRouter.all("/addTender",tenderControl.addTender);
 
 //字典表管理
-mRouter.get("/getDictionaries",dictionaryControl.getAll);
+mRouter.all("/getDictionaries",dictionaryControl.getAll);
 
 // app.get("/Student",function(){});
 module.exports=mRouter;

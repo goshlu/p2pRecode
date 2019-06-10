@@ -3,8 +3,9 @@ let tenderModel = require("../modal/tenderModel");
 //查询所有借款标
 function getTenderAll(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, token,Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  console.log("xxxxxx");
   let limit = Number(req.query.limit);
   let index = (req.query.page-1)*limit;
   tenderModel.getTenderAll(req.query, function (err, data) {
@@ -30,24 +31,28 @@ function getTenderAll(req, res, next) {
 //添加借款标
 function addTender(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,token, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-  let dataJson = JSON.parse(Object.keys(req.body)[0]);
-  // console.log(dataJson);
-  tenderModel.addTender(dataJson, function (err, data) {
-    if (!err) {
-      res.send({code:0,msg:"添加成功"});
-      next();
-    } else {
-      console.log(err);
-      res.send("101,联系管理员");
-    }
-  });
+  let key = Object.keys(req.body)[0]
+  if(key != undefined && key != 'undefined'){
+    let dataJson = JSON.parse(key);
+    tenderModel.addTender(dataJson, function (err, data) {
+      if (!err) {
+        res.send({code:0,msg:"添加成功"});
+        next();
+      } else {
+        console.log(err);
+        res.send("101,联系管理员");
+      }
+    });
+  }else{
+    res.send("options放行");
+  }
 }
 //修改、编辑借款标
 function editTender(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, token,Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
   let dataJson = JSON.parse(Object.keys(req.body)[0]);
   // console.log(dataJson);

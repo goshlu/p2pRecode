@@ -94,14 +94,14 @@
 
 <script>
 import Title from "./../commonComponents/headerTitle";
-
+let host_url = "172.16.6.75:8080";
 export default {
   name: "InvUser",
   components: { Title },
   data() {
     return {
       // 导航
-      host_url: "", //============================================== 更改 主机地址
+      host_url: `http://${host_url}/member/investment/members`, //============================================== 更改 主机地址
       navArr: ["会员管理", "投资用户管理"],
       // 数据
       input1: "",
@@ -158,7 +158,7 @@ export default {
       newform: {},
       formLabelWidth: "120px",
       //   url
-      url: "http://主机地址/member/investment/members" //======================================主机地址
+      url: `http://${host_url}/member/investment/members` //======================================主机地址
     };
   },
 

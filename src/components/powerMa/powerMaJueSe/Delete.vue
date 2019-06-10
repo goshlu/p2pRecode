@@ -29,27 +29,33 @@ export default {
       this.$emit("datailCancle",false);
     },
     deleteMe(){
-      //单个删除
-      // this.Axios.delete("http://172.16.6.72:8080/role/info/2").then(
-      //     res => {
-      //       console.log(res.data);
-            
-      //     }).catch(
-      //     error=>{
-      //       console.log(error);
-            
-      // })
+      if(this.id[0]==="one"){
+        // 单个删除
+        let getId = this.id[1];
+        this.Axios.delete("http://172.16.6.72:8080/role/info/"+getId).then(
+            res => {
+              console.log("单个删除"+res.data);
+              this.$emit("detailOk","isShowDelete");
+            }).catch(
+            error=>{
+              console.log(error);
+              
+        })
+      }else{
+        //批量删除
+        let str = this.id.join(",");
+        this.Axios.delete("http://172.16.6.72:8080/role/info/batch/"+str).then(
+            res => {
+              console.log("单个删除"+res.data);
+              this.$emit("detailOk","isShowDelete");
+            }).catch(
+            error=>{
+              console.log(error);
+              
+        })
+      }
 
-      //批量删除
-      this.Axios.delete("http://172.16.6.72:8080/role/info/batch/1,2").then(
-          res => {
-            console.log(res.data);
-            
-          }).catch(
-          error=>{
-            console.log(error);
-            
-      })
+     
     }
   },
   created(){
