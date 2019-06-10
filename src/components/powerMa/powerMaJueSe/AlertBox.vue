@@ -9,7 +9,7 @@
         </div>
       </div>
 
-      <div>
+      <!-- <div>
         <span>所属职位：</span>
         <el-select v-model="value3" placeholder="请选择">
           <el-option
@@ -19,18 +19,15 @@
             :value="item.value">
           </el-option>
         </el-select>
-      </div>
+      </div> -->
 
       <div>
-        <span>模块：</span>
-        <el-select v-model="value2" placeholder="请选择">
-          <el-option
-            v-for="item in options1"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+        <span>角色名称：</span>
+        <div class="status">
+          <el-radio v-model="radio" label="1">可用</el-radio>
+          <el-radio v-model="radio" label="2">不可用</el-radio>
+        </div>
+        
       </div>
 
       <div>
@@ -58,6 +55,8 @@ export default {
   name:'AlertBox',
   data(){
     return{
+      radio:"1",
+      value:"",
       options1: [{
         value: '选项1',
         label: '黄金糕'
@@ -102,8 +101,7 @@ export default {
     },
     editMe(){
       this.Axios.put("http://172.16.6.72:8080/role/info",{
-        id:1,
-        name:"testtt",
+        
       }).then(
           res => {
             console.log(res.data);
@@ -115,13 +113,20 @@ export default {
       })
     }
   },
+  beforeCreate() {
+    
+  },
   created(){
     // console.log(this.id);
-    
+    this.value = this.detail.name;
+    this.textarea = this.detail.description;
+    this.radio = this.detail.status==="不可用"?"2":"1";
   }
 }
 </script>
 
 <style lang="stylus" scope="this api replaced by slot-scope in 2.5.0+">
   @import './../../../assets/stylus/PowerMaAlert/jueSeAlert.styl';
+  .status
+    margin-left 5px
 </style>
