@@ -1,5 +1,6 @@
 <template>
 	<el-container>
+		<Title :navArr="navArr" class="pubTitle"/>
 		<el-header>
 			<el-row :gutter="15">
 				<el-col :span="4">
@@ -23,7 +24,7 @@
 					</el-select>
 				</el-col>
 				<el-col :span="3" :offset="10">
-					<el-select size="small" v-model="exportvalue" filterable placeholder="请选择">
+					<el-select size="small" v-model="exportvalue" filterable placeholder="导出">
 						<el-option v-for="item in exportoptions" :key="item.exportvalue" :label="item.label" :value="item.exportvalue">
 						</el-option>
 					</el-select>
@@ -50,12 +51,12 @@
 		</el-header>
 		<el-main>
 			<el-table id="moneyTable" 
+			@selection-change="tableChange" 
 			stripe style="font-size: 14px;"
 			:header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}"
 			 :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
 			  :cell-style="{'text-align':'center'}"
 			    tooltip-effect="dark"
-    @selection-change="handleSelectionChange"
 			  >
 					<el-table-column type="selection">
 					</el-table-column>
@@ -101,8 +102,12 @@
 <script>
 	import FileSaver from 'file-saver';
 	import XLSX from 'xlsx';
+	import Title from "./../commonComponents/headerTitle";
 	export default {
 		name: 'Platformfunds',
+		components: {
+			Title
+		},
 		data() {
 			// const item = {
 			// 	userId: '201709091123',
@@ -129,7 +134,9 @@
 				pagesize: 10, //每页的数据条数
 				currentPage: 1, //当前页
 				id: '',
+				navArr: ["资金管理", "平台资金"],
 				input_name: '',
+				multipleSelection:"",
 				exportoptions:[{
 					exportvalue:0,
 					label:"导出选中"
@@ -137,7 +144,7 @@
 					exportvalue:1,
 					label:"导出全部"
 				}],
-				exportvalue:0,
+				exportvalue:"",
 				options: [{
 					value: 0,
 					label: '出入帐'
@@ -196,15 +203,27 @@
 				this.axiosFun();
 			},
 			exportvalue(){
-				if(this.exportvalue==1){
+				if(this.exportvalue==0){
+					this.selTableToExcel();
+				}else{
 					this.tableToExcel();
 				}
+				
 			}
 			},
 		methods: {
+				selTableToExcel(){
+					let data=this.multipleSelection;
+					this.JSONToExcelConvertor(data,"sheet");
+				},
 				tableToExcel() {
 				 let data=this.tableData;
 					this.JSONToExcelConvertor(data,"sheet");
+					
+			},
+			tableChange(sel){
+				this.multipleSelection = sel;
+				// console.log(sel);
 			},
 			axiosFun(){
 				this.Axios.get('http://19h4o94140.51mypc.cn/platformfunds',{
@@ -261,9 +280,6 @@
 						}
 				}
 			},
-			  handleSelectionChange(val) {
-        this.multipleSelection = val;
-      },
 			current_change:function(currentPage){
 				this.currentPage = currentPage;
 			},handleSizeChange(pagesize){

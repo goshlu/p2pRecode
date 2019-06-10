@@ -1,5 +1,6 @@
 <template>
 	<el-container>
+		<Title :navArr="navArr" class="pubTitle"/>
 		<el-header>
 			<el-row :gutter="15">
 				<el-col :span="7">
@@ -18,7 +19,7 @@
 					</el-select>
 				</el-col>
 				<el-col :span="3" :offset="11">
-					<el-select size="small" v-model="exportvalue" filterable placeholder="请选择">
+					<el-select size="small" v-model="exportvalue" filterable placeholder="导出">
 						<el-option v-for="item in exportoptions" :key="item.exportvalue" :label="item.label" :value="item.exportvalue">
 						</el-option>
 					</el-select>
@@ -28,9 +29,12 @@
 			</el-row>
 		</el-header>
 		<el-main>
-			<el-table id="moneyTable" stripe style="font-size: 14px;" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+			<el-table id="moneyTable" 
+			@selection-change="tableChange" 
+			stripe style="font-size: 14px;" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
 			 :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}" :cell-style="{'text-align':'center'}">
-
+				<el-table-column type="selection">
+				</el-table-column>
 				<el-table-column prop="name" label="姓名" align="center">
 				</el-table-column>
 				<el-table-column prop="phone" width="120" label="用户手机" align="center">
@@ -47,33 +51,8 @@
 				</el-table-column>
 				<el-table-column prop="after_freezing" width='120' label="操作后冻结金额" align="center">
 				</el-table-column>
-				<el-table-column width='100' prop="message" label="备注" align="center">
-				</el-table-column>
-				<el-table-column width='170' prop="date_operaing" label="操作时间" align="center">
-				</el-table-column>
-
-			</el-table>
-			<el-table hidden="true" id="moneyTableExport" stripe style="font-size: 11px;" :data="tableData" :header-cell-style="getRowClass"
-			 :cell-style="{'text-align':'center'}">
-
-				<el-table-column prop="name" label="姓名" align="center">
-				</el-table-column>
-				<el-table-column prop="phone" width="100" label="用户手机" align="center">
-				</el-table-column>
-				<el-table-column prop="type" label="类型" align="center">
-				</el-table-column>
-				<el-table-column prop="operating_amount" label="操作金额" align="center">
-				</el-table-column>
-				<el-table-column prop="before_operaing" width='100' label="操作前可用金额" align="center">
-				</el-table-column>
-				<el-table-column prop="after_operaing" width='100' label="操作后可用金额" align="center">
-				</el-table-column>
-				<el-table-column prop="before_freezing" width='100' label="操作前冻结金额" align="center">
-				</el-table-column>
-				<el-table-column prop="after_freezing" width='100' label="操作后冻结金额" align="center">
-				</el-table-column>
-				<el-table-column width='100' prop="message" label="备注" align="center">
-				</el-table-column>
+				<!-- <el-table-column width='100' prop="message" label="备注" align="center">
+				</el-table-column> -->
 				<el-table-column width='170' prop="date_operaing" label="操作时间" align="center">
 				</el-table-column>
 
@@ -96,8 +75,12 @@
 <script>
 	import FileSaver from 'file-saver';
 	import XLSX from 'xlsx';
+	import Title from "./../commonComponents/headerTitle";
 	export default {
 		name: 'CapitalJournal',
+		components: {
+			Title
+		},
 		data() {
 			// const item = {
 			// 	userId: '201709091123',
@@ -121,6 +104,8 @@
 				currentPage: 1, //当前页
 				input_phone: '',
 				input_name: '',
+				multipleSelection:"",
+				navArr: ["资金管理", "资金日志"],
 				cinput: "",
 				csel: "0",
 				exportoptions: [{
@@ -130,7 +115,7 @@
 					exportvalue: 1,
 					label: "导出全部"
 				}],
-				exportvalue: 0,
+				exportvalue: "",
 				options: [{
 					value: 0,
 					label: '全部类型'
@@ -163,9 +148,12 @@
 				this.axiosFun();
 			},
 			exportvalue(){
-				if(this.exportvalue==1){
+				if(this.exportvalue==0){
+					this.selTableToExcel();
+				}else{
 					this.tableToExcel();
 				}
+				
 			}
 		},
 		methods: {
@@ -237,10 +225,19 @@
 			getRowClass() {
 				return 'background:#f2f2f2'
 			},
-				tableToExcel() {
-				 let data=this.tableData;
-					this.JSONToExcelConvertor(data,"sheet");
-			},
+				selTableToExcel(){
+						let data=this.multipleSelection;
+						this.JSONToExcelConvertor(data,"sheet");
+					},
+					tableToExcel() {
+					 let data=this.tableData;
+						this.JSONToExcelConvertor(data,"sheet");
+						
+				},
+				tableChange(sel){
+					this.multipleSelection = sel;
+					// console.log(sel);
+				},
 			current_change: function(currentPage) {
 				this.currentPage = currentPage;
 			},
