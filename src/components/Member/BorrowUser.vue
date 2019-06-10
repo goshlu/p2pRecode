@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <h1>BorrowUser</h1>
+    <Title :navArr="navArr"/>
 
     <el-header>
       <div class="nav">
@@ -37,7 +37,7 @@
         :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         border
         @selection-change="handleSelectionChange"
-        style="width: 100%"
+        :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5'}"
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="id" label="用户编号" width="140"></el-table-column>
@@ -107,9 +107,10 @@
 </template>
 
 <script>
+import Title from "./../commonComponents/headerTitle";
 export default {
   name: "BorrowUser",
-  components: {},
+  components: { Title },
     data() {
     return {
       input: "",
@@ -118,7 +119,12 @@ export default {
       name:"",
       total: 0, //默认数据总数
       pagesize: 5, //每页的数据条数
-      currentPage: 1, //当前页
+      currentPage: 1, //当前页    
+      // 导航
+      host_url: "http://${host_url}/member/investment/members", //============================================== 更改 主机地址
+      navArr: ["会员管理", " 借款用户管理"],
+      url: "http://${host_url}/member/investment/members" ,//======================================主机地址
+
       options1: [
         {
           value1: "0",
@@ -207,7 +213,7 @@ export default {
 			},
 
   axiosFun(){
-    this.Axios.get("http://19h4o94140.51mypc.cn/usercapital",{
+    this.Axios.get("url",{
       params:{
         name:this.name,
         phone:this.phone,
@@ -232,7 +238,7 @@ export default {
       var up_status = row.status;
       if (up_status == "可用") {
         //  请求
-        this.Axios.delete(`http://主机地址/member/info/${row.id}`, {
+        this.Axios.delete(`http://${host_url}/member/info/${row.id}`, {
           //==============================================================================主机地址
           header: {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -252,7 +258,7 @@ export default {
           // 存起来
         });
       } else if (up_status == "不可用") {
-        this.Axios.put(`http://主机地址/member/info/${row.id}`, {
+        this.Axios.put(`http://${host_url}/member/info/${row.id}`, {
           //=============================================================================================主机地址
           header: {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -317,7 +323,7 @@ watch: {
   // },
 
   created() {
-    this.Axios.get("http://19h4o94140.51mypc.cn/usercapital")
+    this.Axios.get("url")
       .then(res => {
          console.log(res);
         // 成功过后对表格内容进行重新赋值
@@ -334,6 +340,7 @@ watch: {
 
 
 <style scoped>
+
 .nav{
   margin-top: 15px;
   width: 100%;
