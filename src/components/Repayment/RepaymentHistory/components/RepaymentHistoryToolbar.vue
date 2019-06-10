@@ -1,16 +1,19 @@
 <template>
 <!-- 搜索 -->
-  <div id="search">
+   <div id="search">
     <div style="padding: 10px 0px">
-      <el-input v-model="input2" class="input-with-select">
-        <el-select v-model="select" slot="prepend">
-          <el-option label="借款方" value="1"></el-option>
-          <el-option label="是否逾期" value="2"></el-option>
-        </el-select>
+      <el-input placeholder="请输入内容"
+      prefix-icon="el-icon-search"
+      v-model="search.name" 
+      class="input-with-select"
+      >
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
+      <el-select v-model="search.status">
+          <el-option label="是" value="1"></el-option>
+          <el-option label="否" value="2"></el-option>
+        </el-select>
     </div>
-
     <!-- 选择状态 -->
     <div style="padding: 10px 0">
       <el-select v-model="value" clearable placeholder="请选择">
@@ -25,26 +28,9 @@
     </div>
   </div>
 </template>
-
-<style>
-#search{
-  display: flex;
-  justify-content: space-between;
-  margin: 5px 20px;
-}
-.el-select{
-  width: 120px;
-}
-body{
-  padding: 0px;
-  margin: 0px;
-}
-</style>
-
-
 <script>
 export default {
-
+  props:["search"],
   data() {
     return {
       stateOptions: [
@@ -63,5 +49,26 @@ export default {
       select: '',
     };
   }
+  // methods:{
+  //   changeName(){
+  //     // this.search.memberName = search.memberName;
+  //     this.$emit("searchChange",this.childDate);
+  //   }       
+  // }
 };
 </script>
+
+<style>
+#search{
+  display: flex;
+  justify-content: space-between;
+  padding:20px 20px 0px 20px;
+}
+.el-select{
+  width: 120px;
+}
+body{
+  padding: 0px;
+  margin: 0px;
+}
+</style>

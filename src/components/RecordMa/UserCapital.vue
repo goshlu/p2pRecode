@@ -1,7 +1,9 @@
 <template>
 	<el-container>
+		<Title :navArr="navArr" class="pubTitle"/>
 		<el-header>
 			<el-row :gutter="15">
+				
 				<el-col :span="7">
 					<el-input size="small" placeholder="请输入搜索内容" v-model="uinput" class="input-with-select">
 						<el-select size="small" class="select-width" v-model="usel" slot="prepend" placeholder="请选择">
@@ -18,7 +20,7 @@
 					</el-select>
 				</el-col>
 				<el-col :span="3" :offset="11">
-					<el-select size="small" v-model="exportvalue" filterable placeholder="请选择">
+					<el-select size="small" v-model="exportvalue" filterable placeholder="导出">
 						<el-option v-for="item in exportoptions" :key="item.exportvalue" :label="item.label" :value="item.exportvalue">
 						</el-option>
 					</el-select>
@@ -28,7 +30,7 @@
 			</el-row>
 		</el-header>
 		<el-main>
-			<el-table id="moneyTable" :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}" tooltip-effect="dark" stripe
+			<el-table id="moneyTable" @selection-change="tableChange" :header-cell-style="{color:'#333',backgroundColor:'#e9e9eb'}" tooltip-effect="dark" stripe
 			 style="font-size: 14px;" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" :cell-style="{'text-align':'center',border:'none'}">
 				<el-table-column type="selection">
 				</el-table-column>
@@ -79,8 +81,12 @@
 <script>
 	import FileSaver from "file-saver";
 	import XLSX from "xlsx";
+	import Title from "./../commonComponents/headerTitle";
 	export default {
 		name: "UserCapital",
+		components: {
+			Title
+		},
 		data() {
 			return {
 				usel: "0",
@@ -92,14 +98,17 @@
 				input_phone: "",
 				input_name: "",
 				pubdata: "",
+				multipleSelection:"",
+				navArr: ["资金管理", "用户资金"],
 				exportoptions: [{
 					exportvalue: 0,
 					label: "导出选中"
 				}, {
 					exportvalue: 1,
 					label: "导出全部"
-				}],
-				exportvalue: 0,
+				}
+				],
+				exportvalue: "",
 				options: [{
 						value: 0,
 						label: "全部用户"
@@ -121,7 +130,12 @@
 		},
 		watch: {
 			exportvalue(){
-				this.tableToExcel();
+				if(this.exportvalue==0){
+					this.selTableToExcel();
+				}else{
+					this.tableToExcel();
+				}
+				
 			},
 			value() {
 				this.inputdatacheck();
@@ -129,11 +143,20 @@
 			}
 		},
 		methods: {
-		
+			selTableToExcel(){
+				let data=this.multipleSelection;
+				this.JSONToExcelConvertor(data,"sheet");
+			},
 			tableToExcel() {
 			 let data=this.tableData;
 				this.JSONToExcelConvertor(data,"sheet");
+				
 		},
+		tableChange(sel){
+			this.multipleSelection = sel;
+			// console.log(sel);
+		},
+		
 	UserSearch() {
 			this.inputdatacheck();
 			this.axiosFun();
