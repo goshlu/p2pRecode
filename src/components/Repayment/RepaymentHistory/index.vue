@@ -37,7 +37,7 @@ export default {
         name:"",
         status:"",
         page:1,
-        limit:10
+        limit:5
       },
       loading:false,
       tableData: [],
