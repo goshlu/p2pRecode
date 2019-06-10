@@ -54,9 +54,10 @@ export default {
                             console.log(res.data);
                             sessionStorage.setItem('token',res.data.token);
                             sessionStorage.setItem('userId',res.data.admin.idCard);
-                            sessionStorage.setItem('menu',res.data.menu);
+                            sessionStorage.setItem('menu',JSON.stringify(res.data.menu));
+                            sessionStorage.setItem('userName',res.data.admin.name)
                             // this.doUpdateNavData(res.data.menu);
-                            this.$router.push('/Home');
+                            this.$router.push('/PowerMa');
                         }
                     ).catch()
                     // this.AXIOS(`admin/login?username=${this.userName}&password=${this.userPassword}`).then(
