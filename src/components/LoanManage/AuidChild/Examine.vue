@@ -164,7 +164,5 @@ span {
  padding-top:20px;
  padding-bottom: 20px;
 }
-.el-row .el-button{
-  /*width: 180px;*/
-}
+
 </style>
