@@ -8,40 +8,40 @@
           <h4>基本信息</h4>
         </div>
         <el-form ref="from1" :model="from1" label-width="150px">
-          <el-form-item label="*标名：">
+          <el-form-item label="标名：" required>
             <span>典当宝-100期</span>
           </el-form-item>
-          <el-form-item label="风险等级：">
+          <el-form-item label="风险等级：" required>
             <span>较低等级</span>
           </el-form-item>
-          <el-form-item label="借款方：">
+          <el-form-item label="借款方：" required>
             <span>上海x x x公司(13599090001)</span>
           </el-form-item>
-          <el-form-item label="借款总金额：">
+          <el-form-item label="借款总金额：" required>
             <span>10000元</span>
           </el-form-item>
-          <el-form-item label="年利率：">
+          <el-form-item label="年利率：" required>
             <span>12%</span>
           </el-form-item>
-          <el-form-item label="*还款方式：">
+          <el-form-item label="还款方式：" required>
             <span>一次性还款</span>
           </el-form-item>
-          <el-form-item label="*借款期限：">
+          <el-form-item label="借款期限：" required>
             <span>30天</span>
           </el-form-item>
-          <el-form-item label="*借款起息方式：">
+          <el-form-item label="借款起息方式：" required>
             <span>成立计息</span>
           </el-form-item>
-          <el-form-item label="*借款管理费月率：">
+          <el-form-item label="借款管理费月率：" required>
             <span>0%</span>
           </el-form-item>
-          <el-form-item label="*利息管理费月率：">
+          <el-form-item label="利息管理费月率：" required>
             <span>0%</span>
           </el-form-item>
-          <el-form-item label="*逾期罚息利率：">
+          <el-form-item label="逾期罚息利率：" required>
             <span>0%</span>
           </el-form-item>
-          <el-form-item label="*逾期罚息利率：">
+          <el-form-item label="逾期罚息利率：" required>
             <span>新增</span>
           </el-form-item>
           <el-form-item label="资金用途：">
@@ -107,7 +107,7 @@ export default {
       from1: {},
       from2: {},
       radio: "1",
-      navArr:['贷款管理','借款审核','借款审核详情']
+      navArr:['借贷管理','借款审核','借款审核详情']
     };
   }
 };

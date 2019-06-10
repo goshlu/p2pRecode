@@ -1,17 +1,17 @@
 <template>
   <div id="details_app">
     <!-- 标题 -->
-    <Title :navArr="navArr"/>
+    <Title :navArr="this.$route.params.navArr"/>
     <!-- 内容 -->
     <div class="app_content">
-      <!-- 提现信息 -->
+      <!-- 详细信息 -->
       <div class="from1">
         <div class="basicInfo">
           <h4>提现信息</h4>
         </div>
         <el-form ref="from1" label-width="150px">
           <el-form-item label="提现单号：">
-            <span>1231231</span>
+            <span>{{formData.id}}</span>
           </el-form-item>
           <el-form-item label="用户手机号码：">
             <span>13800000001</span>
@@ -43,70 +43,12 @@
         </el-form>
       </div>
 
-      <!-- 用户资产 -->
-      <div class="from2">
-        <div class="userAssets">
-          <h4>用户资产</h4>
-        </div>
-        <el-form ref="from1" label-width="150px">
-          <el-form-item label="总资产：">
-            <span>¥12312.00</span>
-          </el-form-item>
-          <el-form-item label="冻结资金：">
-            <span>¥0.00</span>
-          </el-form-item>
-          <el-form-item label="待收利息：">
-            <span>¥12.00</span>
-          </el-form-item>
-          <el-form-item label="可提现金额：">
-            <span>¥120.00</span>
-          </el-form-item>
-        </el-form>
-      </div>
-
-      <!-- 提现记录 -->
-      <div class="from3">
-        <div class="withdrawalsRecord">
-          <h4>最近提现记录</h4>
-        </div>
-        <el-form ref="from1" label-width="150px">
-          <el-form-item>
-            <el-table :data="tableData" :header-cell-style="{background:'#f2f2f2',color:'#606266'}">
-              style="width: 100%">
-              <el-table-column prop="date" label="日期" width="180"></el-table-column>
-              <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-              <el-table-column prop="address" label="地址"></el-table-column>
-            </el-table>
-          </el-form-item>
-        </el-form>
-      </div>
-
-      <!-- 审核 -->
-      <div class="from4">
-        <div class="review">
-          <h4>审核</h4>
-        </div>
-        <el-form ref="form" :model="form" label-width="150px">
-          <!-- 单选按钮 -->
-          <el-form-item label="是否通过：">
-            <el-radio-group v-model="form.resource">
-              <el-radio label="通过"></el-radio>
-              <el-radio label="不通过"></el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <!-- 备注 -->
-          <el-form-item label="备注：" required style="padding-bottom: 20px;">
-            <el-input type="textarea" v-model="form.desc"></el-input>
-          </el-form-item>
-          <!-- 分割线 -->
-        </el-form>
-        <el-divider></el-divider>
-          <!-- 按钮 -->
-          <el-row>
-            <el-button type="primary" @click="open">提交</el-button>
-            <el-button @click="goBack">返回</el-button>
-          </el-row>
-      </div>
+      <el-divider></el-divider>
+      <!-- 按钮 -->
+      <el-row>
+        <el-button type="primary" @click="open">确定</el-button>
+        <el-button @click="goBack">返回</el-button>
+      </el-row>
     </div>
   </div>
 </template>
@@ -119,8 +61,10 @@ export default {
   components: {
     Title
   },
+  props: ["navArr"],
   data() {
     return {
+      formData: "",
       tableData: [
         {
           date: "2016-05-02",
@@ -136,8 +80,8 @@ export default {
       form: {
         resource: "",
         desc: ""
-      },
-      navArr: ["资金管理", "提现审核", "详情"]
+      }
+      // navArr: ["资金管理", "提现审核", "详情"]
     };
   },
   methods: {
@@ -173,6 +117,11 @@ export default {
     onSubmit() {
       console.log("submit!");
     }
+  },
+  created() {
+    let formData = this.$route.params.formArr;
+    console.log(typeof formData);
+    console.log(formData);
   }
 };
 </script>
@@ -213,10 +162,10 @@ span {
   letter-spacing: 2px;
 }
 .el-row {
- text-align: right;
- padding-top:20px;
- padding-bottom: 20px;
- margin-right:360px;
+  text-align: right;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-right: 360px;
 }
 .from3 .el-form-item {
   display: inline-block;

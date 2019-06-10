@@ -105,7 +105,7 @@
           label="已投金额"
           align="center">
           <template slot-scope="scope">
-            {{scope.row.finishMoney}}元
+            ￥{{scope.row.finishMoney}}
           </template>
         </el-table-column>
         <!--<el-table-column
@@ -120,14 +120,15 @@
         </el-table-column>
         <el-table-column
             label="操作"
-            align="center">
+            align="center"
+        >
           <template slot-scope="scope">
             <!--<router-link :to="{name:'TenderingManageModify',params:{}}">
               <el-button type="primary" icon="el-icon-edit" size="mini">
                 修改
               </el-button>
             </router-link>-->
-            <el-button type="danger" icon="el-icon-download" size="mini" @click="handleCancel">下架</el-button>
+            <el-button type="danger" icon="el-icon-download" size="mini" @click="handleCancel(scope.row.id)">下架</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -160,7 +161,7 @@
             </div>
           </div>
           <div class="btns">
-            <el-button type="primary">确定</el-button>
+            <el-button type="primary" @click="doDelete">确定</el-button>
             <el-button @click="showModal">取消</el-button>
           </div>
         </div>
@@ -172,8 +173,7 @@
 
 <script>
   import Title from "../../commonComponents/headerTitle";
-
-  let BASE_URL = "http://172.16.6.62:8080";
+  import baseUrl from "../../../api/baseUrl";
 
   export default {
     name: "TenderingManageHome",
@@ -182,6 +182,7 @@
     },
     data() {
       return {
+        id:"",
         navArr:['借贷管理','进行中标的管理'],
         isShowModal: false,
         searchText: "",
@@ -229,24 +230,23 @@
       //sName &sPhone=17244562861
       // let params = `page=${this.paginations.page_index}&limit=${this.paginations.page_size}`;
       //获取信息列表
-      this.Axios.get(BASE_URL+'/element/elements?status=1').then(res => {
+      this.Axios.get(baseUrl.BASE_URL+'/element/elements?page=1&limit=5').then(res => {
         console.log(res);
         this.tableData = res.data.data;
         // 总页数
         this.paginations.total = this.tableData.length;
       }).catch((err)=>{console.log(err)});
-
-      /*this.Axios.get('http://172.16.6.75:8080/element/elements?'+params).then(res => {
-        console.log(res);
-        this.allTableData = res.data;
-        this.setPaginations();
-      }).catch((err)=>{console.log(err)});*/
     },
     methods: {
-      //编辑
-      handleCancel(row) {
+      //下架
+      handleCancel(id) {
         this.showModal();
-        console.log(row);
+        this.id = id;
+      },
+      doDelete(){
+        this.Axios.delete(baseUrl.BASE_URL+'/element/elements/'+this.id).then(res => {
+          console.log(res);
+        }).catch((err)=>{console.log(err)});
       },
       showModal() {
         this.notesText = "";

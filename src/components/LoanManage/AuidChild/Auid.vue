@@ -94,6 +94,7 @@ export default {
     return {
       tableData: [],
       allTableData: [],
+      value:"",
       paginations: {
         page_index: 1, // 当前位于哪页
         total: 0, // 总数
@@ -101,7 +102,7 @@ export default {
         page_sizes: [5, 10, 15, 20], //每页显示多少条
         layout: "total, sizes, prev, pager, next" // 翻页属性
       },
-      navArr: ["贷款管理", "借款审核"],
+      navArr: ["借贷管理", "借款审核"],
       modeOpt: [
         { value: 1, label: "新标待审核" },
         { value: 2, label: "新增草稿" },

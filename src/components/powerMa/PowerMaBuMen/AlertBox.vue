@@ -1,16 +1,16 @@
 <template>
   <div class="alertBox">
-    <div class="title">修改部门</div>
+    <div class="title">部门修改</div>
     <div class="box">
       <div>
         <span>部门名称：</span>
         <div>
-          <el-input v-model="value" placeholder="请输入内容"></el-input>
+          <el-input v-model="value1" placeholder="请输入内容"></el-input>
         </div>
       </div>
       <div>
         <span>负责人：</span>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="value2" placeholder="请选择">
           <el-option
             v-for="item in options1"
             :key="item.value"
@@ -33,19 +33,11 @@
       <div>
         <span>部门员工：</span>
         <div class="yuangongItem">
-          <!-- <el-checkbox-group v-model="checkList">
-            <el-checkbox label="复选框 A"></el-checkbox>
-            <el-checkbox label="复选框 B"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-          </el-checkbox-group> -->
           <el-tag
             :key="tag"
             v-for="tag in dynamicTags"
             closable
+            type="info"
             :disable-transitions="false"
             @close="handleClose(tag)">
             {{tag}}
@@ -65,14 +57,14 @@
       <!-- <div>
         <span>新增员工：</span>
         <div>
-          <el-input v-model="value2" placeholder="请输入内容"></el-input>
+          <el-input v-model="value3" placeholder="请输入内容"></el-input>
         </div>
       </div> -->
       
       <div>
         <span></span>
         <div>
-          <el-button type="primary">确定</el-button>
+          <el-button @class="editMe" type="primary">确定</el-button>
           <el-button @click="cancle">取消</el-button>
         </div>
       </div>
@@ -85,22 +77,24 @@ export default {
   name:'AlertBox',
   data(){
     return{
-      options1: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
+      options1: [
+      {
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }
+      ],
       options: [
         {
           value: '选项1',
@@ -115,8 +109,8 @@ export default {
           value: '选项4',
           label: '修改专员'
         }],
-        dynamicTags: ['标签一', '标签二', '标签三','标签三','标签三',],
-        value: '',
+        dynamicTags: ['标签一', '标签二', '标签三','标签四','标签五',],
+        value1: '',
         value2:'',
         // checkList: ['复选框 A','复选框 B','复选框 C'],
         textarea: '',
@@ -148,6 +142,19 @@ export default {
       }
       this.inputVisible = false;
       this.inputValue = '';
+    },
+    editMe(){
+      this.Axios.put("http://172.16.6.72:8080/role/group",{
+
+      }).then(
+          res => {
+            console.log(res.data);
+            
+          }).catch(
+          error=>{
+            console.log(error);
+            
+      })
     }
   },
   created(){

@@ -11,7 +11,25 @@
         <p>系统配置</p> -->
       </li>
       <li class="right">
-
+        <!-- <div class="message"></div> -->
+        <div class="mine">
+          <span @click="getMoreBox">李大钊</span>
+          <span class="el-icon-caret-bottom" @click="getMoreBox"></span>
+          <div class="imgBox" @click="getMoreBox">
+            <span></span>
+            <img src="" alt="">
+          </div>
+          <div class="moreBoxBox" v-if="isShowMoreBox">
+            <ul class="moreBox">
+              <li @click="getMessage">消息(2)</li>
+              <li>个人资料</li>
+              <li>修改密码</li>
+              <li>退出</li>
+            </ul>
+            <div class="moreBoxBg" @click="getMoreBox"></div>
+          </div>
+        </div>
+        <div :class="!isFullScreen?'fullScreen':'outFullScreen'" @click="getFullScreen"></div>
       </li>
     </ul>
     <div class="bottom" v-if="openChildren">
@@ -48,12 +66,14 @@ export default {
 
   data(){
     return{
+      isShowMoreBox:false,
       now:"now",
       noo:"",
       input:"",
       openTitle:"",
       openChild:"",
-      openChildren:[]
+      openChildren:[],
+      isFullScreen:false,
     }
   },
 
@@ -77,6 +97,23 @@ export default {
     },
     childClick(title){
       this.openChild=title;
+    },
+    getMoreBox(){
+      this.isShowMoreBox = !this.isShowMoreBox;
+    },
+    getFullScreen(){
+      if(!this.isFullScreen){
+        // console.log(document.getElementById("app"));
+        document.getElementById("app").requestFullscreen();
+      }else{
+        document.exitFullscreen();
+      }
+      this.isFullScreen = !this.isFullScreen
+    },
+    getMessage(){
+      this.$router.push({
+        name:"Message",
+      })
     }
   },
 

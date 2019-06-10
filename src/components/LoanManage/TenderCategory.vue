@@ -77,7 +77,7 @@
             <el-form-item label="分类名称：" required>
               <el-input v-model="formLabelAlign.name"></el-input>
             </el-form-item>
-            <el-form-item label="排序：">
+            <el-form-item label="排序：" prop="sortNum">
               <el-input v-model.number="formLabelAlign.sortNum" style="width: 170px;"></el-input>
               <span>数值越大越靠前</span>
             </el-form-item>
@@ -106,6 +106,7 @@
 <script>
   import Title from "./../commonComponents/headerTitle";
   // import {getCategoryList} from '../../api'
+  import baseUrl from "../../api/baseUrl";
 
   export default {
     name: "TenderCategory",
@@ -114,11 +115,13 @@
     },
     created(){
       //禁用/启用
-      this.Axios.get('http://19h4o94140.51mypc.cn/tendercategory').then(res => {
+
+      // 获取列表 status=1&page=1&limit=5 sName sPhone
+      /*this.Axios.get(baseUrl.BASE_URL+'/investment/type?page=1&limit=5').then(res => {
         console.log(res);
-        this.allTableData = res.data;
-        this.setPaginations();
-      }).catch((err)=>{console.log(err)});
+        this.tableData = res.data;
+
+      }).catch((err)=>{console.log(err)});*/
     },
     methods: {
       handleClick(row) {
@@ -171,7 +174,7 @@
     },
     data() {
       //添加 排序数值校验
-      let checkSortNum = (rule, value, callback) => {
+      /*let checkSortNum = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('排序不能为空'));
         }
@@ -186,13 +189,22 @@
             }
           }
         }, 1000);
-      };
+      };*/
       let checkName = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('分类名称不能为空'));
         }
       };
       return {
+        tableData: [
+          {
+            name: "企业1号",
+            phone: "13700000000",
+            status: "正常",
+            type: "个人用户",
+            time: "2017-01-01"
+          }
+        ],
         navArr:['借贷管理','借款标类别'],
         formLabelAlign:{
           name:"",
@@ -220,7 +232,8 @@
         }],
         rules: {
           sortNum: [
-            { validator: checkSortNum, trigger: 'blur' }
+            // { validator: checkSortNum, trigger: 'blur' }
+            {required:true,message:"不能为空",trigger:'blur'}
           ],
           name: [
             { validator: checkName, trigger: 'blur' }

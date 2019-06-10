@@ -53,28 +53,32 @@
             style="width: 100%"
           >
             <el-table-column type="selection"></el-table-column>
-            <el-table-column prop="loan_id" label="充值单号"></el-table-column>
-            <!-- <el-table-column prop="loan_money" label="用户手机"></el-table-column> -->
-            <el-table-column prop="loan_money" label="真实姓名"></el-table-column>
+            <el-table-column prop="payNumber" label="充值单号" width="145px"></el-table-column>
+            <el-table-column prop="pePhone" label="用户手机"></el-table-column>
+            <el-table-column prop="username" label="真实姓名"></el-table-column>
             <!-- <el-table-column prop="loan_ deadline" label="用户来源"></el-table-column> -->
             <!-- <el-table-column prop="loan_ deadline" label="应用来源"></el-table-column> -->
-            <el-table-column prop="loan_money" label="充值金额"></el-table-column>
-            <el-table-column prop="loan_money" label="到账金额"></el-table-column>
-            <el-table-column prop="loan_money" label="手续费"></el-table-column>
-            <el-table-column prop="loan_money" label="充值方式"></el-table-column>
-            <!-- <el-table-column prop="loan_money" label="交易流水号"></el-table-column> -->
+            <el-table-column prop="orMoney" label="充值金额"></el-table-column>
+            <!-- <el-table-column prop="" label="到账金额"></el-table-column> -->
+            <!-- <el-table-column prop="" label="手续费"></el-table-column> -->
+            <el-table-column prop="payName" label="充值方式"></el-table-column>
+            <el-table-column prop="number" label="交易流水号"></el-table-column>
             <el-table-column label="订单时间" width="160px">
               <template slot-scope="scope">
-                <p>{{ scope.row.loan_date | dateFormat }}</p>
+                <p>{{ scope.row.oraTime | dateFormat }}</p>
               </template>
             </el-table-column>
             <el-table-column label="到账时间" width="160px">
               <template slot-scope="scope">
-                <p>{{ scope.row.loan_date | dateFormat }}</p>
+                <p>{{ scope.row.accountTime | dateFormat }}</p>
+              </template>
+            </el-table-column> 
+            <el-table-column prop="status" label="状态">
+              <template slot-scope="scope">
+                <p>{{ scope.row.orStatus | orStatusFormate }}</p>
               </template>
             </el-table-column>
-            <el-table-column prop="status" label="状态"></el-table-column>
-            <el-table-column prop="do" label="操作" show-overflow-tooltip>
+            <!-- <el-table-column prop="do" label="操作" show-overflow-tooltip>
               <template slot-scope="scope">
                 <el-button
                   type="primary "
@@ -83,7 +87,7 @@
                   @click="handleView(scope.$index, scope.row)"
                 >查看</el-button>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
         </div>
       </div>
@@ -185,11 +189,12 @@ export default {
         }
       });
     },
-    // 获取搜索列表
-    getSearchList(pageSize, currentPage) {
-      this.Axios.post("", {})
+    // 获取搜索列表 (pageSize, currentPage)
+    getSearchList() {
+      console.log(val);
+      this.Axios.get("http://172.16.6.60:8080/order/orders")
         .then(res => {
-          console.log(res);
+          // console.log(res);
           this.tableData = res.data.datas.data;
           this.total = this.tableData.length;
         })
@@ -198,10 +203,20 @@ export default {
         });
     },
     // 查看
-    handleView: function(row) {
+    handleView: function(index, row) {
+      console.log(row);
+      /* let arr = row;
+      console.log("arr");
+      console.log(arr); */
       window.sessionStorage.setItem("rows", JSON.stringify(row));
-      console.log(this.$router);
-      this.$router.push("/Recharge/Details");
+      // console.log(this.$router);
+      this.$router.push({
+        name: "Details",
+        params: {
+          navArr: ["资金管理", "充值记录", "充值记录详情"],
+          formArr: row
+        }
+      });
     },
     // 全选
     handleSelectionChange(val) {
@@ -246,10 +261,11 @@ export default {
 
   created() {
     // http://5cf61a7646583900149cb303.mockapi.io/RechargeRecord
-    this.Axios.get("http://rap2api.taobao.org/app/mock/177576/borrow")
+    this.Axios.get("http://172.16.6.60:8080/order/orders")
       .then(res => {
         // console.log(res);
-        this.tableData = res.data.datas.data;
+        this.tableData = res.data.data;
+        // console.log(this.tableData);
         this.total = this.tableData.length;
       })
       .catch(err => {

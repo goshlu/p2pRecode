@@ -1,41 +1,51 @@
 <template>
   <div class="alertBox">
-    <div class="title">修改部门</div>
+    <div class="title">修改员工信息</div>
     <div class="box">
       <div>
-        <span>部门名称：</span>
+        <span>姓名：</span>
         <div>
-          <el-input v-model="value" placeholder="请输入内容"></el-input>
+          <el-input v-model="name" placeholder="请输入内容"></el-input>
         </div>
       </div>
       <div>
-        <span>负责人：</span>
+        <span>性别：</span>
         <div>
-          <el-radio v-model="radio" label="1">备选项</el-radio>
-          <el-radio v-model="radio" label="2">备选项</el-radio>
+          <el-radio v-model="gender" label="1">男</el-radio>
+          <el-radio v-model="gender" label="0">女</el-radio>
         </div>
       </div>
       <div>
-        <span>部门员工：</span>
-        <div>
-          <el-checkbox-group v-model="checkList">
-            <el-checkbox label="复选框 A"></el-checkbox>
-            <el-checkbox label="复选框 B"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-          </el-checkbox-group>
-        </div>
+        <span>所属部门：</span>
+        <el-select v-model="bumen" placeholder="请选择">
+          <el-option
+            v-for="item in bumens"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </div>
+      <!-- <div>
+        <span>职位：</span>
+        <el-select v-model="zhiwei" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div> -->
+
       <div>
-        <span>部门描述：</span>
+        <span>备注：</span>
         <div>
           <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea">
           </el-input>
         </div>
       </div>
+
       <div>
         <span></span>
         <div>
@@ -52,6 +62,22 @@ export default {
   name:'AlertBox',
   data(){
     return{
+      bumens: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
       options: [
         {
           value: '选项1',
@@ -66,10 +92,11 @@ export default {
           value: '选项4',
           label: '修改专员'
         }],
-        value: '',
-        checkList: ['复选框 A','复选框 B'],
+        name: '',
+        bumen: '',
+        zhiwei: '',
         textarea: '',
-        radio:'1',
+        gender:'1',
     }
   },
   props:["title","id"],
@@ -79,8 +106,7 @@ export default {
     }
   },
   created(){
-    console.log(this.id);
-    
+    // console.log(this.id);
   }
 }
 </script>

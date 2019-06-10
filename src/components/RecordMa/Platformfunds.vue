@@ -84,7 +84,7 @@
 
 			</el-table>
 		</el-main>
-		<el-footer style="margin:20px 0 10px">
+		<el-footer style="margin:20px 0 10px;text-align: right;">
 			<el-row>
 				<el-col>
 					<el-pagination background layout="total,prev, pager, next,sizes" :page-sizes="[10, 25, 50, 100]" :page-size="pagesize"
@@ -194,8 +194,18 @@
 			},
 			value(){
 				this.axiosFun();
-			}},
+			},
+			exportvalue(){
+				if(this.exportvalue==1){
+					this.tableToExcel();
+				}
+			}
+			},
 		methods: {
+				tableToExcel() {
+				 let data=this.tableData;
+					this.JSONToExcelConvertor(data,"sheet");
+			},
 			axiosFun(){
 				this.Axios.get('http://19h4o94140.51mypc.cn/platformfunds',{
 					params:{

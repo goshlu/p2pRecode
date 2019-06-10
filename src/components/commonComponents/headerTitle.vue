@@ -2,7 +2,7 @@
   <div class="title">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item v-for="(item,index) in navArr" :key="index" class="nextMenu">{{item}}</el-breadcrumb-item>
+      <el-breadcrumb-item :style="`${item.url?'cursor:pointer':''}`" v-for="(item,index) in navArr" :to="item.url?{path:`/${item.url}`}:''" :key="index" class="nextMenu">{{item.title?item.title:item}}</el-breadcrumb-item>
     </el-breadcrumb>
   </div>
 </template>

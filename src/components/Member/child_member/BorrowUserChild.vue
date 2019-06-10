@@ -1,8 +1,7 @@
   <template>
   <el-container>
-    
     <el-header></el-header>
-        <!-- <el-row>
+    <!-- <el-row>
 <el-col :span="8">
         <div class="grid-content bg-purple"></div>
       </el-col>
@@ -19,7 +18,7 @@
       <el-col :span="2">
         <div class="grid-content bg-purple-light"></div>
       </el-col>
-      </el-row> -->
+    </el-row>-->
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
@@ -27,13 +26,13 @@
       <el-col :span="2">
         <div class="grid-content bg-purple-light">状态</div>
       </el-col>
-    <el-col :span="6">
-        <div class="grid-content bg-purple"  @change="radioFun1">
+      <el-col :span="6">
+        <div class="grid-content bg-purple" @change="radioFun1">
           <el-radio v-model="radio" label="1">锁定</el-radio>
           <el-radio v-model="radio" label="2">正常</el-radio>
         </div>
       </el-col>
-      </el-row>
+    </el-row>
     <el-row>
       <el-col :span="24">
         <!-- <div class="grid-content bg-purple-dark">基本信息</div> -->
@@ -48,7 +47,7 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <el-input v-model="input1" label="" v-if="disabled" placeholder="请输入内容"></el-input>
+          <el-input v-model="datas.id" label="" v-if="disabled" placeholder="请输入内容"></el-input>
         </div>
       </el-col>
     </el-row>
@@ -61,12 +60,10 @@
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <el-input v-model="input1" label="" v-if="disabled" placeholder="请输入内容"></el-input>
+          <el-input v-model="datas.phone" label="" v-if="disabled" placeholder="请输入内容"></el-input>
         </div>
       </el-col>
     </el-row>
-
-
 
     <el-row>
       <el-col :span="8">
@@ -78,14 +75,13 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input2"  v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.username"  v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
-      
     </el-row>
     <el-row>
-<el-col :span="8">
+      <el-col :span="8">
         <div class="grid-content bg-purple-light"></div>
       </el-col>
       <el-col :span="2">
@@ -94,29 +90,28 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input3" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.register_time" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
-      </el-row>
+    </el-row>
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
       </el-col>
       <el-col :span="2">
-        <div class="grid-content bg-purple-light">最近</div>
+        <div class="grid-content bg-purple-light">最近登录</div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input4" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.login_time" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
-      
     </el-row>
     <el-row>
-<el-col :span="8">
+      <el-col :span="8">
         <div class="grid-content bg-purple-light"></div>
       </el-col>
       <el-col :span="2">
@@ -125,17 +120,16 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="input5" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.description" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
-      </el-row>
+    </el-row>
     <el-row>
       <el-col :span="24">
         <!-- <div class="grid-content bg-purple-dark">操作</div> -->
       </el-col>
     </el-row>
-  
 
     <!-- <el-row>
       <el-col :span="8">
@@ -149,18 +143,23 @@
           <el-input type="textarea" :rows="3" v-if="disabled" placeholder="请输入内容" v-model="textarea"></el-input>
         </div>
       </el-col>
-    </el-row> -->
-<el-row>
-  </el-row>
+    </el-row>-->
+    <el-row></el-row>
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple"></div>
       </el-col>
       <el-col :span="4">
-        <div class="grid-content bg-purple-light"><el-button type="primary" @click="open2">保存修改</el-button></div>
+        <div class="grid-content bg-purple-light">
+          <el-button type="primary" @click="open2">保存修改</el-button>
+        </div>
       </el-col>
       <el-col :span="3">
-        <div class="grid-content bg-purple"><el-button><router-link to="/BorrowUserHome" @click="Pathto">返回</router-link></el-button></div>
+        <div class="grid-content bg-purple">
+          <el-button>
+            <router-link to="/BorrowUserHome" @click="Pathto">返回</router-link>
+          </el-button>
+        </div>
       </el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light"></div>
@@ -171,17 +170,16 @@
 
 <script>
 export default {
-
   name: "BorrowUserChild",
   components: {},
 
   created(){
-    this.datasthis.$route.params
-
+    this.datas=this.$route.params
+console.log(this.datas)
   },
   data() {
     return {
-
+      name:'datas.username',
       datas:"",
       input1: "",
       input2: "",
@@ -193,7 +191,7 @@ export default {
       radio: "2",
       radio1: "2",
       textarea: "",
-      disabled:"false"
+      disabled: "false"
     };
   },
       methods: {
@@ -217,7 +215,12 @@ export default {
             })
             .then(
                 () => {
+                  // get在浏览器上输入地址能直接显示，post则不直接显示
+                  this.Axios.get("http://172.16.6.60:8080/member/borrow/members",{
+                    name:'username'
+                  });
                     this.$message({
+                        
                         type: 'success',
                         message: '保存成功!'
                     });
@@ -234,8 +237,8 @@ export default {
             this.$router.push('/InvUser')   
         }
     }
+  }
 
-};
 </script>
 
 <style scoped>

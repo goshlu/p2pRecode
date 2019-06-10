@@ -1,29 +1,53 @@
+
 <template>
   <div>
     <Title :navArr="navArr"/>
+
+    <!-- 选择和添加 -->
     <div class="add">
-      <el-button class="add_mess" @click="up_date(1)" type="primary">添加信息</el-button>
-      <el-button class="add_mess" type="danger" @click="delete_All([refund_type[0], refund_type[1]])">删除信息</el-button>
+      <div class="block">
+        <el-cascader
+          v-model="lianji"
+          :options="options"
+          :props="{ expandTrigger: 'hover' }"
+          @change="handleChange"
+        ></el-cascader>
+      </div>
+
+      <!-- 操作 -->
+      <div>
+        <el-button class="add_mess" @click="AddMessage(1)" type="primary">添加信息</el-button>
+        <el-button class="add_mess" type="danger">删除信息</el-button>
+      </div>
     </div>
-    <div>
-      <el-table :data="refund_type"  ref="multipleTable" style="width: 100%">
+
+    <!-- 表 -->
+    <div class="table">
+      <el-table
+        :data="refund_type"
+        ref="multipleTable"
+        style="width: 100%"
+        :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5'}"
+      >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="id" label="id" width="180"></el-table-column>
-        <el-table-column prop="url" label="url" width="180"></el-table-column>
+        <!--  ==============================================================================这里URL绑定有点儿问题,表格双向绑定未解决 -->
+        <el-table-column label="Url" width="180">{{All_Url}}</el-table-column>
         <el-table-column prop="name" label="名称" width="180"></el-table-column>
         <el-table-column prop="description" label="描述"></el-table-column>
         <el-table-column prop="status" label="是否可用"></el-table-column>
+
         <!-- 操作 -->
         <el-table-column fixed="right" label="操作" width="200">
           <template slot-scope="scope" style="display:flex">
             <el-button
-              @click="up_date(2,scope.row)"
+              @click="AddMessage(2,scope.row)"
               type="primary"
               icon="el-icon-edit"
               size="mini"
             >编辑</el-button>
             <el-button
-              @click="delet(scope.row,scope.index)"
+              @click="delet(scope.row,scope.$index)"
               type="danger"
               icon="el-icon-delete"
               size="mini"
@@ -32,37 +56,17 @@
         </el-table-column>
       </el-table>
     </div>
-    <!-- 添加 -->
-    <div class="roter_view">
-      <router-view></router-view>
-    </div>
 
-    <!-- 显示隐藏 -->
+    <!-- 编辑框显示/隐藏 -->
 
     <div v-show="isShow" class="view">
       <h4 class="view_title">修改/添加</h4>
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="类型">
-          <el-select v-model="form.addListValue" placeholder="请选择添加类型">
-            <el-option
-              v-for="(item,index) in addList"
-              :key="index"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+      <el-form ref="form" :model="DJ_value" label-width="80px">
         <el-form-item label="名称">
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model="DJ_value.name"></el-input>
         </el-form-item>
         <el-form-item label="描述">
-          <el-input type="textarea" v-model="form.desc"></el-input>
-        </el-form-item>
-
-        <el-form-item label="是否可用">
-          <el-radio-group v-model="form.statusValue">
-            <el-radio v-for="(item,i) in statusList" :key="i" :label="item.value">{{item.label}}</el-radio>
-          </el-radio-group>
+          <el-input type="textarea" v-model="DJ_value.description"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -71,15 +75,13 @@
       </el-form>
     </div>
 
-    <!--  -->
-
     <!-- 分页 -->
     <div class="footer">
       <div class="el-input__inner el-input--mini footer_num">共{{this.total}}条</div>
       <el-pagination
         background
         layout="sizes,prev, pager, next"
-        :page-sizes="[5, 8, 10, 20, 50]"
+        :page-sizes="[10, 20, 50]"
         :page-size="pagesize"
         :current-page="currentPage"
         @size-change="handleSizeChange"
@@ -90,418 +92,517 @@
   </div>
 </template>
 
-
-
 <script>
-  import Title from "./../commonComponents/headerTitle";
-  export default {
-    name:'config',
-    components: {
-      Title,
-    },
-    data() {
-      return {
-        // show
-        navArr:['系统设置','系统设置'],
-        isShow: false,
-        whatOperate: -1,
-        addList: [
-          // refund_type 还款类型 /borrow/refund/type
-          // borrow_type 借款类型 /borrow/type
-          // element_status 竞标状态 /borrow/element/status
-          // element_type 竞标类型 /borrow/element/type
-          // investment_channel 投资方式 /investment/channel
-          // eatnings_type 收益方式 /eatnings/type
-          // investment_type 投资状态 /investment/type
-          // overdue 逾期状态 /overdue/status
-          // collateral_type 担保类型 /collateral/type
-          // rate_type 起息方式 /rate/type
-          // use_fund_type 资金用途 /member/use/funds/type
-          // refund_source 还款来源 /refund/source
-          // risk_type 风险等级 /risk/type
-          // element_type 标类型 /borrow/element
-          // increament_fund_type 金额递增 /increament/fund/type
-          // public_tips_type 宣传标签 /borrow/public/tips/type
-          // put_way_type 上架渠道 /borrow/put/way/type
-          // account_status 账户状态 /account/status
-          // creadit_level 信用评级 /member/credit/level
-          // registered_source 注册来源 /member/registered/source
-          // pay_type 充值方式 /account/pay/type
-          // audit 审核 /borrow/element/audit
-
-          { label: "还款类型", value: 0 },
-          { label: "借款类型", value: 1 },
-          { label: "竞标状态", value: 2 },
-          { label: "竞标类型", value: 3 },
-          { label: "投资方式", value: 4 },
-          { label: "收益方式", value: 5 },
-          { label: "投资状态", value: 6 },
-          { label: "逾期状态", value: 7 },
-          { label: "担保类型", value: 8 },
-          { label: "起息方式", value: 9 },
-          { label: "资金用途", value: 10 },
-          { label: "还款来源", value: 11 },
-          { label: "风险等级", value: 12 },
-          { label: "标类型", value: 13 },
-          { label: "金额递增", value: 14 },
-          { label: "宣传标签", value: 15 },
-          { label: "上架渠道", value: 16 },
-          { label: "账户状态", value: 17 },
-          { label: "信用评级", value: 18 },
-          { label: "注册来源", value: 19 },
-          { label: "充值方式", value: 20 },
-          { label: "审核", value: 21 }
-        ],
-
-        statusList: [{ label: "可用", value: 0 }, { label: "不可用", value: 1 }],
-        form: {
-          id: "",
-          addListValue: "",
-          statusValue: "",
-          name: "",
-          desc: ""
+// 引入组件--title
+import Title from "./../commonComponents/headerTitle";
+export default {
+  name: "config_view",
+  components: {
+    Title
+  },
+  data() {
+    return {
+      host_url: "", //==============================================更改主机地址
+      // 标题导航
+      navArr: ["系统设置", "系统设置"],
+      // 联动菜单
+      lianji: [],
+      options: [
+        {
+          value: "1",
+          label: "借贷配置",
+          children: [
+            {
+              value: "a1",
+              label: "借款类型"
+            },
+            {
+              value: "a2",
+              label: "担保类型"
+            },
+            {
+              value: "a3",
+              label: "起息方式"
+            },
+            {
+              value: "a4",
+              label: "资金用途"
+            },
+            {
+              value: "a5",
+              label: "风险等级"
+            },
+            {
+              value: "a6",
+              label: "还款来源"
+            }
+          ]
         },
-
-        newArr: {
-          id: "",
-          type: "",
-          name: "",
-          description: "",
-          status: ""
+        {
+          value: "2",
+          label: "还款配置",
+          children: [
+            {
+              value: "b1",
+              label: "还款类型"
+            },
+            {
+              value: "b2",
+              label: "逾期状态"
+            },
+            {
+              value: "b3",
+              label: "还款来源"
+            }
+          ]
         },
-
-        // 还款类型
-        addMse: {
-          id: "",
-          name: "",
-          description: ""
+        {
+          value: "3",
+          label: "会员配置",
+          children: [
+            {
+              value: "c1",
+              label: "账户状态"
+            },
+            {
+              value: "c2",
+              label: "信用评级"
+            },
+            {
+              value: "c3",
+              label: "注册来源"
+            },
+            {
+              value: "c4",
+              label: "充值方式"
+            }
+          ]
         },
-        //   信息
-        refund_type: [
-          {
-            id: 1,
-            name: "100",
-            url: "/borrow/refund/type",
-            description: "aduyaldidkgjbhfslbjcsclsglccuilskcs;iukuil",
-            status: "1"
-          },
-          {
-            id: 2,
-            name: "200",
-            url: "/borrow/type",
-            description: "aduyaldidkgjbhfslbjcsclsglccuilskcs20000",
-            status: "0"
-          },
-          {
-            id: 3,
-            name: "300",
-            url: "/borrow/type",
-            description: "aduyaldidkgjbhfslbjcsclsglccuilskcs20000",
-            status: "0"
-          }
-        ],
-        total: 0,
-        currentPage: 1,
-        pagesize: 5,
-      };
-    },
+        {
+          value: "4",
+          label: "标信息配置",
+          children: [
+            {
+              value: "d1",
+              label: "竞标状态"
+            },
+            {
+              value: "d2",
+              label: "竞标类型"
+            },
+            {
+              value: "d3",
+              label: "投资方式"
+            },
+            {
+              value: "d4",
+              label: "收益方式"
+            },
+            {
+              value: "d5",
+              label: "投资状态"
+            },
+            {
+              value: "d6",
+              label: "标类型"
+            },
+            {
+              value: "d7",
+              label: "金额递增"
+            },
+            {
+              value: "d8",
+              label: "宣传标签"
+            },
+            {
+              value: "d9",
+              label: "上架渠道"
+            },
+            {
+              value: "d10",
+              label: "审核"
+            }
+          ]
+        }
+      ],
 
+      // 真实数据
+      refund_type: [
+        {
+          id: 1,
+          name: "100",
+          url: "/borrow/refund/type",
+          description: "aduyaldidkgjbhfslbjcsclsglccuilskcs;iukuil",
+          status: "1"
+        },
+        {
+          id: 2,
+          name: "200",
+          url: "/borrow/type",
+          description: "aduyaldidkgjbhfslbjcsclsglccuilskcs20000",
+          status: "0"
+        },
+        {
+          id: 3,
+          name: "300",
+          url: "/borrow/type",
+          description: "aduyaldidkgjbhfslbjcsclsglccuilskcs20000",
+          status: "0"
+        }
+      ],
 
+      //   显示隐藏
+      isShow: false,
 
-    //   shuju
-    created() {
-      this.Axios({
-        methods: "get",
-        url: "http://172.16.6.64:8080/borrow/element/audit"
-      }).then(res => {
-        console.log(res);
-        this.refund_type = res.data.data;
+      //添加 编辑 数据绑定
+      form: {
+        // id: "",
+        type: "",
+        name: "",
+        description: "",
+        status: ""
+      },
+      // 暂存状态和数据
+      Dj_status: "",
+      DJ_value: "",
+      rows: "",
+      All_Url: "/account/status",
+      total: 0,
+      currentPage: 1,
+      pagesize: 5
+    };
+  },
+
+  // 加载默认请求账户状态数据
+  created() {
+    this.Axios.get(`http://${host_url}/account/status`).then(respon => {
+      this.refund_type = respon.data.data;
+    });
+  },
+
+  methods: {
+    //判断选择哪一个，拿出url
+    handleChange(value) {
+      let PAGE_url;
+      switch (value[1]) {
+        case "a1":
+          PAGE_url = "/borrow/type";
+          break;
+        case "a2":
+          PAGE_url = "/collateral/type";
+          break;
+        case "a3":
+          PAGE_url = "/rate/type";
+          break;
+        case "a4":
+          PAGE_url = "/member/use/funds/type";
+          break;
+        case "a5":
+          PAGE_url = "/risk/type";
+          break;
+        case "a6":
+          PAGE_url = "/refund/source";
+          break;
+
+        //   b
+        case "b1":
+          PAGE_url = "/borrow/refund/type";
+          break;
+        case "b2":
+          PAGE_url = "/overdue/status";
+          break;
+        case "b3":
+          PAGE_url = "/refund/source";
+          break;
+
+        //   c
+        case "c1":
+          PAGE_url = "/account/status";
+          break;
+        case "c2":
+          PAGE_url = "/member/credit/level";
+          break;
+        case "c3":
+          PAGE_url = "/member/registered/source";
+          break;
+        case "c4":
+          PAGE_url = "/account/pay/type";
+          break;
+
+        //   d
+        case "d1":
+          PAGE_url = "/borrow/element/status";
+          break;
+        case "d2":
+          PAGE_url = "/borrow/element/type";
+          break;
+        case "d3":
+          PAGE_url = "/investment/channel";
+          break;
+        case "d4":
+          PAGE_url = "/eatnings/type";
+          break;
+        case "d5":
+          PAGE_url = "/investment/type";
+          break;
+        case "d6":
+          PAGE_url = "/borrow/element";
+          break;
+        case "d7":
+          PAGE_url = "/increament/fund/type";
+          break;
+        case "d8":
+          PAGE_url = "/borrow/public/tips/type";
+          break;
+        case "d9":
+          PAGE_url = "/borrow/put/way/type";
+          break;
+        case "d10":
+          PAGE_url = "/borrow/element/audit";
+          break;
+      }
+      this.All_Url = PAGE_url;
+
+      this.Axios.get(`http://${host_url}${this.All_Url}`).then(respon => {
+        this.refund_type = respon.data.data;
       });
     },
 
-
-    //方法
-    methods: {
-
-
-      up_date(whatOperate, row) {
-        this.isShow = true;
-        this.whatOperate = whatOperate;
-        //   this.form.id = row.id;
-        if (whatOperate === 2) {
-          // 更新
-          this.form.addListValue = row.type;
-          this.form.statusValue = Number(row.status);
-          this.form.name = row.name;
-          this.form.desc = row.description;
-          //   需要传的值
-          let up_message = {
-            id: row.id,
-            name: this.form.name,
-            description: this.form.desc
-          };
-          console.log("edit");
-        } else if (whatOperate === 1) {
-          // add的值
-          //添加
-          console.log("add");
+    // 添加 和编辑判断
+    AddMessage(index, row) {
+      console.log(index, row);
+      //   点击添加?编辑判断
+      let obj = {};
+      if (index == 1) {
+        console.log("进入添加(if)分支,下一步调用新增函数");
+      } else if (index == 2) {
+        console.log("进入编辑(else if)分支,下一步调用编辑函数");
+        for (let key in row) {
+          obj[key] = row[key];
         }
-      },
-
-
-      // 类型检查
-
-      // 删除
-      delet(row, index) {
-        this.newArr.id = row.id;
-        this.newArr.name = this.form.name;
-        this.newArr.description = this.form.desc;
-        this.newArr.type = this.form.addListValue;
-        this.newArr.status = this.form.statusValue;
-        // 是否确定删除
-        this.$confirm("你确定需要删除次条记录，这将永久删除？", "删除信息", {
-          distinguishCancelAndClose: true,
-          confirmButtonText: "保存",
-          cancelButtonText: "保留"
-        })
-          .then(() => {
-            this.$message({
-              showClose: true,
-              type: "success",
-              message: "删除成功，不能再次恢复了哦"
-            });
-            /* 本地测试的删除
-          ==========================================
-              this.refund_type.splice(this.newArr.id, 1);
-          */
-            this.refund_type.splice(index, 1);
-            console.log(index);
-            // 请求成功确认后删除;
-            this.Axios.delete(
-              "http://172.16.6.64:8080/borrow/element/audit/" + this.newArr.id
-            )
-              .then(res => {
-                console.log(res);
-
-                /* 这里判断返回值，是否删除
-                ==========================================
-                 if (res.msg == 200) {
-                   this.refund_type.splice(this.newArr.id, 1);
-                 }
-                 */
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          })
-          .catch(action => {
-            this.$message({
-              type: "info",
-              message: action === "cancel" ? "我舍不得删除" : "停留在当前页面"
-            });
-          });
-      },
-
-      // 添加和编辑提交
-      onSubmit() {
-        console.log(this.whatOperate);
-        if (this.whatOperate === 1) {
-          this.onAdd();
-        } else if (this.whatOperate === 2) {
-          this.onEdit();
-        }
-      },
-
-      //添加方式
-      onAdd() {
-        this.newArr.id = this.form.id;
-        this.newArr.name = this.form.name;
-        this.newArr.description = this.form.desc;
-        this.newArr.status = this.form.statusValue;
-
-        if (this.newArr.name != "") {
-          //   存储需要提交的值
-          let postList = {
-            name: this.newArr.name,
-            description: this.newArr.description
-          };
-
-          let MAN =
-            "您正在添加一条数据，提交信息为 名称：" +
-            postList.name +
-            "的数据, 是否继续?";
-
-          // 确人是否提交
-          this.$confirm(MAN, "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-            .then(() => {
-              this.$message({
-                type: "success",
-                message: "提交成功!"
-              });
-
-              // 确定后使用axios post提交到服务端
-              this.Axios.post(
-                "http://172.16.6.64:8080/borrow/element/audit",
-                postList
-              )
-                .then(function(res) {
-                  console.log(res);
-                })
-                // 提交错误
-                .catch(function(err) {
-                  console.log(err);
-                });
-            })
-            // 取消提交
-            .catch(() => {
-              this.$message({
-                type: "info",
-                message: "已取消"
-              });
-
-              // 清空
-              this.form.id = null;
-              this.form.name = null;
-              this.form.desc = null;
-              this.form.addListValue = null;
-              this.form.statusValue = null;
-            });
-        } else {
-          this.$message({
-            showClose: true,
-            message: "添加数据的 名称 不能为空",
-            type: "error"
-          });
-        }
-      },
-
-      // 编辑方法
-      onEdit() {
-        this.newArr.id = this.form.id;
-        this.newArr.name = this.form.name;
-        this.newArr.description = this.form.desc;
-        this.newArr.type = this.form.addListValue;
-        this.newArr.status = this.form.statusValue;
-
-        let put_mes = {
-          id: this.newArr.id,
-          name: this.newArr.name,
-          description: this.newArr.description
-        };
-
-
-
-        //   编辑
-        this.Axios.put("http://172.16.6.64:8080/borrow/element/audit", put_mes, {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }).then(res => {
-          console.log(res);
-          // 清空
-          this.form.id = null;
-          this.form.name = null;
-          this.form.desc = null;
-          this.form.addListValue = null;
-          this.form.statusValue = null;
-        });
-      },
-
-      // 关闭方法
-      close() {
-        this.isShow = false;
-        this.$message('取消操作');
-        //   清空
-        this.form.id = null;
-        this.form.name = null;
-        this.form.desc = null;
-        this.form.addListValue = null;
-        this.form.statusValue = null;
-      },
-
-      //分页方法
-      current_change: function(currentPage) {
-        this.currentPage = currentPage;
-      },
-      handleSizeChange(pagesize) {
-        this.pagesize = pagesize;
-      },
-
-      // 删除所有or选择删除 的方法
-      delete_All(rows) {
-        console.log(rows)
-        if (rows) {
-          rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
-        } else {
-          this.$refs.multipleTable.clearSelection();
-        }
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
+        this.form = obj;
+        this.rows = row;
       }
-    }
+      this.isShow = true;
+      //  暂时存起来
+      this.Dj_status = index;
+      this.DJ_value = obj;
+    },
 
-  };
+    // 点击提交按钮，判断执行添加还是编辑
+    onSubmit() {
+      //   询问是否提交;
+      this.$confirm("此操作将永久提交该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          console.log("确认提交信息,正在判断你是提交还是编辑");
+
+          if (this.Dj_status == 1) {
+            console.log("提交信息");
+            // 执行提交信息
+            this.onNewMessage();
+          } else if (this.Dj_status == 2) {
+            console.log("编辑信息");
+            // 进入编辑信息
+            this.onEditMessage();
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "您,已取消提交"
+          });
+        });
+    },
+
+    // 新增信息模块
+    onNewMessage() {
+      console.log("调用新增函数成功,进行添加操作");
+      if (this.DJ_value.name != "") {
+        console.log("名字不为空,正在执行submit提交函数");
+        // 提交
+        this.submit();
+      } else {
+        this.$message({
+          type: "error",
+          message: "名字不能为空,请重新提交"
+        });
+      }
+    },
+
+    //   编辑信息
+    onEditMessage() {
+      let eqal;
+      //   判断是否相同
+      for (var index in this.DJ_value) {
+        if (this.DJ_value[index] != this.rows[index]) {
+          eqal = true;
+          index++;
+        }
+      }
+      //
+      if (eqal) {
+        //   不相同执行提交函数
+        this.submit();
+      } else {
+        this.$message("你没有修改数据");
+      }
+    },
+
+    // 提交函数,地址还没有拼接
+    submit() {
+      console.log(`正在像${this.All_Url}提交信息`);
+      let postL, typeP, typeU, typeH; // 提交的数据
+      // 判断请求
+      if (this.Dj_status == 1) {
+        typeP = "post";
+        postL = {
+          name: this.form.name,
+          description: this.form.description
+        };
+        typeH = {
+          "Content-Type": "application/json"
+        };
+      } else if (this.Dj_status == 2) {
+        //   put请求
+        typeP = "put";
+        postL = {
+          id: this.DJ_value.id,
+          name: this.form.name,
+          description: this.form.description
+        };
+        typeH = {
+          "Content-Type": "application/x-www-form-urlencoded"
+        };
+      }
+
+      //   Axios请求
+      this.Axios({
+        method: typeP,
+        url: `http://http://主机地址${this.All_Url}`, //=============================== 更改 主机地址
+        data: postL,
+        heaers: typeH
+      })
+        .then(res => {
+          console.log(`提交数据了,我看看状态码为:${res.status}`);
+
+          this.isShow = false;
+          if (res.status == 200) {
+            this.Axios.get(`http://http://主机地址${this.All_Url}`).then(
+              resp => {
+                //   ===========sssssssss======================================= 更改 主机地址
+                this.refund_type = resp.data.data;
+              }
+            );
+          }
+        })
+        .catch(err => {
+          console.log(`提交出现了错误,错误为:${err}`);
+        });
+    },
+
+    delet(row, index) {
+      // 是否确定删除
+      this.$confirm("你确定需要删除次条记录，这将永久删除？", "删除信息", {
+        distinguishCancelAndClose: true,
+        confirmButtonText: "保存",
+        cancelButtonText: "保留"
+      }).then(() => {
+        this.$message({
+          showClose: true,
+          type: "success",
+          message: "删除成功，不能再次恢复了哦"
+        });
+        // 这是本地删除了
+        this.refund_type.splice(index, 1);
+
+        // 请求成功确认后删除;
+        this.Axios.delete(
+          `http://http://${host_url}${this.All_Url}/${row.id}`
+        ).then(res => {
+          if (res.status == 200) {
+            this.Axios.get(`http://${host_url}${this.All_Url}`).then(res => {
+              this.refund_type = res.data.data;
+            });
+          }
+        });
+      });
+    },
+
+    // 取消提交
+    close() {
+      this.isShow = false;
+    },
+
+    // 分页
+    current_change: function(currentPage) {
+      this.currentPage = currentPage;
+    },
+    handleSizeChange(pagesize) {
+      this.pagesize = pagesize;
+    }
+  }
+};
 </script>
 
 
-
-
 <style lang="less" scoped>
-  .view {
-    //   border: 1px red solid;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    width: 30vw;
-    padding: 3vw 5vw 3vw 2vw;
-    position: absolute;
-    background: white;
-    .view_title {
-      margin: 0px 0 30px 30px;
-      color: rgb(64, 158, 255);
-      font-weight: normal;
-    }
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.table {
+  margin: 0 20px;
+}
+.view {
+  //   border: 1px red solid;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 30vw;
+  padding: 3vw 5vw 3vw 2vw;
+  position: absolute;
+  background: white;
+  .view_title {
+    margin: 0px 0 30px 30px;
+    color: rgb(64, 158, 255);
+    font-weight: normal;
   }
-  .add {
-    display: flex;
-    justify-content: flex-end;
-    margin: 20px
-  }
-  .refund_type {
-    display: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.add {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+.refund_type {
+  display: flex;
 
-    .refund_mess {
-      padding: 10px 20px;
-      border: 1px black solid;
-    }
-    .operation {
-      padding: 2px 4px;
-      width: 50px;
-      height: 20px;
-      font-size: 12px;
-    }
+  .refund_mess {
+    padding: 10px 20px;
+    border: 1px black solid;
   }
-  .footer {
-    display: flex;
-    justify-content: space-between;
-    margin: 30px 20px 50px 20px;
-    .footer_num {
-      width: 100px;
-      height: 28px;
-      text-align: center;
-      line-height: 28px;
-      margin-left: 20px;
-    }
+  .operation {
+    padding: 2px 4px;
+    width: 50px;
+    height: 20px;
+    font-size: 12px;
   }
+}
+.footer {
+  //   position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 20px 0px 20px;
+  padding-bottom: 30px;
+  //   z-index: 100;
+  .footer_num {
+    width: 100px;
+    height: 28px;
+    text-align: center;
+    line-height: 28px;
+    margin-left: 20px;
+  }
+}
 </style>
-
 
