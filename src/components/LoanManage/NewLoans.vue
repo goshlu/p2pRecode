@@ -337,6 +337,7 @@
 
             //请求新标维护数据列表
             this.reqDataModule1();
+            this.$router.push({name:'Stence'})
           })
           .catch(err => {
             console.log(err);
@@ -376,6 +377,7 @@
 
             //请求新标维护数据列表
             this.reqDataModule1();
+            this.$router.push({name:'Stence'})
           })
           .catch(err => {
             console.log(err);
