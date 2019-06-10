@@ -1,9 +1,10 @@
 <template>
   <div>
-    <h2>还款记录</h2>
+    <Title :navArr="navArr"/>
+    <!-- <h2>还款记录</h2> -->
     <RepaymentToolbar :search="search"/>
     <RepaymentTable :data="tableData" :loading="loading"/>
-    <RepaymentPage />
+    <RepaymentPage :count="count" :search="search"/>
   </div>
 </template>
 
@@ -25,7 +26,8 @@ body{
 <script>
 import RepaymentTable from "./components/RepaymentHistoryTable";
 import RepaymentToolbar from "./components/RepaymentHistoryToolbar";
-import RepaymentPage from "./components/RepaymentHistoryPage";
+import RepaymentPage from "../common/RepaymentPage";
+import Title from './../../commonComponents/headerTitle';
 import { fetchRest } from "@/api";
 
 export default {
@@ -33,10 +35,14 @@ export default {
     return {
        search:{
         name:"",
-        state:""
+        state:"",
+        page:0,
+        limit:10
       },
       loading:false,
-      tableData: []
+      tableData: [],
+      navArr: ["还款管理", "还款记录"],
+      count:0,
     };
   },
   watch: {
@@ -50,10 +56,12 @@ export default {
     async fetchData() {
       this.loading = true;
       try {
-        const { data } = await fetchRest();
-        this.tableData = data;
+        const { data,count } = await fetchRest();
+        this.tableData = data;//获取到的数据 count
+        console.log(this.tableData);
       } catch (error) {
         // ...处理错误
+        console.log(error);
       }
       this.loading = false;
     }
@@ -61,7 +69,8 @@ export default {
   components: {
     RepaymentTable,
     RepaymentToolbar,
-    RepaymentPage
+    RepaymentPage,
+    Title
   }
 };
 </script>
