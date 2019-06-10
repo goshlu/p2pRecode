@@ -95,7 +95,7 @@ export default {
         textarea: '',
     }
   },
-  props:["title","id"],
+  props:["title","detail"],
   methods: {
     cancle(){
       this.$emit("datailCancle",false);
