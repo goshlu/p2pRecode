@@ -379,15 +379,24 @@ const router = new Router({
         component: () => import('@/components/Member/InvUser.vue'),
 
         children: [{
+            meta: {
+              isLogin: true
+            },
             path: '/InvUserChildren1',
             name: 'InvUserChildren1',
             component: () => import('@/components/Member/InvUserChild1.vue'),
           }, {
+            meta: {
+              isLogin: true
+            },
             path: '/inv_update01',
             name: 'inv_update01',
             component: () => import('@/components/Member/child_member/inv_update01.vue'),
           },
           {
+            meta: {
+              isLogin: true
+            },
             path: '/inv_pwd',
             name: 'inv_pwd',
             component: () => import('@/components/Member/child_member/inv_pwd.vue')
@@ -472,13 +481,14 @@ router.beforeEach(
   (to, from, next) => {
 
     // next()
-    if(false){
+    if(sessionStorage.getItem('userId')){
       next()
     }else{
       if(to.meta.isLogin){
-        next({
-          path: "/Login"
-        });
+        // next({
+        //   path: "/Login"
+        // });
+        next();
       }else{
         next();
       }
