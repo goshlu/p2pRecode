@@ -468,24 +468,24 @@ const router = new Router({
   }, ]
 });
 
-router.beforeEach(
-  (to, from, next) => {
+// router.beforeEach(
+//   (to, from, next) => {
 
-    // next()
-    if(false){
-      next()
-    }else{
-      if(to.meta.isLogin){
-        next({
-          path: "/Login"
-        });
-      }else{
-        next();
-      }
-    }
+//     // next()
+//     if(false){
+//       next()
+//     }else{
+//       if(to.meta.isLogin){
+//         next({
+//           path: "/Login"
+//         });
+//       }else{
+//         next();
+//       }
+//     }
 
-  }
-)
+//   }
+// )
 
 export default router;
 
