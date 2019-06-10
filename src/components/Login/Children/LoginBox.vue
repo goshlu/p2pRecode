@@ -44,7 +44,13 @@ export default {
                 // console.log(this.userName);
                 // console.log(this.userPassword);
                 if(this.userName==="admin"&&this.userPassword==="123"&&this.loginDone){
-                    this.$router.push('/Home');
+                    // this.$router.push('/Home');
+                    this.Axios.get("?").then(
+                        res => {
+                            console.log(res.data);
+                            this.$router.push('/Home');
+                        }
+                    ).catch()
                 }else{
                     alert('用户名或者密码错误！');
                     this.userName="";
