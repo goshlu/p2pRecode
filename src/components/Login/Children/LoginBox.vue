@@ -49,15 +49,32 @@ export default {
                 // console.log(this.userPassword);
                 if(true){
                     // this.$router.push('/Home');
-                    this.Axios.get("http://172.16.6.72:8080/admin/login?username=郑光&password=123").then(
+                    this.Axios.get(`http://172.16.6.72:8080/admin/login?username=${this.userName}&password=${this.userPassword}`).then(
                         res => {
                             console.log(res.data);
                             sessionStorage.setItem('token',res.data.token);
                             sessionStorage.setItem('userId',res.data.admin.idCard);
+                            sessionStorage.setItem('menu',res.data.menu);
                             this.doUpdateNavData(res.data.menu);
                             this.$router.push('/Home');
                         }
                     ).catch()
+                    // this.AXIOS(`admin/login?username=${this.userName}&password=${this.userPassword}`).then(
+                    //     res => {
+                    //         console.log(res.data);
+                    //         sessionStorage.setItem('token',res.data.token);
+                    //         sessionStorage.setItem('userId',res.data.admin.idCard);
+                    //         this.doUpdateNavData(res.data.menu);
+                    //         this.$router.push('/Home');
+                    //     }
+                    // ).catch(
+                    //     error=>{
+                    //         alert('用户名或者密码错误！');
+                    //         this.userName="";
+                    //         this.userPassword="";
+                    //         this.seedRight = "265px";
+                    //     }
+                    // )
                 }else{
                     alert('用户名或者密码错误！');
                     this.userName="";

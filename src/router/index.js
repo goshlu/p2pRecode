@@ -477,7 +477,8 @@ router.beforeEach(
     }else{
       if(to.meta.isLogin){
         next({
-          path: "/Login"
+          // path: "/Login"
+          next();
         });
       }else{
         next();

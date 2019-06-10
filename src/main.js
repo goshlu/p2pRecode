@@ -19,26 +19,28 @@ for (let key in filter) {
 Vue.use(elementUi);
 //定义全局axios实例
 import axios from 'axios';
+axios.defaults.baseURL = 'https://172.16.6.72:8080/';
+Vue.prototype.AXIOS = axios;
 Vue.prototype.Axios = axios;
-// this.Axios.defaults.headers.common['token'] = sessionStorage.getItem('token');
-// this.Axios.interceptors.request.use(function (config) {
-//   // 在发送请求之前做些什么
-//   headers: {token:sessionStorage.getItem('token')}
-//   return config;
-// }, function (error) {
-//   // 对请求错误做些什么
-//   return Promise.reject(error);
-// });
+axios.interceptors.request.use(function (config) {
+  // 在发送请求之前做些什么
+  config.headers.token = sessionStorage.getItem('token');
+  return config;
 
-Vue.prototype.AXIOS = axios.create(
-  {
-    baseURL: 'https://172.16.6.72:8080/',
-    // timeout: 1000,
-    headers: {
-      'tokenb': sessionStorage.getItem('token')
-    }
-  }
-);
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error);
+});
+
+// Vue.prototype.AXIOS = axios.create(
+//   {
+//     baseURL: 'https://172.16.6.72:8080/',
+//     // timeout: 1000,
+//     headers: {
+//       'token': sessionStorage.getItem('token')
+//     }
+//   }
+// );
 
 Vue.config.productionTip = false;
 

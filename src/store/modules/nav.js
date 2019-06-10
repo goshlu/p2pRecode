@@ -1,6 +1,6 @@
 const navStore = {
   state:{
-    navData:[],
+    navData: sessionStorage.getItem("menu") ? sessionStorage.getItem("menu"):[],
   },
   getters:{
     getNavData(state){
