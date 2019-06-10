@@ -1,8 +1,7 @@
 <template>
   <div style="margin-top: 15px; display: inline-block;">
-    <!-- 充值方式 -->
     <p>方式筛选：</p>
-    <el-select v-model="modeSel" placeholder="请选择" class="selectWidth">
+    <el-select v-model="modeSel" placeholder="请选择">
       <el-option v-for="item in modeOpt" :key="item.value" :label="item.label" :value="item.value"></el-option>
     </el-select>
   </div>
