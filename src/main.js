@@ -19,7 +19,7 @@ for (let key in filter) {
 Vue.use(elementUi);
 //定义全局axios实例
 import axios from 'axios';
-axios.defaults.baseURL = 'https://172.16.6.72:8080/';
+axios.defaults.baseURL = 'http://172.16.6.72:8080/';
 Vue.prototype.AXIOS = axios;
 Vue.prototype.Axios = axios;
 axios.interceptors.request.use(function (config) {

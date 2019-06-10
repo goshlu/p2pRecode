@@ -26,7 +26,7 @@ export const fetchInv = () => request("/Inv").then(res => res.data.datas);
 export const fetchNav = "p2pMenu";
 // export const powerMaZiYuan = "/resource/info"
 
-export const bumenApi = 'admin/group';
+export const bumen = 'admin/group';
 export const gongneng = 'autority/info';
 export const juese = 'role/info';
 export const yuangong = 'admin/info';

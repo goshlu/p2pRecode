@@ -55,7 +55,7 @@ export default {
                             sessionStorage.setItem('token',res.data.token);
                             sessionStorage.setItem('userId',res.data.admin.idCard);
                             sessionStorage.setItem('menu',res.data.menu);
-                            this.doUpdateNavData(res.data.menu);
+                            // this.doUpdateNavData(res.data.menu);
                             this.$router.push('/Home');
                         }
                     ).catch()
