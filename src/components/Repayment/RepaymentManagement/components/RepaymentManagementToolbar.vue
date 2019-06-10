@@ -4,13 +4,13 @@
     <div style="padding: 10px 0px">
       <el-input placeholder="请输入内容"
       prefix-icon="el-icon-search"
-      v-model="memberName" 
+      v-model="search.memberName" 
       class="input-with-select">
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
-      <el-select v-model="status">
+      <el-select v-model="search.status">
           <el-option label="是" value="1"></el-option>
-          <el-option label="否" value="0"></el-option>
+          <el-option label="否" value="2"></el-option>
         </el-select>
     </div>
     <!-- 选择状态 -->
@@ -46,7 +46,7 @@ body{
 
 <script>
 export default {
-
+  props:["search"],
   data() {
     return {
       stateOptions: [{
@@ -64,9 +64,6 @@ export default {
       input2: '',
       select:'',
     };
-  },
-  methods: {
-      
-    }
+  }
 };
 </script>

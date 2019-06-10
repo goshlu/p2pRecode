@@ -1,26 +1,11 @@
 <template>
   <div>
     <Title :navArr="navArr"/>
-    <RepaymentToolbar />
+    <RepaymentToolbar :search="search"/>
     <RepaymentTable :data="tableData" :loading="loading"/>
     <RepaymentPage :count="count" :search="search"/>
   </div>
 </template>
-
-<style scope>
-h2{
-  color:#fff;
-  background-color: #006d75;
-  padding-left: 10px;
-  font-size: 24px;
-  line-height: 40px;
-}
-body{
-  padding: 0px;
-  margin: 0px;
-}
-</style>
-
 <script>
 import RepaymentTable from "./components/RepaymentManagementTable";
 import RepaymentToolbar from "./components/RepaymentManagementToolbar";
@@ -31,35 +16,34 @@ import { fetchRecode } from "@/api";
 export default {
   data() {
     return {
-       search:{
-        name:"",
-        state:"",
-        page:0,
-        limit:10
+      search:{
+        memberName:"",
+        status:"",
+        page:1,
+        limit:5
       },
       tableData: [],
       navArr: ["还款管理", "还款管理"],
-      count:0
+      count:0,
     };
   },
   watch: {
     search: {
       deep: true,
       immediate: true,
-      handler: "fetchData"
-    }
+      handler: "fetchData",
+    }//获取数据
   },
   methods: {
     async fetchData() {
       this.loading = true;
       try {
-        const { data } = await fetchRecode();
+        const { data,count } = await fetchRecode();
         this.tableData = data;
-        console.log(data);
       } catch (error) {
         // ...处理错误
         console.log(error);
-        console.log("无数据");
+    
       }
       this.loading = false;
     }
@@ -86,3 +70,17 @@ export default {
   }
 };
 </script>
+
+<style scope>
+h2{
+  color:#fff;
+  background-color: #006d75;
+  padding-left: 10px;
+  font-size: 24px;
+  line-height: 40px;
+}
+body{
+  padding: 0px;
+  margin: 0px;
+}
+</style>

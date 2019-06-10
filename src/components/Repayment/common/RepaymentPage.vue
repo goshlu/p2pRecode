@@ -3,9 +3,9 @@
     <p>共{{count}}条</p>
     <el-pagination
       background
-      :current-page.sync="search.page"
+      :current-page.sync="search.limit"
       :page-sizes="[100, 200, 300, 400]"
-      :page-size="search.limit"
+      :page-size="search.page"
       layout="sizes, total, prev, pager, next" jumper :total="count">
     </el-pagination>
   </div>
@@ -14,14 +14,6 @@
 <script>
   export default {
     props:["search","count"],
-    data() {
-      return {
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
-      };
-    }
   }
 </script>
 

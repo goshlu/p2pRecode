@@ -2,7 +2,7 @@
   <div>
     <Title :navArr="navArr"/>
     <!-- <h2>还款记录</h2> -->
-    <RepaymentToolbar :search="search"/>
+    <RepaymentToolbar @searchChange="DataChange" :search="search"/>
     <RepaymentTable :data="tableData" :loading="loading"/>
     <RepaymentPage :count="count" :search="search"/>
   </div>
@@ -33,10 +33,10 @@ import { fetchRest } from "@/api";
 export default {
   data() {
     return {
-       search:{
-        name:"",
-        state:"",
-        page:0,
+      search:{
+        memberName:"111",
+        status:"",
+        page:1,
         limit:10
       },
       loading:false,
@@ -53,12 +53,14 @@ export default {
     }
   },
   methods: {
+    DataChange(data){
+      console.log(data);
+    },
     async fetchData() {
       this.loading = true;
       try {
         const { data,count } = await fetchRest();
         this.tableData = data;//获取到的数据 count
-        console.log(this.tableData);
       } catch (error) {
         // ...处理错误
         console.log(error);
