@@ -59,13 +59,13 @@
       </div>
     </div>
     <div class="AlertBoxBox"  v-if="isShowDetailAlertBox">
-      <AlertBox @datailCancle="datailCancle" :detail="detailMe"/>
+      <AlertBox @detailOk="detailOk" @datailCancle="datailCancle" :detail="detailMe"/>
     </div>
     <div class="AlertBoxBox"  v-if="isShowAddNew">
-      <AddNew  @datailCancle="datailCancle"/>
+      <AddNew @detailOk="detailOk"  @datailCancle="datailCancle"/>
     </div>
     <div class="AlertBoxBox"  v-if="isShowDelete">
-      <Delete  @datailCancle="datailCancle" :id="deleteId"/>
+      <Delete @detailOk="detailOk"  @datailCancle="datailCancle" :id="deleteId"/>
     </div>
   </div>
 </template>
@@ -96,22 +96,24 @@
         currentPage: 1,
         limitArr:[5, 10, 15, 20],
         limit:5,
-        options: [{
-            value: '选项1',
-            label: '黄金糕'
-          }, {
-            value: '选项2',
-            label: '双皮奶'
-          }, {
-            value: '选项3',
-            label: '蚵仔煎'
-          }, {
-            value: '选项4',
-            label: '龙须面'
-          }, {
-            value: '选项5',
-            label: '北京烤鸭'
-          }],
+        options: [
+          // {
+          //   value: '选项1',
+          //   label: '黄金糕'
+          // }, {
+          //   value: '选项2',
+          //   label: '双皮奶'
+          // }, {
+          //   value: '选项3',
+          //   label: '蚵仔煎'
+          // }, {
+          //   value: '选项4',
+          //   label: '龙须面'
+          // }, {
+          //   value: '选项5',
+          //   label: '北京烤鸭'
+          // }
+          ],
         tableData: [
           // {
           //   id: '99921',
@@ -152,12 +154,13 @@
       handleDelete(index, row) {
         console.log(index, row);
         this.isShowDelete = true;
-        this.deleteId = [row.numberId]
+
+        this.deleteId = ['one',row.id]
       },
       deleteMuch(){
         this.isShowDelete = true;
         this.deleteId = this.multipleSelection.map((item)=>{
-          return item.numberId
+          return item.id
         });
       },
       handleSizeChange(val) {
@@ -215,6 +218,37 @@
         this.isShowAddNew=type;
         this.isShowDelete=type;
       },
+      detailOk(type){
+        // this.type[0]=type[1];
+        if(type==="isShowDetailAlertBox"){
+          this.isShowDetailAlertBox=false;
+        }else if(type==="isShowDelete"){
+          this.isShowDelete = false;
+        }
+        
+        let limit = this.limit;
+        this.Axios.get(`http://172.16.6.72:8080/role/info?page=1&limit=${limit}`).then(
+            res => {
+              // console.log(res.data);
+              this.count = res.data.count;
+              this.isShowPage = true;
+              let arr = [...res.data.data];
+              this.tableData = arr.map(item => {
+                return {
+                  id:item.id,
+                  name:item.name,
+                  time:item.time,
+                  status:item.status,
+                  description:item.description,
+                  children:item.autority,
+                }
+              });
+            }).catch(
+            error=>{
+              // console.log(error);
+              
+        })
+      },
       addNew(){
         this.isShowAddNew=true;
       },
@@ -262,6 +296,11 @@
                 children:item.autority,
               }
             });
+            console.log(this.tableData);
+            
+            this.options=[
+
+            ]
           }).catch(
           error=>{
             // console.log(error);
