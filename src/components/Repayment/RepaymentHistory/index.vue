@@ -1,8 +1,8 @@
 <template>
   <div>
     <h2>还款记录</h2>
-    <RepaymentToolbar />
-    <RepaymentTable :data="tableData" />
+    <RepaymentToolbar :search="search"/>
+    <RepaymentTable :data="tableData" :loading="loading"/>
     <RepaymentPage />
   </div>
 </template>
@@ -31,6 +31,11 @@ import { fetchRest } from "@/api";
 export default {
   data() {
     return {
+       search:{
+        name:"",
+        state:""
+      },
+      loading:false,
       tableData: []
     };
   },

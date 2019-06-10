@@ -2,10 +2,19 @@
 <!-- 搜索 -->
   <div id="search">
     <div >
-      <el-input v-model="input2" class="input-with-select">
+      <el-input placeholder="请输入内容" 
+      prefix-icon="el-icon-search" 
+      v-model="searchInput" 
+      class="input-with-select"
+      @input="searchImfo">
         <el-select v-model="select" slot="prepend">
-          <el-option label="借款方" value="1"></el-option>
-          <el-option label="是否逾期" value="2"></el-option>
+          <el-option 
+          v-for="item in searchOptions"
+          :key="item.value"
+          :label="item.lable"
+          :value="item.value"
+          >
+          </el-option>
         </el-select>
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
@@ -43,10 +52,42 @@ body{
 
 
 <script>
+import { EventBus } from "../../bus"
 export default {
-
+  props:["search"],
+  methods:{
+    handleClick(row){
+      console.log(row);
+    },
+    searchFetch(){
+      if(searchOptions.label=="借款方"){
+        searchInput = search.name;
+        console.log("借款方");
+      }
+      else{
+        searchInput = search.state;
+        console.log("是否逾期");
+      }
+    },
+    fetchData() {
+      api(this.search).then(data => {
+      this.tableData = data;
+      });
+    }
+  },
   data() {
     return {
+      searchInput: '',
+      searchOptions:[
+        {
+          value:"借款方",
+          label:"借款方"
+        },
+        {
+          value:"是否逾期",
+          label:"是否逾期"
+        }
+      ],
       stateOptions: [
         {
           value: "cuikuanzhong",
