@@ -476,10 +476,10 @@ router.beforeEach(
       next()
     }else{
       if(to.meta.isLogin){
-        next({
-          // path: "/Login"
-          next();
-        });
+        // next({
+        //   path: "/Login"
+        // });
+        next();
       }else{
         next();
       }
