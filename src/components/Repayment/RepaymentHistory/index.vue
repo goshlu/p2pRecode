@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       search:{
-        memberName:"111",
+        name:"",
         status:"",
         page:1,
         limit:10

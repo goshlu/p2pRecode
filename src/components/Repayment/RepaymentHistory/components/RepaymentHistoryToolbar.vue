@@ -4,9 +4,9 @@
     <div style="padding: 10px 0px">
       <el-input placeholder="请输入内容"
       prefix-icon="el-icon-search"
-      v-model="childDate" 
+      v-model="search.name" 
       class="input-with-select"
-      @change="changeName">
+      >
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
       <el-select v-model="search.status">
@@ -45,17 +45,16 @@ export default {
       ],
       value:'',
       input1: '',
-      childDate:this.search.memberName,
       input2: '',
       select: '',
     };
-  },
-  methods:{
-    changeName(){
-      // this.search.memberName = search.memberName;
-      this.$emit("searchChange",this.childDate);
-    }       
   }
+  // methods:{
+  //   changeName(){
+  //     // this.search.memberName = search.memberName;
+  //     this.$emit("searchChange",this.childDate);
+  //   }       
+  // }
 };
 </script>
 
