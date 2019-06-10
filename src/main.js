@@ -22,15 +22,16 @@ import axios from 'axios';
 axios.defaults.baseURL = 'http://172.16.6.72:8080/';
 Vue.prototype.AXIOS = axios;
 Vue.prototype.Axios = axios;
-axios.interceptors.request.use(function (config) {
+/*axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
+  console.log(config);
   config.headers.token = sessionStorage.getItem('token');
   return config;
 
 }, function (error) {
   // 对请求错误做些什么
   return Promise.reject(error);
-});
+});*/
 
 // Vue.prototype.AXIOS = axios.create(
 //   {
