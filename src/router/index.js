@@ -5,6 +5,7 @@ Vue.use(Router);
 
 const router = new Router({
   routes: [{
+    
     path: "/",
     name: "Content",
     redirect: "/Home",
@@ -479,16 +480,16 @@ const router = new Router({
 
 router.beforeEach(
   (to, from, next) => {
-
-    // next()
+    // console.log(to);
+    next()
     if(sessionStorage.getItem('userId')){
       next()
     }else{
       if(to.meta.isLogin){
-        // next({
-        //   path: "/Login"
-        // });
-        next();
+        next({
+          path: "/Login"
+        });
+        // next();
       }else{
         next();
       }
