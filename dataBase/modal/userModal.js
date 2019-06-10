@@ -179,6 +179,7 @@ function getBorrows({name},callback){
   }
 	pool.sqlpool().query(sql,arr,callback);
 }
+
 module.exports={
     usercapital,capitaljournal,platformfunds,tendercategory,tenderall,getBorrows
 };
