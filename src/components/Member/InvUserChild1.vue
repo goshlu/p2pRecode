@@ -101,7 +101,7 @@ export default {
   data() {
     return {
       // 导航
-      host_url: "", //============================================== 更改 主机地址
+      host_url: "http://${host_url}/member/investment/members", //============================================== 更改 主机地址
       navArr: ["会员管理", "投资用户管理"],
       // 数据
       input1: "",
@@ -158,7 +158,7 @@ export default {
       newform: {},
       formLabelWidth: "120px",
       //   url
-      url: "http://主机地址/member/investment/members" //======================================主机地址
+      url: "http://${host_url}/member/investment/members" //======================================主机地址
     };
   },
 

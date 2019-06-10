@@ -1,34 +1,34 @@
 <template>
   <div class="alertBox">
-    <div class="title">员工修改</div>
+    <div class="title">修改员工信息</div>
     <div class="box">
       <div>
         <span>姓名：</span>
         <div>
-          <el-input v-model="value1" placeholder="请输入内容"></el-input>
+          <el-input v-model="name" placeholder="请输入内容"></el-input>
         </div>
       </div>
       <div>
         <span>性别：</span>
         <div>
-          <el-radio v-model="radio" label="1">男</el-radio>
-          <el-radio v-model="radio" label="0">女</el-radio>
+          <el-radio v-model="gender" label="1">男</el-radio>
+          <el-radio v-model="gender" label="0">女</el-radio>
         </div>
       </div>
       <div>
         <span>所属部门：</span>
-        <el-select v-model="value2" placeholder="请选择">
+        <el-select v-model="bumen" placeholder="请选择">
           <el-option
-            v-for="item in options1"
+            v-for="item in bumens"
             :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
         </el-select>
       </div>
-      <div>
+      <!-- <div>
         <span>职位：</span>
-        <el-select v-model="value3" placeholder="请选择">
+        <el-select v-model="zhiwei" placeholder="请选择">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -36,7 +36,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-      </div>
+      </div> -->
 
       <div>
         <span>备注：</span>
@@ -62,7 +62,7 @@ export default {
   name:'AlertBox',
   data(){
     return{
-      options1: [{
+      bumens: [{
         value: '选项1',
         label: '黄金糕'
       }, {
@@ -92,12 +92,11 @@ export default {
           value: '选项4',
           label: '修改专员'
         }],
-        value1: '',
-        value2: '',
-        value3: '',
-        // checkList: ['复选框 A','复选框 B'],
+        name: '',
+        bumen: '',
+        zhiwei: '',
         textarea: '',
-        radio:'1',
+        gender:'1',
     }
   },
   props:["title","id"],
@@ -107,8 +106,7 @@ export default {
     }
   },
   created(){
-    console.log(this.id);
-    
+    // console.log(this.id);
   }
 }
 </script>

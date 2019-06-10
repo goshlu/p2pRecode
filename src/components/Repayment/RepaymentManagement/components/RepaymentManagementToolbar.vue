@@ -2,15 +2,17 @@
 <!-- 搜索 -->
   <div id="search">
     <div style="padding: 10px 0px">
-      <el-input v-model="input1" class="input-with-select">
-        <el-select v-model="select" slot="prepend">
-          <el-option label="借款方" value="1"></el-option>
-          <el-option label="是否逾期" value="2"></el-option>
-        </el-select>
+      <el-input placeholder="请输入内容"
+      prefix-icon="el-icon-search"
+      v-model="search.memberName" 
+      class="input-with-select">
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
+      <el-select v-model="search.status">
+          <el-option label="是" value="1"></el-option>
+          <el-option label="否" value="2"></el-option>
+        </el-select>
     </div>
-
     <!-- 选择状态 -->
     <div style="padding: 10px 0">
       <el-select v-model="value" clearable placeholder="请选择">
@@ -44,7 +46,7 @@ body{
 
 <script>
 export default {
-
+  props:["search"],
   data() {
     return {
       stateOptions: [{
@@ -62,9 +64,6 @@ export default {
       input2: '',
       select:'',
     };
-  },
-  methods: {
-      
-    }
+  }
 };
 </script>

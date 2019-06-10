@@ -1,22 +1,22 @@
 <template>
   <div class="alertBox">
-    <div class="title">职位修改</div>
+    <div class="title">新增模块</div>
     <div class="box">
       <div>
-        <span>职位名称：</span>
+        <span>模块名称：</span>
         <div>
           <el-input v-model="value1" placeholder="请输入内容"></el-input>
         </div>
       </div>
       <div>
-        <span>职位描述：</span>
+        <span>模块描述：</span>
         <div>
           <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea">
           </el-input>
         </div>
       </div>
       <div>
-        <span>包含角色：</span>
+        <span>包含功能：</span>
         <div class="yuangongItem">
           <el-tag
             :key="tag"
@@ -36,13 +36,13 @@
             @keyup.enter.native="handleInputConfirm"
             @blur="handleInputConfirm">
           </el-input>
-          <el-button v-else class="button-new-tag" size="small" @click="showInput">添加角色</el-button>
+          <el-button v-else class="button-new-tag" size="small" @click="showInput">添加功能</el-button>
         </div>
       </div>
       <div>
         <span></span>
         <div>
-          <el-button @click="editMe" type="primary">确定</el-button>
+          <el-button type="primary">确定</el-button>
           <el-button @click="cancle">取消</el-button>
         </div>
       </div>
@@ -119,20 +119,6 @@ export default {
       }
       this.inputVisible = false;
       this.inputValue = '';
-    },
-    editMe(){
-      this.Axios.put("http://172.16.6.72:8080/role/group",{
-        id:1,
-        name:'testttte'
-      }).then(
-          res => {
-            console.log(res.data);
-            
-          }).catch(
-          error=>{
-            console.log(error);
-            
-      })
     }
   },
   created(){

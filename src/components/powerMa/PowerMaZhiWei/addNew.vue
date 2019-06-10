@@ -1,6 +1,6 @@
 <template>
   <div class="alertBox">
-    <div class="title">职位修改</div>
+    <div class="title">新增职位</div>
     <div class="box">
       <div>
         <span>职位名称：</span>
@@ -42,7 +42,7 @@
       <div>
         <span></span>
         <div>
-          <el-button @click="editMe" type="primary">确定</el-button>
+          <el-button @click="addMe" type="primary">确定</el-button>
           <el-button @click="cancle">取消</el-button>
         </div>
       </div>
@@ -120,25 +120,26 @@ export default {
       this.inputVisible = false;
       this.inputValue = '';
     },
-    editMe(){
-      this.Axios.put("http://172.16.6.72:8080/role/group",{
-        id:1,
-        name:'testttte'
-      }).then(
-          res => {
-            console.log(res.data);
-            
-          }).catch(
-          error=>{
-            console.log(error);
-            
-      })
-    }
+    addMe(){
+    //新增
+    this.Axios.post("http://172.16.6.72:8080/role/group",{
+      name:"eeess"
+    }).then(
+        res => {
+          console.log(res.data);
+          
+        }).catch(
+        error=>{
+          console.log(error);
+          
+    })
+  }
   },
   created(){
     console.log(this.id);
     
-  }
+  },
+  
 }
 </script>
 

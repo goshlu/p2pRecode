@@ -31,7 +31,7 @@
       <div>
         <span></span>
         <div>
-          <el-button @click="change" type="primary">确定</el-button>
+          <el-button type="primary">确定</el-button>
           <el-button @click="cancle">取消</el-button>
         </div>
       </div>
@@ -72,23 +72,6 @@ export default {
   methods: {
     cancle(){
       this.$emit("datailCancle",false);
-    },
-    change(){
-      this.Axios.put("http://172.16.6.72:8080/autority/info",{
-          id:6,
-          name:'test',
-          description:'tests',
-          oid:1,
-          rid:8,
-        }).then(
-        res => {
-          console.log(res.data);
-          
-        }).catch(
-        error=>{
-          console.log(error);
-          
-        })
     }
   },
   created(){

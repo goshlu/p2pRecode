@@ -1,22 +1,33 @@
 <template>
   <div class="alertBox">
-    <div class="title">职位修改</div>
+    <div class="title">新增部门</div>
     <div class="box">
       <div>
-        <span>职位名称：</span>
+        <span>部门名称：</span>
         <div>
           <el-input v-model="value1" placeholder="请输入内容"></el-input>
         </div>
       </div>
       <div>
-        <span>职位描述：</span>
+        <span>负责人：</span>
+        <el-select v-model="value2" placeholder="请选择">
+          <el-option
+            v-for="item in options1"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div>
+        <span>部门描述：</span>
         <div>
           <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea">
           </el-input>
         </div>
       </div>
       <div>
-        <span>包含角色：</span>
+        <span>部门员工：</span>
         <div class="yuangongItem">
           <el-tag
             :key="tag"
@@ -36,13 +47,14 @@
             @keyup.enter.native="handleInputConfirm"
             @blur="handleInputConfirm">
           </el-input>
-          <el-button v-else class="button-new-tag" size="small" @click="showInput">添加角色</el-button>
+          <el-button v-else class="button-new-tag" size="small" @click="showInput">添加员工</el-button>
         </div>
       </div>
+      
       <div>
         <span></span>
         <div>
-          <el-button @click="editMe" type="primary">确定</el-button>
+          <el-button @click="addMe" type="primary">确定</el-button>
           <el-button @click="cancle">取消</el-button>
         </div>
       </div>
@@ -55,10 +67,8 @@ export default {
   name:'AlertBox',
   data(){
     return{
-      dynamicTags: ['标签一', '标签二', '标签三','标签四','标签五',],
-      inputVisible: false,
-      inputValue: '',
-      options1: [{
+      options1: [
+      {
         value: '选项1',
         label: '黄金糕'
       }, {
@@ -73,13 +83,14 @@ export default {
       }, {
         value: '选项5',
         label: '北京烤鸭'
-      }],
+      }
+      ],
       options: [
         {
           value: '选项1',
           label: '超级管理员'
         }, {
-          value: '选项2',
+          value: '',
           label: '管理员'
         }, {
           value: '选项3',
@@ -88,12 +99,12 @@ export default {
           value: '选项4',
           label: '修改专员'
         }],
+        dynamicTags: ['标签一', '标签二', '标签三','标签四','标签五',],
         value1: '',
-        value2: '',
-        value3: '',
-        // checkList: ['复选框 A','复选框 B'],
+        value2:'',
         textarea: '',
-        radio:'1',
+        inputVisible: false,
+        inputValue: '',
     }
   },
   props:["title","id"],
@@ -120,10 +131,10 @@ export default {
       this.inputVisible = false;
       this.inputValue = '';
     },
-    editMe(){
-      this.Axios.put("http://172.16.6.72:8080/role/group",{
-        id:1,
-        name:'testttte'
+    addMe(){
+    //新增
+      this.Axios.post("http://172.16.6.72:8080/role/group",{
+
       }).then(
           res => {
             console.log(res.data);

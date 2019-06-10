@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const client = axios.create({
-  baseURL: "http://rap2api.taobao.org/app/mock/177576/"
+  baseURL: "http://172.16.6.75:8080"
 });
 
 export default client;

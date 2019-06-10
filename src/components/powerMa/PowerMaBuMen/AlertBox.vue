@@ -64,7 +64,7 @@
       <div>
         <span></span>
         <div>
-          <el-button type="primary">确定</el-button>
+          <el-button @class="editMe" type="primary">确定</el-button>
           <el-button @click="cancle">取消</el-button>
         </div>
       </div>
@@ -142,6 +142,19 @@ export default {
       }
       this.inputVisible = false;
       this.inputValue = '';
+    },
+    editMe(){
+      this.Axios.put("http://172.16.6.72:8080/role/group",{
+
+      }).then(
+          res => {
+            console.log(res.data);
+            
+          }).catch(
+          error=>{
+            console.log(error);
+            
+      })
     }
   },
   created(){
