@@ -19,7 +19,7 @@
 </template>
 
 <script>
-
+import { mapState,mapGetters,mapMutations,mapActions } from "vuex";
 export default {
     name: 'LoginBox',
 
@@ -38,16 +38,23 @@ export default {
             userPassword:'',
         }
     },
+    computed:{
+        ...mapGetters(['getNavData']),
+    },
     methods:{
+        ...mapActions(['doUpdateNavData','doUpdateNavIsopenTrue']),
         loginDo(){
             if(this.loginDone){
                 // console.log(this.userName);
                 // console.log(this.userPassword);
-                if(this.userName==="admin"&&this.userPassword==="123"&&this.loginDone){
+                if(true){
                     // this.$router.push('/Home');
-                    this.Axios.get("?").then(
+                    this.Axios.get("http://172.16.6.72:8080/admin/login?username=郑光&password=123").then(
                         res => {
                             console.log(res.data);
+                            sessionStorage.setItem('token',res.data.token);
+                            sessionStorage.setItem('userId',res.data.admin.idCard);
+                            this.doUpdateNavData(res.data.menu);
                             this.$router.push('/Home');
                         }
                     ).catch()

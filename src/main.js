@@ -20,13 +20,23 @@ Vue.use(elementUi);
 //定义全局axios实例
 import axios from 'axios';
 Vue.prototype.Axios = axios;
+// this.Axios.defaults.headers.common['token'] = sessionStorage.getItem('token');
+// this.Axios.interceptors.request.use(function (config) {
+//   // 在发送请求之前做些什么
+//   headers: {token:sessionStorage.getItem('token')}
+//   return config;
+// }, function (error) {
+//   // 对请求错误做些什么
+//   return Promise.reject(error);
+// });
+
 Vue.prototype.AXIOS = axios.create(
   {
-    baseURL: 'https://5cd808f00cc5100014f1e33e.mockapi.io/',
+    baseURL: 'https://172.16.6.72:8080/',
     // timeout: 1000,
-    // headers: {
-    //   'X-Custom-Header': 'foobar'
-    // }
+    headers: {
+      'tokenb': sessionStorage.getItem('token')
+    }
   }
 );
 

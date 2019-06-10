@@ -88,7 +88,7 @@ export default {
       // console.log(index);
       this.doUpdateNavIsopenTrue(index);
       this.getNavData.forEach(element => {
-        if(element.isOpen){
+        if(element.open===1){
           // return element.children;
           this.openChildren=element.children;
           this.openTitle=element.title;
@@ -118,23 +118,36 @@ export default {
   },
 
   created(){
-    this.Axios(`https://5cd808f00cc5100014f1e33e.mockapi.io/${fetchNav}`).then(
-      res => {
-        // console.log(res.data);
-        this.doUpdateNavData(res.data);
-        this.getNavData.forEach(element => {
-          if(element.isOpen){
-            // return element.children;
-            this.openChildren=element.children;
-            this.openTitle=element.title;
-          }
-        });
-      }
-    ).catch(
-      error => {
-        // console.log(error);
-      }
-    );
+    // this.Axios(`https://5cd808f00cc5100014f1e33e.mockapi.io/${fetchNav}`).then(
+    //   res => {
+    //     // console.log(res.data);
+    //     this.doUpdateNavData(res.data);
+    //     this.getNavData.forEach(element => {
+    //       if(element.open===1){
+    //         // return element.children;
+    //         this.openChildren=element.children;
+    //         this.openTitle=element.title;
+    //       }
+    //     });
+      // }
+    // ).catch(
+    //   error => {
+    //     // console.log(error);
+    //   }
+    // );
+    // this.Axios.get("http://172.16.6.72:8080",{
+    //   headers: {
+    //     token:sessionStorage.getItem('token')
+    //   },
+    // }).then(
+    //     res => {
+    //         // console.log(res.data);
+    //         sessionStorage.setItem('token',res.data.token);
+    //         sessionStorage.setItem('userId',res.data.admin.idCard);
+    //         this.doUpdateNavData(res.data.menu);
+    //         this.$router.push('/Home');
+    //     }
+    // ).catch()
   },
 
 }

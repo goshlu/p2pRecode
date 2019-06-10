@@ -472,7 +472,7 @@ router.beforeEach(
   (to, from, next) => {
 
     // next()
-    if(false){
+    if(sessionStorage.getItem('userId')){
       next()
     }else{
       if(to.meta.isLogin){

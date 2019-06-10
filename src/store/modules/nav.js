@@ -14,9 +14,9 @@ const navStore = {
     updateNavIsopenTrue(state, index){
       state.navData.forEach((element,i) => {
         if(i===index){
-          element.isOpen = true;
+          element.open = 1;
         }else{
-          element.isOpen = false;
+          element.open = 0;
         }
       });
       // state.navData[index].isOpen=true;
