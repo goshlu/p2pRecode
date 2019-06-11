@@ -1,9 +1,9 @@
 <template>
-  <div
+  <!-- <div
     class="block"
-    style="width: 325px; margin-top: 15px; margin-left: 30px;display: inline-block;"
+    style="width: 355px; margin-top: 15px; margin-left: 30px;display: inline-block;"
   >
-    <p>日期筛选：</p>
+    
     <el-date-picker
       v-model="value7"
       type="daterange"
@@ -13,6 +13,19 @@
       start-placeholder="开始日期"
       end-placeholder="结束日期"
       :picker-options="pickerOptions2"
+    ></el-date-picker>
+  </div>-->
+
+  <div class="block">
+    <p>日期筛选：</p>
+    <el-date-picker
+      v-model="value5"
+      type="datetimerange"
+      :picker-options="pickerOptions2"
+      range-separator="至"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期"
+      align="right"
     ></el-date-picker>
   </div>
 </template>
@@ -53,7 +66,8 @@ export default {
           }
         ]
       },
-      value7: ""
+      value4: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
+      value5: ""
     };
   }
 };
@@ -61,7 +75,7 @@ export default {
 
 <style>
 .block > .el-date-editor {
-  width: 240px;
+  width: 360px;
 }
 .block > p {
   display: inline-block;

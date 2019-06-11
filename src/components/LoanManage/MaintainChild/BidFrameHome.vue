@@ -91,7 +91,14 @@ export default {
       },
       input5: "",
       select: "",
-      tableDataList: [],
+      tableDataList: [{
+        value: "选项1",
+        label: "车贷宝"
+      },
+        {
+          value: "选项2",
+          label: "房贷宝"
+        }],
       tableData: [],
       value:"",
       navArr:['借贷管理','标的上架']

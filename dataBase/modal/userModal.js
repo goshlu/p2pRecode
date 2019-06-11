@@ -169,8 +169,9 @@ function tenderall(id,account_type,type,callback) {
 //获取借款方 
 function getBorrows({name},callback){
   let arr=[];
-	let sql = `SELECT b.*,d.name userTypeName FROM borrower b 
-	  INNER JOIN dictionary d ON b.userTypeId = d.id`;
+	let sql = `SELECT b.*,d.name userTypeName,c.name userSourceName FROM borrower b 
+	  LEFT JOIN dictionary d ON b.userTypeId = d.id
+	  LEFT JOIN dictionary c ON b.userSourceId = c.id`;
 
   if(name != null && name != "" && name != undefined){
     name = "%"+name+"%";

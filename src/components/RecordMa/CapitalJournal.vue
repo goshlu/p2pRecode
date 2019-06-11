@@ -54,6 +54,9 @@
 				<!-- <el-table-column width='100' prop="message" label="备注" align="center">
 				</el-table-column> -->
 				<el-table-column width='170' prop="date_operaing" label="操作时间" align="center">
+					 <template slot-scope="scope">
+					  <p>{{ scope.row.date_operaing | dateFormat }}</p>
+					</template>
 				</el-table-column>
 
 			</el-table>

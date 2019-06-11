@@ -60,6 +60,7 @@
   import AlertBox from './AlertBox';
   import AddNew from './addNew';
   import Delete from './Delete';
+  import {bumen} from './../../../api/index';
   export default {
     name:'PowerMaBu',
     components:{
@@ -146,28 +147,32 @@
       },
       searchMe(){
         //搜索
-        this.Axios.get("http://172.16.6.72:8080/role/group?name=page=1&limit=3").then(
-          res => {
-            console.log(res.data);
+        // this.Axios.get("http://172.16.6.72:8080/role/group?name=page=1&limit=3").then(
+        //   res => {
+        //     console.log(res.data);
             
-          }).catch(
-          error=>{
-            console.log(error);
+        //   }).catch(
+        //   error=>{
+        //     console.log(error);
             
-        })
+        // })
+        // this.AXIOS(bumen)
       }
     },
     beforeCreate(){
       //获取数据，渲染
-      this.Axios.get("http://172.16.6.72:8080/admin/group?page=1&limit=3").then(
-          res => {
-            console.log(res.data);
+    //   this.Axios.get("http://172.16.6.72:8080/admin/group?page=1&limit=3").then(
+    //       res => {
+    //         console.log(res.data);
             
-          }).catch(
-          error=>{
-            console.log(error);
+    //       }).catch(
+    //       error=>{
+    //         console.log(error);
             
-      })
+    //   })
+    his.AXIOS(bumen).then(
+      
+    ).catch()
     }
   }
 </script>

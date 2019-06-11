@@ -37,13 +37,21 @@
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="id" label="借款编号"></el-table-column>
-        <el-table-column prop="member.username" label="借款方"></el-table-column>
+        <el-table-column prop="borrowName" label="借款方" width="200"></el-table-column>
         <el-table-column prop="phone" label="借款人手机" width="130"></el-table-column>
-        <el-table-column prop="name" label="标名"></el-table-column>
-        <el-table-column prop="money" label="借款金额"></el-table-column>
-        <el-table-column prop="year_mon" label="年化利率"></el-table-column>
-        <el-table-column prop="loan_method" label="还款方式"></el-table-column>
-        <el-table-column prop="loan_day" label="期限"></el-table-column>
+        <el-table-column prop="iName" label="标名"></el-table-column>
+        <el-table-column prop="balance" label="借款金额">
+          <template slot-scope="scope">
+            ￥{{scope.row.balance}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="yearRateName" label="年化利率"></el-table-column>
+        <el-table-column prop="refundMethod" label="还款方式" width="100"></el-table-column>
+        <el-table-column prop="deadline" label="期限">
+          <template slot-scope="scope">
+            {{scope.row.deadline + scope.row.deadlineTypeName}}
+          </template>
+        </el-table-column>
         <!--<el-table-column
           prop="uptime"
           label="上架时间"
@@ -60,12 +68,16 @@
             <span>{{scope.row.start_time | dateFormat}}</span>
           </template>
         </el-table-column>-->
-        <el-table-column prop="loan_day" label="已投金额"></el-table-column>
-        <el-table-column prop="loan_day" label="投资进度"></el-table-column>
-        <el-table-column prop="state" label="状态"></el-table-column>
-        <el-table-column label="操作" width="200">
+        <el-table-column prop="balance" label="已投金额">
           <template slot-scope="scope">
-            <router-link :to="{name:'TenderFullReviewRedo',params:{}}">
+            ￥{{scope.row.balance}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="riskName" label="风险等级"></el-table-column>
+        <el-table-column prop="status" label="状态">满标待审</el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <router-link :to="{name:'TenderFullReviewRedo',params:{row:scope.row}}">
               <el-button type="primary" icon="el-icon-view" size="mini">复审</el-button>
             </router-link>
           </template>
@@ -86,41 +98,18 @@
         ></el-pagination>
       </div>
 
-      <div class="modal" v-show="isShowModal">
-        <div class="modal-content">
-          <div class="title">
-            <span>下架确认</span>
-            <i class="el-icon-close" style="cursor: pointer;font-size: 30px;" @click="showModal"></i>
-          </div>
-          <div class="main">
-            <p>
-              <label>注意：</label>
-              <span style="color:#990000">标的下架后，投资款项全部返还至投资者账户中，只能获得返还的本金，无法获得利息</span>
-            </p>
-            <div class="notes-wrap">
-              <label>
-                <i style="color: red;margin-right: 2px;">*</i>备注：
-              </label>
-              <textarea name="notes" cols="65" rows="6" style="resize: none;" v-model="notesText"></textarea>
-            </div>
-          </div>
-          <div class="btns">
-            <el-button type="primary">确定</el-button>
-            <el-button @click="showModal">取消</el-button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Title from "../../commonComponents/headerTitle";
+import baseUrl from "../../../api/baseUrl";
 
 export default {
   name: "TenderingFullReviewHome",
   components: {
-    Title
+    Title,baseUrl
   },
   data() {
     return {
@@ -128,29 +117,7 @@ export default {
       notesText: "",
       isShowModal: false,
       searchText: "",
-      tableData: [
-        {
-          id: 1,
-          phone: 13323479765,
-          year_mon: "2%",
-          loan_method: "按月付息",
-          money: 1988,
-          date: "2016-05-02",
-          name: "标名",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333,
-          start_time: "2017-01-01T04:23:33.000Z",
-          uptime: "2017-01-01T04:23:33.000Z",
-          state: 5,
-          loan_m_money: "200",
-          loan_day: "5天",
-          member: {
-            username: "王小虎"
-          }
-        }
-      ],
+      tableData: [],
       allTableData: [],
       input5: "",
       searchSel: 0,
@@ -172,7 +139,7 @@ export default {
   created() {
     // this.tableDataOrigin = this.tableData;
 
-    this.Axios.get("http://172.16.6.75:8080/element/fullElement?status=1")
+    /*this.Axios.get("http://172.16.6.75:8080/element/fullElement?status=1")
       .then(res => {
         console.log(res);
         // this.allTableData = res.data;
@@ -180,7 +147,13 @@ export default {
       })
       .catch(err => {
         console.log(err);
-      });
+      });*/
+
+    this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}&limit=${this.paginations.page_size}&moduleTypeId=5`).then(res => {
+      this.tableData = res.data.data;
+      // 总页数
+      this.paginations.total = res.data.total;
+    }).catch((err)=>{console.log(err)});
   },
   methods: {
     //编辑
@@ -192,22 +165,36 @@ export default {
       this.notesText = "";
       this.isShowModal = !this.isShowModal;
     },
-    executeSearch() {
-      if (this.searchSel == 0) {
-        this.tableData = this.tableDataOrigin;
-      } else if (this.searchSel == 1 && this.searchText != "") {
-        //搜索借款方
-        this.tableData = this.tableDataOrigin.filter(item => {
-          return item.name.includes(this.searchText);
-        });
-      } else if (this.searchSel == 2 && this.searchText != "") {
-        //搜索借款方手机
-      } else {
-        return this.$message("请输入搜索内容！");
+    executeSearch(){
+      if(this.searchSel == 1 && this.searchText != ""){ //搜索借款方
+        this.paginations.page_index = 1;
+        this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}
+          &limit=${this.paginations.page_size}&moduleTypeId=5&name=${this.searchText}`).then(res => {
+          this.tableData = res.data.data;
+          // 总页数
+          this.paginations.total = res.data.total;
+        }).catch((err)=>{console.log(err)});
+      }else if(this.searchSel == 2 && this.searchText != ""){ //搜索借款方手机
+        this.paginations.page_index = 1;
+        this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}
+          &limit=${this.paginations.page_size}&moduleTypeId=5&phone=${this.searchText}`).then(res => {
+          this.tableData = res.data.data;
+          // 总页数
+          this.paginations.total = res.data.total;
+        }).catch((err)=>{console.log(err)});
+      }else{
+        return this.$message('请选择搜索类型或输入搜索内容！');
       }
     },
-    searchSelectChange() {
-      if (this.searchSel == 0) this.executeSearch();
+    searchSelectChange(){
+      if(this.searchSel == 0) {
+        this.paginations.page_index = 1;
+        this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}&limit=${this.paginations.page_size}&moduleTypeId=5`).then(res => {
+          this.tableData = res.data.data;
+          // 总页数
+          this.paginations.total = res.data.total;
+        }).catch((err)=>{console.log(err)});
+      }
     },
     //选择框
     handleSelectionChange(val) {
@@ -215,23 +202,22 @@ export default {
       console.log(this.multipleSelection);
     },
     handleCurrentChange(page) {
-      // 当前页
-      let sortnum = this.paginations.page_size * (page - 1);
-      let table = this.allTableData.filter((item, index) => {
-        return index >= sortnum;
-      });
-      // 设置默认分页数据
-      this.tableData = table.filter((item, index) => {
-        return index < this.paginations.page_size;
-      });
+      this.paginations.page_index = page;
+      this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}&limit=${this.paginations.page_size}&moduleTypeId=5`).then(res => {
+        this.tableData = res.data.data;
+        // 总页数
+        this.paginations.total = res.data.total;
+      }).catch((err)=>{console.log(err)});
     },
     handleSizeChange(page_size) {
       // 切换size
       this.paginations.page_index = 1;
       this.paginations.page_size = page_size;
-      this.tableData = this.allTableData.filter((item, index) => {
-        return index < page_size;
-      });
+      this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}&limit=${this.paginations.page_size}&moduleTypeId=5`).then(res => {
+        this.tableData = res.data.data;
+        // 总页数
+        this.paginations.total = res.data.total;
+      }).catch((err)=>{console.log(err)});
     },
     setPaginations() {
       // 总页数

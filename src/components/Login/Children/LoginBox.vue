@@ -19,7 +19,7 @@
 </template>
 
 <script>
-
+import { mapState,mapGetters,mapMutations,mapActions } from "vuex";
 export default {
     name: 'LoginBox',
 
@@ -38,19 +38,44 @@ export default {
             userPassword:'',
         }
     },
+    computed:{
+        ...mapGetters(['getNavData']),
+    },
     methods:{
+        ...mapActions(['doUpdateNavData','doUpdateNavIsopenTrue']),
         loginDo(){
             if(this.loginDone){
                 // console.log(this.userName);
                 // console.log(this.userPassword);
-                if(this.userName==="admin"&&this.userPassword==="123"&&this.loginDone){
+                if(true){
                     // this.$router.push('/Home');
-                    this.Axios.get("?").then(
+                    this.Axios.get(`http://172.16.6.72:8080/admin/login?username=${this.userName}&password=${this.userPassword}`).then(
                         res => {
                             console.log(res.data);
-                            this.$router.push('/Home');
+                            sessionStorage.setItem('token',res.data.token);
+                            sessionStorage.setItem('userId',res.data.admin.idCard);
+                            sessionStorage.setItem('menu',JSON.stringify(res.data.menu));
+                            sessionStorage.setItem('userName',res.data.admin.name)
+                            // this.doUpdateNavData(res.data.menu);
+                            this.$router.push('/PowerMa');
                         }
                     ).catch()
+                    // this.AXIOS(`admin/login?username=${this.userName}&password=${this.userPassword}`).then(
+                    //     res => {
+                    //         console.log(res.data);
+                    //         sessionStorage.setItem('token',res.data.token);
+                    //         sessionStorage.setItem('userId',res.data.admin.idCard);
+                    //         this.doUpdateNavData(res.data.menu);
+                    //         this.$router.push('/Home');
+                    //     }
+                    // ).catch(
+                    //     error=>{
+                    //         alert('用户名或者密码错误！');
+                    //         this.userName="";
+                    //         this.userPassword="";
+                    //         this.seedRight = "265px";
+                    //     }
+                    // )
                 }else{
                     alert('用户名或者密码错误！');
                     this.userName="";
