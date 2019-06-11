@@ -9,46 +9,46 @@
         </div>
         <el-form ref="from1" :model="from1" label-width="150px">
           <el-form-item label="标名：" required>
-            <span>典当宝-100期</span>
+            <span>{{iName}}</span>
           </el-form-item>
           <el-form-item label="风险等级：" required>
-            <span>较低等级</span>
+            <span>{{rkId}}</span>
           </el-form-item>
           <el-form-item label="借款方：" required>
-            <span>上海x x x公司(13599090001)</span>
+            <span>{{mId}}</span>
+          </el-form-item>
+          <el-form-item label="借款方名称：" required>
+            <span>{{iLName}}</span>
           </el-form-item>
           <el-form-item label="借款总金额：" required>
-            <span>10000元</span>
+            <span>{{sum}}元</span>
           </el-form-item>
           <el-form-item label="年利率：" required>
-            <span>12%</span>
+            <span>{{rate}}</span>
           </el-form-item>
           <el-form-item label="还款方式：" required>
-            <span>一次性还款</span>
+            <span>{{cost}}</span>
           </el-form-item>
           <el-form-item label="借款期限：" required>
-            <span>30天</span>
+            <span>{{day}}天</span>
           </el-form-item>
           <el-form-item label="借款起息方式：" required>
             <span>成立计息</span>
           </el-form-item>
           <el-form-item label="借款管理费月率：" required>
-            <span>0%</span>
-          </el-form-item>
-          <el-form-item label="利息管理费月率：" required>
-            <span>0%</span>
+            <span>{{monthRate}}</span>
           </el-form-item>
           <el-form-item label="逾期罚息利率：" required>
-            <span>0%</span>
+            <span>{{penalty}}</span>
           </el-form-item>
-          <el-form-item label="逾期罚息利率：" required>
-            <span>新增</span>
+          <el-form-item label="借款类型：" required>
+            <span>{{bId}}</span>
           </el-form-item>
           <el-form-item label="资金用途：">
-            <span>供应链周转</span>
+            <span>{{uId}}</span>
           </el-form-item>
           <el-form-item label="还款来源：">
-            <span>营业收入</span>
+            <span>{{rsId}}</span>
           </el-form-item>
         </el-form>
       </div>
@@ -59,13 +59,10 @@
         </div>
         <el-form ref="from1" :model="from1" label-width="150px">
           <el-form-item label="是否担保：">
-            <span>是</span>
+            <span>{{(isEnsure === 1) ? '是' : '否'}}</span>
           </el-form-item>
           <el-form-item label="担保机构：">
-            <span>上海泽润典当</span>
-          </el-form-item>
-          <el-form-item label="是否抵押：">
-            <span>否</span>
+            <span>{{coId}}</span>
           </el-form-item>
         </el-form>
       </div>
@@ -76,39 +73,93 @@
         </div>
         <el-form ref="from1" :model="from1" label-width="150px">
           <el-form-item label="是否通过：">
-            <el-radio v-model="radio" label="1">通过</el-radio>
-            <el-radio v-model="radio" label="2">不通过</el-radio>
+            <el-radio v-model="radio" label="4">通过</el-radio>
+            <el-radio v-model="radio" label="3">不通过</el-radio>
           </el-form-item>
-          <el-form-item label="">
-          </el-form-item>
+          <el-form-item label></el-form-item>
           <el-form-item label="备注：">
-            <textarea name="notes" id="notes" cols="100" rows="4" style="resize: none;border-radius:4px;padding:10px;border: 1px solid #dcdfe6;"></textarea>
+            <textarea
+              name="notes"
+              id="notes"
+              cols="100"
+              rows="4"
+              style="resize: none;border-radius:4px;padding:10px;border: 1px solid #dcdfe6;"
+            ></textarea>
           </el-form-item>
         </el-form>
       </div>
       <el-divider></el-divider>
       <el-row>
-        <el-button type="primary">提交</el-button>
-        <el-button>返回</el-button>
+        <el-button type="primary" @click="ToExamine">提交</el-button>
+        <el-button @click="goBack">返回</el-button>
       </el-row>
     </div>
   </div>
 </template>
 
 <script>
-import Title from "./../../commonComponents/headerTitle"
+import Title from "./../../commonComponents/headerTitle";
+import baseUrl from "../../../api/baseUrl";
 
 export default {
-  components:{
+  components: {
     Title
   },
   data() {
     return {
       from1: {},
       from2: {},
-      radio: "1",
-      navArr:['借贷管理','借款审核','借款审核详情']
+      radio: "4",
+      navArr: ["借贷管理", "借款审核", "借款审核详情"]
     };
+  },
+  created() {
+    this.iName = this.$route.query.row.iName;
+    this.iLName = this.$route.query.row.iLName;
+    this.rkId = this.$route.query.row.riskName;
+    this.mId = this.$route.query.row.borrowName;
+    this.sum = this.$route.query.row.balance;
+    this.rate = this.$route.query.row.yearRateName;
+    this.rtId = this.$route.query.row.rtId;
+    this.cost = this.$route.query.row.refundMethod;
+    this.penalty = this.$route.query.row.overtimeRateName;
+    this.monthRate = this.$route.query.row.manageMonthRateName;
+    this.bId = this.$route.query.row.borrowTypeName;
+    this.uId = this.$route.query.row.moneyUseName;
+    this.rsId = this.$route.query.row.refundSourceName;
+    this.day = this.$route.query.row.deadline;
+    this.way = this.$route.query.row.rId + "";
+    this.type = this.$route.query.row.deadlineTypeId + "";
+    this.coId = this.$route.query.row.coName;
+    this.isEnsure = this.$route.query.row.isConId + "";
+  },
+  methods: {
+    ToExamine() {
+      let id = this.$route.query.row.id;
+      let params = {
+        status: this.radio,
+        id: id
+      };
+      this.Axios.post(baseUrl.BASE_URL + "/auditTender", params)
+        .then(res => {
+          console.log(res);
+          this.$message({
+            message: "提交成功",
+            type: "success"
+          });
+          // this.tableData = res.data.data;
+          this.$router.push({ name: "Auid" });
+          window.location.reload();
+          // 总页数
+          // this.paginations.total = this.tableData.length;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    goBack() {
+      this.$router.back();
+    }
   }
 };
 </script>
@@ -137,7 +188,7 @@ span {
 .el-form {
   width: 70%;
   margin: 0 auto;
-  padding-top:20px;
+  padding-top: 20px;
 }
 .el-form-item {
   display: inline-block;
@@ -154,15 +205,14 @@ span {
   letter-spacing: 2px;
 }
 /* 备注 */
-.el-textarea__inner{
+.el-textarea__inner {
   width: 223%;
   height: 140px;
 }
 /* 按钮 */
 .el-row {
- text-align: center;
- padding-top:20px;
- padding-bottom: 20px;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
-
 </style>

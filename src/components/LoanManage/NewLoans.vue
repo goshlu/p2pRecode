@@ -159,7 +159,7 @@
       <el-divider></el-divider>
       <div class="CheakBtn">
         <el-row>
-          <el-button type="primary" @click="handleAdd">提交</el-button>
+          <el-button type="primary" @click="handleAdd">提交审核</el-button>
           <el-button @click="handleSave">保存</el-button>
         </el-row>
       </div>

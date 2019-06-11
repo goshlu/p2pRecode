@@ -2,8 +2,8 @@
   <div id="MaintainWrap">
     <!-- <div class="title">
       <h2>上架维护</h2>
-    </div> -->
-    <Title  :navArr="navArr"/> 
+    </div>-->
+    <Title :navArr="navArr"/>
     <div class="content">
       <div class="EssentialInfo">
         <div class="EssentialTitle">
@@ -16,41 +16,44 @@
           </h4>
         </div>
         <el-form ref="from1" :model="from1" label-width="150px" v-if="isShow">
-          <el-form-item label="借款名称：">
-            <span>上海xx公司</span>
+          <el-form-item label="借款方名称：" required>
+            <span>{{iLName}}</span>
           </el-form-item>
-          <el-form-item label="风险等级：">
-            <span>较低等级</span>
+          <el-form-item label="风险等级：" required>
+            <span>{{rkId}}</span>
           </el-form-item>
-          <el-form-item label="借款方：">
-            <span>上海x x x公司(13599090001)</span>
+          <el-form-item label="借款方：" required>
+            <span>{{mId}}</span>
           </el-form-item>
-          <el-form-item label="借款总金额：">
-            <span>10000元</span>
+          <el-form-item label="借款总金额：" required>
+            <span>{{sum}}元</span>
           </el-form-item>
-          <el-form-item label="年利率：">
-            <span>12%</span>
+          <el-form-item label="年利率：" required>
+            <span>{{rate}}</span>
           </el-form-item>
-          <el-form-item label="资金用途：">
-            <span>供应链周转</span>
+          <el-form-item label="还款方式：" required>
+            <span>{{cost}}</span>
           </el-form-item>
-          <el-form-item label="借款期限：">
-            <span>30天</span>
+          <el-form-item label="借款期限：" required>
+            <span>{{day}}天</span>
           </el-form-item>
-          <el-form-item label="起息方式：">
+          <el-form-item label="借款起息方式：" required>
             <span>成立计息</span>
           </el-form-item>
-          <el-form-item label="还款方式：">
-            <span>一次性还款</span>
+          <el-form-item label="借款管理费月率：" required>
+            <span>{{monthRate}}</span>
           </el-form-item>
-          <el-form-item label="借款管理费：">
-            <span>0%</span>
+          <el-form-item label="逾期罚息利率：" required>
+            <span>{{penalty}}</span>
           </el-form-item>
-          <el-form-item label="利息管理费：">
-            <span>0%</span>
+          <el-form-item label="借款类型：" required>
+            <span>{{bId}}</span>
           </el-form-item>
-          <el-form-item label="逾期罚息利率：">
-            <span>0%</span>
+          <el-form-item label="资金用途：">
+            <span>{{uId}}</span>
+          </el-form-item>
+          <el-form-item label="还款来源：">
+            <span>{{rsId}}</span>
           </el-form-item>
         </el-form>
       </div>
@@ -67,13 +70,10 @@
         </div>
         <el-form ref="from2" :model="from2" label-width="150px" v-if="isGuarantee">
           <el-form-item label="是否担保：">
-            <span>是</span>
+            <span>{{(isEnsure === 1) ? '是' : '否'}}</span>
           </el-form-item>
           <el-form-item label="担保机构：">
-            <span>上海泽润典当</span>
-          </el-form-item>
-          <el-form-item label="是否抵押：">
-            <span>否</span>
+            <span>{{coId}}</span>
           </el-form-item>
         </el-form>
       </div>
@@ -84,16 +84,16 @@
         </div>
         <el-form ref="from2" :model="from2" label-width="150px">
           <el-form-item label="标名：" required>
-            <el-input v-model="input" :disabled="true"></el-input>
+            <el-input v-model="iName" :disabled="true"></el-input>
           </el-form-item>
 
           <el-form-item label="标的类型：" required>
             <el-select v-model="LoanType" placeholder="请选择">
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="item in options[79].children"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -103,10 +103,10 @@
           <el-form-item label="递增金额：" required>
             <el-select v-model="Incremental" placeholder="请选择">
               <el-option
-                v-for="item in option"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="item in options[9].children"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -117,7 +117,7 @@
           <!-- *上架时间： -->
           <el-form-item label="上架时间：" required>
             <div class="block">
-              <el-date-picker v-model="Shelf" type="date" placeholder="选择日期" ></el-date-picker>
+              <el-date-picker v-model="Shelf" type="date" placeholder="选择日期"></el-date-picker>
             </div>
           </el-form-item>
           <!-- *开售时间： -->
@@ -171,18 +171,26 @@
       <div class="RiskMeasure">
         <el-form ref="from2" :model="from2" label-width="150px">
           <el-form-item label="项目介绍：">
-            <textarea name="notes" id="introduce" cols="100" rows="4"
-                      style="resize: none;border-radius:4px;padding:10px;border: 1px solid #dcdfe6;"
-                      v-model="introduce"
+            <textarea
+              name="notes"
+              id="introduce"
+              cols="100"
+              rows="4"
+              style="resize: none;border-radius:4px;padding:10px;border: 1px solid #dcdfe6;"
+              v-model="introduce"
             ></textarea>
           </el-form-item>
-          <el-form-item >
+          <el-form-item>
             <!-- <el-input type="textarea"></el-input> -->
           </el-form-item>
           <el-form-item label="风控措施：">
-            <textarea name="notes" id="measures" cols="100" rows="4"
-                      style="resize: none;border-radius:4px;padding:10px;border: 1px solid #dcdfe6;"
-                      v-model="Measures"
+            <textarea
+              name="notes"
+              id="measures"
+              cols="100"
+              rows="4"
+              style="resize: none;border-radius:4px;padding:10px;border: 1px solid #dcdfe6;"
+              v-model="Measures"
             ></textarea>
           </el-form-item>
         </el-form>
@@ -197,25 +205,25 @@
 </template>
 
 <script>
-import Title from "./../../commonComponents/headerTitle"
+import Title from "./../../commonComponents/headerTitle";
 import baseUrl from "../../../api/baseUrl";
 
 export default {
   name: "Maintain",
-  components:{
+  components: {
     Title
   },
   data() {
     return {
-      navArr:['借贷管理','标的上架','标的上架维护'],
+      navArr: ["借贷管理", "标的上架", "标的上架维护"],
       isShow: true,
       isGuarantee: true,
       checkList: ["高收益"],
-      channel:['PC'],
+      channel: ["PC"],
       from1: {},
-      from2:{},
-      introduce:"",
-      Measures:"",
+      from2: {},
+      introduce: "",
+      Measures: "",
       input: "新手1号",
       LoanName: "",
       LoanType: "",
@@ -226,82 +234,79 @@ export default {
       Shelf: "",
       Opening: "",
       radio: "0",
-      type:"0",
-      Selected:"0",
-      Novice:"0",
+      type: "0",
+      Selected: "0",
+      Novice: "0",
       value: "",
-      options: [
-        {
-          value: "选项1",
-          label: "车贷宝"
-        },
-        {
-          value: "选项2",
-          label: "房贷宝"
-        },
-        {
-          value: "选项3",
-          label: "新手标"
-        },
-        {
-          value: "选项4",
-          label: "供应链金融"
-        }
-      ],
-      option: [
-        {
-          value: "选项1",
-          label: "100元"
-        },
-        {
-          value: "选项2",
-          label: "200元"
-        },
-        {
-          value: "选项3",
-          label: "500元"
-        },
-        {
-          value: "选项4",
-          label: "1000元"
-        }
-      ]
+      options: []
     };
+  },
+  created() {
+    this.iName = this.$route.query.row.iName;
+    this.iLName = this.$route.query.row.iLName;
+    this.rkId = this.$route.query.row.riskName;
+    this.mId = this.$route.query.row.borrowName;
+    this.sum = this.$route.query.row.balance;
+    this.rate = this.$route.query.row.yearRateName;
+    this.rtId = this.$route.query.row.rtId;
+    this.cost = this.$route.query.row.refundMethod;
+    this.penalty = this.$route.query.row.overtimeRateName;
+    this.monthRate = this.$route.query.row.manageMonthRateName;
+    this.bId = this.$route.query.row.borrowTypeName;
+    this.uId = this.$route.query.row.moneyUseName;
+    this.rsId = this.$route.query.row.refundSourceName;
+    this.day = this.$route.query.row.deadline;
+    this.way = this.$route.query.row.rId + "";
+    this.type = this.$route.query.row.deadlineTypeId + "";
+    this.coId = this.$route.query.row.coName;
+    this.isEnsure = this.$route.query.row.isConId + "";
+    this.Axios.get(baseUrl.BASE_URL + "/getDictionaries").then(res => {
+      let resData = this.toTreeData(res.data);
+      // console.log(resData);
+      this.options = resData;
+      // console.log(this.options[2].children);
+    });
   },
   methods: {
     handleCommand(command) {
       this.$message("click on item " + command);
     },
     //修改
-    getUpdate(){
+    getUpdate() {
+      let id = this.$route.query.row.id;
       let params = {
-        id:294,
-        name:"电器制造项目112",// 标名
-        number:'1',
-        totalMoney:1,
-        deadline:1,
-        finishMoney:1,
-        esPo:1,
-        iftPo:1,
-        maxFund:1,
-        minFund:1,
-        isChoiceness:20,
-        isNewEnjoy:1,
-        descripble:1,
-        riskControl:"1",
-        miPo:1,
-        description:'1',
-        etPo:1
+        id:id,
+        
       };
-      this.Axios.put(baseUrl.BASE_URL+'/element/update',params).then(res => {
-        console.log(res);
-        // this.tableData = res.data.data;
-        // 总页数
-        // this.paginations.total = this.tableData.length;
-      }).catch((err)=>{console.log(err)});
+      this.Axios.put(baseUrl.BASE_URL + "/editTender", params)
+        .then(res => {
+          console.log(res);
+          // this.tableData = res.data.data;
+          // 总页数
+          // this.paginations.total = this.tableData.length;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
+    toTreeData(resData) {
+      // let obj = {};
+      let tree = [];
+      for (let i = 0; i < resData.length; i++) {
+        if (resData[i].parentId === 0) {
+          for (let j = 0; j < resData.length; j++) {
+            if (resData[i].id == resData[j].parentId) {
+              tree.push(resData[j]);
+            }
+          }
+          resData[i].children = tree;
+          tree = [];
+        }
+      }
+      return resData;
+    }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -328,7 +333,7 @@ h2 {
   font-weight: normal;
   margin-left: 10px;
   cursor: pointer;
-  display:inline-block;
+  display: inline-block;
 }
 .content {
   background-color: #fff;
@@ -362,14 +367,14 @@ span {
 
 .EssentialTitle,
 .GuaranteeTitle,
-.LoansTitle{
+.LoansTitle {
   padding: 20px 0 10px 200px;
-  font-size:20px;
+  font-size: 20px;
   letter-spacing: 2px;
-  color:#333;
+  color: #333;
 }
 
-.el-textarea__inner{
+.el-textarea__inner {
   width: 223%;
   height: 140px;
 }

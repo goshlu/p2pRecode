@@ -31,6 +31,7 @@
         </div>
       </div>
       <el-table
+        v-if="getDataModule1.data"
         :data="getDataModule1.data"
         :stripe="true"
         :border="false"
@@ -146,19 +147,32 @@ export default {
   methods: {
     ...mapActions(["doUpdateDataModule1"]),
     handleClick(row) {
+      console.log("fffsf");
+      console.log(row);
       this.$router.push({ path: "/NewStence/Edit", query: { row: row } });
     },
+    //删除
     handleDelete(id) {
-      //删除
-      this.Axios.delete(baseUrl.BASE_URL + "/borrow/Info/" + id)
-        .then(res => {
-          console.log(res);
-          this.tableData = res.data.data;
-          // 总页数
-          this.paginations.total = this.tableData.length;
-        })
-        .catch(err => {
-          console.log(err);
+      let params={
+        id:id,
+      }
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            this.Axios.post(baseUrl.BASE_URL + "/deleteTender",params)
+              .then(res => {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                    });
+                  })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
         });
     },
     getTableList() {

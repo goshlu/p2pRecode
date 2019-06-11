@@ -2,9 +2,9 @@
   <div class="Loans">
     <!-- <div class="title">
       <h2>新增借款</h2>
-    </div> -->
+    </div>-->
     <Title :navArr="navArr"/>
-    <div class="content">
+    <div class="content" v-if="options.length > 0">
       <div class="EssentialInfo">
         <div class="EssentialTitle">
           <h4>基本信息</h4>
@@ -15,18 +15,23 @@
             <el-input v-model="name"></el-input>
           </el-form-item>
           <!-- *风险等级： -->
-          <el-form-item required label="风险等级：">
+          <el-form-item label="风险等级：" required>
             <el-select v-model="rkId" placeholder="请选择">
-              <el-option label="极低" value="1"></el-option>
-              <el-option label="较低" value="2"></el-option>
-              <el-option label="中等" value="3"></el-option>
-              <el-option label="中高" value="4"></el-option>
-              <el-option label="高" value="5"></el-option>
+              <el-option
+                v-for="item in options[0].children"
+                :key="item.value"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
           <!-- *借款方： -->
           <el-form-item required label="借款方：">
-            <el-input v-model="debtor"></el-input>
+            <el-input v-model="mId"></el-input>
+          </el-form-item>
+          <!-- 借款名称： -->
+          <el-form-item label="借款名称：" required>
+            <el-input v-model="iLName" placeholder="请输入借款名称"></el-input>
           </el-form-item>
           <!-- *借款总金额： -->
           <el-form-item required label="借款总金额：">
@@ -37,12 +42,14 @@
             <el-input v-model="rate"></el-input>
           </el-form-item>
           <!-- *还款方式： -->
-          <el-form-item required label="还款方式：">
-            <el-select v-model="method" placeholder="请选择">
-              <el-option value="Disposable" label="一次性还款"></el-option>
-              <el-option value="Equal" label="等额本息"></el-option>
-              <el-option value="Monthly" label="按月付息到期还本"></el-option>
-              <el-option value="Repayment" label="到期还本"></el-option>
+          <el-form-item label="还款方式：" required>
+            <el-select v-model="rtId" placeholder="请选择">
+              <el-option
+                v-for="item in options[2].children"
+                :key="item.value"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
 
@@ -55,26 +62,37 @@
             <el-input v-model="penalty"></el-input>
           </el-form-item>
           <!-- *借款类型： -->
-          <el-form-item required label="借款类型：">
-            <el-select v-model="LoanType" placeholder="请选择">
-              <el-option value="1" label="新增"></el-option>
-              <el-option value="2" label="续贷"></el-option>
-              <el-option value="3" label="资产处理"></el-option>
+          <el-form-item label="借款类型：" required>
+            <el-select v-model="bId" placeholder="请选择">
+              <el-option
+                v-for="item in options[5].children"
+                :key="item.value"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
           <!-- 资金用途： -->
           <el-form-item label="资金用途：">
-            <el-select v-model="capital" placeholder="请选择">
-              <el-option value="1" label="短期周转"></el-option>
-              <el-option value="2" label="生意周转"></el-option>
-              <el-option value="3" label="购物消费"></el-option>
-              <el-option value="4" label="长期周转"></el-option>
-              <el-option value="5" label="其他用途"></el-option>
+            <el-select v-model="uId" placeholder="请选择">
+              <el-option
+                v-for="item in options[6].children"
+                :key="item.value"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
           <!-- 还款来源： -->
           <el-form-item label="还款来源：">
-            <el-input v-model="source"></el-input>
+            <el-select v-model="rsId" placeholder="请选择">
+              <el-option
+                v-for="item in options[7].children"
+                :key="item.value"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <!-- **还款方式： -->
           <el-form-item required label="借款天数：">
@@ -82,12 +100,12 @@
           </el-form-item>
           <!-- *借款起息方式： -->
           <el-form-item required label="借款起息方式：">
-            <el-radio v-model="way" label="0">成立利息</el-radio>
+            <el-radio v-model="way" label="57">成立利息</el-radio>
           </el-form-item>
           <!-- *期限类型： -->
           <el-form-item required label="期限类型：">
-            <el-radio v-model="type" label="0">月</el-radio>
-            <el-radio v-model="type" label="1">天</el-radio>
+            <el-radio v-model="type" label="78">月</el-radio>
+            <el-radio v-model="type" label="79">天</el-radio>
           </el-form-item>
         </el-form>
       </div>
@@ -97,9 +115,14 @@
         </div>
         <el-form ref="form" :model="form" label-width="150px">
           <!-- 担保机构： -->
-          <el-form-item required label="担保机构：">
-            <el-select v-model="Chanism" placeholder="请选择">
-              <el-option value="0" label="上海泽润典当有限公司"></el-option>
+          <el-form-item label="担保机构：" required>
+            <el-select v-model="coId" placeholder="请选择">
+              <el-option
+                v-for="item in options[8].children"
+                :key="item.value"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
             </el-select>
           </el-form-item>
           <!-- 是否担保： -->
@@ -112,8 +135,8 @@
       <el-divider></el-divider>
       <div class="CheakBtn">
         <el-row>
-          <el-button type="primary" @click="handleUpdate">提交审核</el-button>
-          <el-button>保存</el-button>
+          <el-button type="primary" @click="handleUpdate">提交</el-button>
+          <el-button @click="goBack">返回</el-button>
         </el-row>
       </div>
     </div>
@@ -121,49 +144,130 @@
 </template>
 
 <script>
-import Title from "./../../commonComponents/headerTitle"
+import Title from "./../../commonComponents/headerTitle";
 import baseUrl from "../../../api/baseUrl";
 export default {
   name: "NewLoans",
   components: {
-    Title,
+    Title
   },
   data() {
     return {
-      navArr:['借贷管理','新增贷款','新增贷款修改'],
+      navArr: ["借贷管理", "新增贷款", "新增贷款修改"],
       form: {},
       name: "",
-      rkId:"",
-      debtor: "",
+      iLName: "",
+      rkId: "",
+      mId: "",
       sum: "",
       rate: "",
-      method:"",
-      cost:"",
-      penalty:"",
-      LoanType:"",
-      capital:"",
-      source:"",
-      day:"",
-      way:"0",
-      type:"0",
-      Chanism:"0",
-      isEnsure:"0",
+      rtId: "",
+      cost: "",
+      penalty: "",
+      bId: "",
+      uId: "",
+      rsId: "",
+      day: "",
+      way: "0",
+      type: "0",
+      coId: "",
+      isEnsure: "0",
+      options: []
     };
   },
-  methods: {
+  created() {
+    // console.log('aaaa')
+    // console.log(this.$route.query);
+    // let id = this.$route.query.row.id;
+    this.name = this.$route.query.row.iName;
+    this.iLName = this.$route.query.row.iLName;
+    this.rkId = this.$route.query.row.rkId;
+    this.mId = this.$route.query.row.mId;
+    this.sum = this.$route.query.row.balance;
+    this.rate = this.$route.query.row.yearRateId;
+    this.rtId = this.$route.query.row.rtId;
+    this.cost = this.$route.query.row.manageMonthRateId;
+    this.penalty = this.$route.query.row.overtimeRateId;
+    this.bId = this.$route.query.row.bId;
+    this.uId = this.$route.query.row.uId;
+    this.rsId = this.$route.query.row.rsId;
+    this.day = this.$route.query.row.deadline;
+    this.way = this.$route.query.row.rId + "";
+    this.type = this.$route.query.row.deadlineTypeId + "";
+    this.coId = this.$route.query.row.coId;
+    this.isEnsure = this.$route.query.row.isConId + "";
+    // this.isEnsure='1';
+    // console.log('aaabbb')
+    // console.log(this.$route.query.row.isConId)
 
+    this.Axios.get(baseUrl.BASE_URL + "/getDictionaries").then(res => {
+      let resData = this.toTreeData(res.data);
+      // console.log(resData);
+      this.options = resData;
+      // console.log(this.options[2].children);
+    });
+  },
+  methods: {
     //确定编辑
-    handleUpdate(){
+    handleUpdate() {
       let row = this.$route.query.row;
       console.log(row);
-      //删除
-      this.Axios.post(baseUrl.BASE_URL+'/element/elements',row).then(res => {
-        console.log(res);
-        // this.tableData = res.data.data;
-        // 总页数
-        // this.paginations.total = this.tableData.length;
-      }).catch((err)=>{console.log(err)});
+      let id = this.$route.query.row.id;
+      let params = {
+        id:id,
+        iName: this.name,
+        iLName: this.iLName,
+        mId: this.mId,
+        balance:this.sum,
+        yearRateId:this.rate,
+        rtId:this.rtId,
+        manageMonthRateId:this.cost,
+        overtimeRateId:this.penalty,
+        bId:this.bId,
+        uId:this.uId,
+        rsId:this.rsId,
+        deadline:this.dey,
+        rId:this.way,
+        deadlineTypeId:this.type,
+        coId:this.coId,
+        isConId:this.isEnsure
+      };
+      this.Axios.post(baseUrl.BASE_URL + "/editTender", params)
+        .then(res => {
+          console.log(res);
+          this.$message({
+              message: "修改成功",
+              type: "success"
+            });
+          // this.tableData = res.data.data;
+          this.$router.push({name:'Stence'})
+          window.location.reload();
+          // 总页数
+          // this.paginations.total = this.tableData.length;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
+    goBack(){
+      this.$router.back();
+    },
+    toTreeData(resData) {
+      // let obj = {};
+      let tree = [];
+      for (let i = 0; i < resData.length; i++) {
+        if (resData[i].parentId === 0) {
+          for (let j = 0; j < resData.length; j++) {
+            if (resData[i].id == resData[j].parentId) {
+              tree.push(resData[j]);
+            }
+          }
+          resData[i].children = tree;
+          tree = [];
+        }
+      }
+      return resData;
+    }
   }
 };
 </script>
@@ -173,7 +277,6 @@ export default {
   width: 100%;
   margin: 0 auto;
 }
-
 
 h2 {
   color: #fff;
@@ -188,14 +291,14 @@ h2 {
 .EssentialTitle,
 .GuaranteeTitle {
   padding: 30px 0 10px 280px;
-  font-size:20px;
+  font-size: 20px;
   letter-spacing: 2px;
 }
 
 .el-form {
   width: 70%;
   margin: 0 auto;
-  padding-top:20px;
+  padding-top: 20px;
 }
 .el-form-item {
   display: inline-block;
@@ -214,8 +317,8 @@ input {
 
 /* 按钮 */
 .el-row {
- text-align: center;
- padding-top:20px;
- padding-bottom: 20px;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 </style>
