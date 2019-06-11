@@ -132,8 +132,8 @@
       </div>
       <el-divider></el-divider>
       <el-row>
-        <el-button type="primary">提交</el-button>
-        <el-button>保存</el-button>
+        <el-button type="primary" @click="$route.back()">提交</el-button>
+        <el-button @click="$route.back()">返回</el-button>
       </el-row>
     </div>
   </div>

@@ -102,6 +102,7 @@ export default {
     return {
       // 导航
       host_url: `http://${host_url}/member/investment/members`, //============================================== 更改 主机地址
+      host_url: `http://${host_url}/member/investment/members`, //============================================== 更改 主机地址
       navArr: ["会员管理", "投资用户管理"],
       // 数据
       input1: "",

@@ -10,7 +10,7 @@ function usercapital(req,res,next){
    let id=req.query.id;
    // console.log(usertype);
      res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, token,Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
    userModal.usercapital(id,phone,name,type,function(err,data){
        if(!err){
@@ -30,7 +30,7 @@ function capitaljournal(req,res,next){
    let type=req.query.type;
    // console.log(usertype);
      res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, token,Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
    userModal.capitaljournal(phone,name,type,function(err,data){
        if(!err){
@@ -50,7 +50,7 @@ function platformfunds(req,res,next){
    let type=req.query.type;
    // console.log(usertype);
      res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, token,Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
    userModal.platformfunds(id,account_type,type,function(err,data){
        if(!err){
@@ -70,7 +70,7 @@ function tendercategory(req,res,next){
    let type=req.query.type;
    // console.log(usertype);
      res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,token, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
    userModal.tendercategory(id,account_type,type,function(err,data){
        if(!err){
@@ -91,7 +91,7 @@ function tenderall(req,res,next){
    let type=req.query.type;
    // console.log(usertype);
      res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, token,Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
    userModal.tenderall(id,account_type,type,function(err,data){
        if(!err){
@@ -108,7 +108,7 @@ function tenderall(req,res,next){
 //获取借款方
 function getBorrows(req,res,next){
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,token, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
   userModal.getBorrows(req.query,function(err,data){
     if(!err){

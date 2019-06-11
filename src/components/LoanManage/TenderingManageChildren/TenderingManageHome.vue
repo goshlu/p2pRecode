@@ -43,28 +43,29 @@
           width="80">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="borrowName"
           label="借款方"
-          align="center">
+          align="center"
+          width="200">
         </el-table-column>
         <el-table-column
           prop="phone"
           label="借款人手机"
-          width="120"
-          align="center">
+          align="center"
+          width="120">
         </el-table-column>
         <el-table-column
-          prop="elementName"
+          prop="iName"
           label="标名"
-          width="260"
+          width="200"
           align="center">
         </el-table-column>
         <el-table-column
-          prop="money"
+          prop="balance"
           label="借款金额"
           align="center">
           <template slot-scope="scope">
-            {{scope.row.money}}元
+            ￥{{scope.row.balance}}
           </template>
         </el-table-column>
         <!--<el-table-column
@@ -72,16 +73,16 @@
           label="年化利率">
         </el-table-column>-->
         <el-table-column
-          prop="refundName"
+          prop="refundMethod"
           label="还款方式"
           align="center">
         </el-table-column>
         <el-table-column
-          prop="deline"
+          prop="deadline"
           label="期限"
           align="center">
           <template slot-scope="scope">
-            {{scope.row.deline}}天
+            {{scope.row.deadline + scope.row.deadlineTypeName}}
           </template>
         </el-table-column>
         <!--<el-table-column
@@ -105,7 +106,7 @@
           label="已投金额"
           align="center">
           <template slot-scope="scope">
-            ￥{{scope.row.finishMoney}}
+            ￥{{scope.row.finishMoney?scope.row.finishMoney:0}}
           </template>
         </el-table-column>
         <!--<el-table-column
@@ -151,7 +152,7 @@
         <div class="modal-content">
           <div class="title">
             <span>下架确认</span>
-            <i class="el-icon-close" style="cursor: pointer;font-size: 30px;" @click="showModal"></i>
+            <i class="el-icon-close" style="cursor: pointer;font-size: 20px;" @click="showModal"></i>
           </div>
           <div class="main">
             <p><label>注意：</label><span style="color:#990000">标的下架后，投资款项全部返还至投资者账户中，只能获得返还的本金，无法获得利息</span></p>
@@ -187,7 +188,7 @@
         isShowModal: false,
         searchText: "",
         notesText:"",
-        tableData: [{
+        tableData: [/*{
           id:1,
           phone:13323479765,
           year_mon:"2%",
@@ -207,7 +208,7 @@
           member:{
             username:"王小虎"
           }
-        }],
+        }*/],
         allTableData: [],
         input5: "",
         searchSel: 0,
@@ -230,11 +231,19 @@
       //sName &sPhone=17244562861
       // let params = `page=${this.paginations.page_index}&limit=${this.paginations.page_size}`;
       //获取信息列表
-      this.Axios.get(baseUrl.BASE_URL+'/element/elements?page=1&limit=5').then(res => {
+      /*this.Axios.get(baseUrl.BASE_URL+'/element/elements?page=1&limit=5').then(res => {
         console.log(res);
         this.tableData = res.data.data;
         // 总页数
         this.paginations.total = this.tableData.length;
+      }).catch((err)=>{console.log(err)});*/
+
+
+      this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}&limit=${this.paginations.page_size}&moduleTypeId=4`).then(res => {
+        console.log(res);
+        this.tableData = res.data.data;
+        // 总页数
+        this.paginations.total = res.data.total;
       }).catch((err)=>{console.log(err)});
     },
     methods: {
@@ -244,8 +253,23 @@
         this.id = id;
       },
       doDelete(){
-        this.Axios.delete(baseUrl.BASE_URL+'/element/elements/'+this.id).then(res => {
+        /*this.Axios.delete(baseUrl.BASE_URL+'/element/elements/'+this.id).then(res => {
           console.log(res);
+        }).catch((err)=>{console.log(err)});*/
+
+        this.Axios.post(baseUrl.BASE_URL+'/editTender',{id:this.id,status:10}).then(res => {
+          this.$message({
+            message: '下架成功，请前往“"所有借款标"进行查看',
+            type: 'success'
+          });
+          this.showModal();
+
+          this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}&limit=${this.paginations.page_size}&moduleTypeId=4`).then(res => {
+            console.log(res);
+            this.tableData = res.data.data;
+            // 总页数
+            this.paginations.total = res.data.total;
+          }).catch((err)=>{console.log(err)});
         }).catch((err)=>{console.log(err)});
       },
       showModal() {
@@ -253,44 +277,57 @@
         this.isShowModal = !this.isShowModal;
       },
       executeSearch(){
-        if(this.searchSel == 0){
-          this.tableData = this.tableDataOrigin;
-        }else if(this.searchSel == 1 && this.searchText != ""){ //搜索借款方
-          this.tableData = this.tableDataOrigin.filter(item => {
-            return item.name.includes(this.searchText);
-          })
+        if(this.searchSel == 1 && this.searchText != ""){ //搜索借款方
+          this.paginations.page_index = 1;
+          this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}
+          &limit=${this.paginations.page_size}&moduleTypeId=4&name=${this.searchText}&notes=${this.notesText}`).then(res => {
+            this.tableData = res.data.data;
+            // 总页数
+            this.paginations.total = res.data.total;
+          }).catch((err)=>{console.log(err)});
         }else if(this.searchSel == 2 && this.searchText != ""){ //搜索借款方手机
-
+          this.paginations.page_index = 1;
+          this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}
+          &limit=${this.paginations.page_size}&moduleTypeId=4&phone=${this.searchText}&notes=${this.notesText}`).then(res => {
+            this.tableData = res.data.data;
+            // 总页数
+            this.paginations.total = res.data.total;
+          }).catch((err)=>{console.log(err)});
         }else{
-          return this.$message('请输入搜索内容！');
+          return this.$message('请选择搜索类型或输入搜索内容！');
         }
       },
       searchSelectChange(){
-        if(this.searchSel == 0) this.executeSearch();
+        if(this.searchSel == 0) {
+          this.paginations.page_index = 1;
+          this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}&limit=${this.paginations.page_size}&moduleTypeId=4`).then(res => {
+            this.tableData = res.data.data;
+            // 总页数
+            this.paginations.total = res.data.total;
+          }).catch((err)=>{console.log(err)});
+        }
       },
       //选择框
       handleSelectionChange(val) {
         this.multipleSelection = val;
-        console.log(this.multipleSelection);
       },
       handleCurrentChange(page) {
-        // 当前页
-        let sortnum = this.paginations.page_size * (page - 1);
-        let table = this.allTableData.filter((item, index) => {
-          return index >= sortnum;
-        });
-        // 设置默认分页数据
-        this.tableData = table.filter((item, index) => {
-          return index < this.paginations.page_size;
-        });
+        this.paginations.page_index = page;
+        this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}&limit=${this.paginations.page_size}&moduleTypeId=4`).then(res => {
+          this.tableData = res.data.data;
+          // 总页数
+          this.paginations.total = res.data.total;
+        }).catch((err)=>{console.log(err)});
       },
       handleSizeChange(page_size) {
         // 切换size
         this.paginations.page_index = 1;
         this.paginations.page_size = page_size;
-        this.tableData = this.allTableData.filter((item, index) => {
-          return index < page_size;
-        });
+        this.Axios.get(baseUrl.BASE_URL+`/getTenderAll?page=${this.paginations.page_index}&limit=${this.paginations.page_size}&moduleTypeId=4`).then(res => {
+          this.tableData = res.data.data;
+          // 总页数
+          this.paginations.total = res.data.total;
+        }).catch((err)=>{console.log(err)});
       },
       setPaginations() {
         // 总页数
@@ -353,13 +390,14 @@
   }
 
   .wrapper .wrapper-content .modal .modal-content .title {
+    height: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px;
-    background-color: rgba(242, 242, 242, 1);
+    padding: 2px 15px;
+    background-color: #646973;
     font-size: 20px;
-    color: #555555;
+    color: #fff;
     border-bottom: 1px solid #d5d5d5;
   }
 
