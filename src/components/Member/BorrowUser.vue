@@ -37,17 +37,21 @@
         :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         border
         @selection-change="handleSelectionChange"
-        :header-cell-style="{color:'#333',backgroundColor:'#EBEEF5'}"
+        style="width: 100%"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="id" label="用户编号" width="140"></el-table-column>
-        <el-table-column prop="name" label="姓名/公司名称" width="140"></el-table-column>
-        <el-table-column prop="phone" label="手机" width="140"></el-table-column>
-        <el-table-column prop="borrower_email" label="借款人邮箱" width="140"></el-table-column>
-        <el-table-column prop="status" label="锁定状态" width="120"></el-table-column>
-        <el-table-column prop="register_time" label="注册时间" width="180"></el-table-column>
-        <el-table-column prop="description" label="用户来源" width="160"></el-table-column>
-        <el-table-column prop="cad" label="身份证/税务登记证号" width="180"></el-table-column>
+        <el-table-column prop="id" label="用户编号" width="140" color="black"></el-table-column>
+        <el-table-column prop="name" label="姓名/公司名称" width="140" color="black"></el-table-column>
+        <el-table-column prop="phone" label="手机" width="140" color="black"></el-table-column>
+        <el-table-column prop="email" label="借款人邮箱" width="140" color="black"></el-table-column>
+        <el-table-column prop="status" label="锁定状态" width="120" color="black">
+          <template slot-scope="scope">
+            {{scope.row.status==0?"锁定":"正常"}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="registTime" label="注册时间" width="180" color="black"></el-table-column>
+        <el-table-column prop="userSourceId" label="用户来源" width="160" color="black"></el-table-column>
+        <el-table-column prop="taxNum" label="身份证/税务登记证号" width="180" color="black"></el-table-column>
         <el-table-column fixed="right" label="操作" width="200">
           <!-- <template slot-scope="scope" styly="display:flex">
             <el-button
@@ -68,14 +72,14 @@
             >编辑</el-button>
             <el-button
               @click="update(scope.row)"
-              v-if="scope.row.status == '不可用'"
+              v-if="scope.row.status == '0'"
               :type="btn_type"
               icon="el-icon-s-custom"
               size="mini"
             >锁定</el-button>
             <el-button
               @click="update(scope.row)"
-              v-if="scope.row.status == '可用'"
+              v-if="scope.row.status == '1'"
               :type="btn_type01"
               icon="el-icon-s-custom"
               size="mini"
@@ -119,11 +123,11 @@ export default {
       name:"",
       total: 0, //默认数据总数
       pagesize: 5, //每页的数据条数
-      currentPage: 1, //当前页    
+      currentPage: 1, //当前页   
       // 导航
-      host_url: "http://${host_url}/member/investment/members", //============================================== 更改 主机地址
+      // host_url: "http://${host_url}/member/investment/members", //============================================== 更改 主机地址
       navArr: ["会员管理", " 借款用户管理"],
-      url: "http://${host_url}/member/investment/members" ,//======================================主机地址
+      url:"http://172.16.6.38:8888/getBorrows",
 
       options1: [
         {
@@ -210,10 +214,10 @@ export default {
 						this.name=""
 						this.phone=this.pudata;
 					}
-			},
-
+      },
+      
   axiosFun(){
-    this.Axios.get("url",{
+    this.Axios.get("http://172.16.6.38:8888/getBorrows",{
       params:{
         name:this.name,
         phone:this.phone,
@@ -232,9 +236,13 @@ export default {
         this.inputdatacheck();
 				this.axiosFun();
       },
+  
+  
   },
-   //  状态按钮
-    update(row) {
+
+
+
+  update(row) {
       var up_status = row.status;
       if (up_status == "可用") {
         //  请求
@@ -278,6 +286,55 @@ export default {
         });
       }
     },
+
+
+
+    
+   //  状态按钮
+    // update(row) {
+    //   var up_status = row.status;
+    //   if (up_status == "可用") {
+    //     //  请求
+    //     this.Axios.delete(`http://${host_url}/member/info/${row.id}`, {
+    //       //==============================================================================主机地址
+    //       header: {
+    //         "Content-Type": "application/x-www-form-urlencoded"
+    //       }
+    //     }).then(res => {
+    //       this.Axios.get(this.url)
+    //         .then(response => {
+    //           // 存起来
+    //           this.tableData = response.data.data;
+    //           this.total = this.tableData.length;
+
+    //           // 判断状态
+    //         })
+    //         .catch(error => {
+    //           console.log(error);
+    //         });
+    //       // 存起来
+    //     });
+    //   } else if (up_status == "不可用") {
+    //     this.Axios.put(`http://${host_url}/member/info/${row.id}`, {
+    //       //=============================================================================================主机地址
+    //       header: {
+    //         "Content-Type": "application/x-www-form-urlencoded"
+    //       }
+    //     }).then(() => {
+    //       this.Axios.get(this.url)
+    //         .then(response => {
+    //           // 存起来
+    //           this.tableData = response.data.data;
+    //           this.total = this.tableData.length;
+
+    //           // 判断状态
+    //         })
+    //         .catch(error => {
+    //           console.log(error);
+    //         });
+    //     });
+    //   }
+    // },
 
 watch: {
       value1(){
@@ -323,7 +380,7 @@ watch: {
   // },
 
   created() {
-    this.Axios.get("url")
+    this.Axios.get("http://172.16.6.38:8888/getBorrows")
       .then(res => {
          console.log(res);
         // 成功过后对表格内容进行重新赋值
@@ -340,7 +397,9 @@ watch: {
 
 
 <style scoped>
-
+.tab{
+  color: black;
+}
 .nav{
   margin-top: 15px;
   width: 100%;

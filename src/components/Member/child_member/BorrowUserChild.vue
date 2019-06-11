@@ -27,9 +27,9 @@
         <div class="grid-content bg-purple-light">状态</div>
       </el-col>
       <el-col :span="6">
-        <div class="grid-content bg-purple" @change="radioFun1">
-          <el-radio v-model="radio" label="1">锁定</el-radio>
-          <el-radio v-model="radio" label="2">正常</el-radio>
+        <div class="grid-content bg-purple"  @change="radioFun1">
+          <el-radio v-model="status" label="0">锁定</el-radio>
+          <el-radio v-model="status" label="1">正常</el-radio>
         </div>
       </el-col>
     </el-row>
@@ -75,7 +75,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="datas.username"  v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.name"  v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -90,7 +90,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="datas.register_time" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.registTime" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -100,12 +100,12 @@
         <div class="grid-content bg-purple"></div>
       </el-col>
       <el-col :span="2">
-        <div class="grid-content bg-purple-light">最近登录</div>
+        <div class="grid-content bg-purple-light">借款人邮箱</div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="datas.login_time" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.email" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -120,7 +120,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div class="grid-content bg-purple">
-            <el-input v-model="datas.description" v-if="disabled" placeholder="请输入内容"></el-input>
+            <el-input v-model="datas.userSourceId" v-if="disabled" placeholder="请输入内容"></el-input>
           </div>
         </div>
       </el-col>
@@ -175,11 +175,13 @@ export default {
 
   created(){
     this.datas=this.$route.params
-console.log(this.datas)
+// console.log(this.datas);
+    //  因为我数据库返回回来的是0和1，但它接收的是字符串，所以+""
+    this.status=this.$route.params.status+"";
   },
   data() {
     return {
-      name:'datas.username',
+      name:'datas.name',
       datas:"",
       input1: "",
       input2: "",
@@ -188,25 +190,25 @@ console.log(this.datas)
       input5: "",
       input6: "",
       input7: "",
-      radio: "2",
-      radio1: "2",
+      status: "",
+      // radio1: "2",
       textarea: "",
       disabled: "false"
     };
   },
       methods: {
         radioFun1(msg){
-          if(msg==2){
-            this.disabled = false;
+          if(msg==1){
+            this.datas.status = 1;
           }else{
-            this.disabled = true;
+            this.datas.status = 0;
           }
         },
-        radioFun2(msg){
-          if(msg == 2){
+        // radioFun1(msg){
+        //   if(msg == 1){
 
-          }
-        },
+        //   }
+        // },
         open2() {
             this.$confirm('您将修改此内容，确定将会永久更改?', '修改提示', {
                 confirmButtonText: '确定',
@@ -217,7 +219,7 @@ console.log(this.datas)
                 () => {
                   // get在浏览器上输入地址能直接显示，post则不直接显示
                   this.Axios.get("http://172.16.6.60:8080/member/borrow/members",{
-                    name:'username'
+                    name:'name'
                   });
                     this.$message({
                         

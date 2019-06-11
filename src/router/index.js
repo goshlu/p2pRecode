@@ -493,6 +493,11 @@ const router = new Router({
 //         next();
 //       }
 //     }
+<<<<<<< HEAD
+
+//   }
+// )
+=======
 
 //   }
 // )
@@ -518,6 +523,7 @@ router.beforeEach(
   }
 )*/
 
+>>>>>>> 07ec50a11e5689231f8c32796a69f100e7d8a541
 
 export default router;
 
