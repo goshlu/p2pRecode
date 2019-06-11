@@ -57,7 +57,7 @@ export default {
                             sessionStorage.setItem('menu',JSON.stringify(res.data.menu));
                             sessionStorage.setItem('userName',res.data.admin.name)
                             // this.doUpdateNavData(res.data.menu);
-                            this.$router.push('/PowerMa');
+                            // this.$router.push('/PowerMa');
                         }
                     ).catch()
                     // this.AXIOS(`admin/login?username=${this.userName}&password=${this.userPassword}`).then(
