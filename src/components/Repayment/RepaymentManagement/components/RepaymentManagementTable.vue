@@ -15,9 +15,9 @@
       <el-table-column prop="status" label="会员状态"></el-table-column>
       <el-table-column prop="periods" label="还款期数"></el-table-column>
       <el-table-column prop="shouldTime" label="应还款时间" min-width="140"></el-table-column>
-      <el-table-column prop="stay" label="待还金额（￥）" min-width="130"></el-table-column>
-      <el-table-column prop="should" label="实际还款金额（￥）" min-width="150"></el-table-column>
-      <el-table-column prop="principal" label="本金（￥）" min-width="100"></el-table-column>
+      <el-table-column prop="stayMoney" label="待还金额（￥）" min-width="130"></el-table-column>
+      <el-table-column prop="realityMoney" label="实际还款金额（￥）" min-width="150"></el-table-column>
+      <el-table-column prop="priecipal" label="本金（￥）" min-width="100"></el-table-column>
       <el-table-column prop="payment" label="罚息（￥）" min-width="130"></el-table-column>
       <el-table-column prop="payment" label="是否逾期"></el-table-column>
       <!-- <el-table-column label="操作" width="200" align="left">
@@ -66,7 +66,7 @@ p {
 import { updateStatus } from "@/api/mock";
 
 export default {
-  props: ["data", "loading"],
+  props: ["data"],
   methods: {
     async handleChangeStatus(row, targetStatus) {
       try {

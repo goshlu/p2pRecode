@@ -3,7 +3,7 @@
     <Title :navArr="navArr"/>
     <!-- <h2>还款记录</h2> -->
     <RepaymentToolbar :search="search"/>
-    <RepaymentTable :data="tableData" :loading="loading" @reload="fetchData"/>
+    <RepaymentTable :data="tableData" @reload="fetchData"/>
     <RepaymentPage :count="count" :search="search"
     @handleCurrentChange="handleCurrentChange"
       @handleSizeChange="handleSizeChange"/>
@@ -36,24 +36,28 @@ export default {
   data() {
     return {
       search:{
-        name:"",
+        memeberName:"",
         status:"",
         page:1,
         limit:5
       },
-      loading:false,
+
       tableData: [],
+      tableDataOrigin:[],
       navArr: ["还款管理", "还款记录"],
       count:0,
     };
   },
-  watch: {
-    search: {
-      deep: true,
-      immediate: true,
-      handler: "fetchData"
-    }
+  created(){
+    this.fetchData();
   },
+  // watch: {
+  //   search: {
+  //     deep: true,
+  //     immediate: true,
+  //     handler: "fetchData"
+  //   }
+  // },
   methods: {
     async fetchData() {
       this.loading = true;

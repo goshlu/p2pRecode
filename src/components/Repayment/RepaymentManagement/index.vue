@@ -65,7 +65,7 @@ export default {
       this.tableData = [];
       // 当前页
       this.search.page = page;
-      let index = 5*(page-1)*this.search.limit;
+      let index = (page-1)*this.search.limit;
       let loopCount = 0;
       for(let i=index; i<this.count;i++){
           if(loopCount == this.search.limit){
