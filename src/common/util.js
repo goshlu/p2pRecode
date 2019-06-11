@@ -31,6 +31,15 @@ export default {
             str = "充值处理中";
         }
         return str
-    }
+    },
+    wrStatusFormate(wrStatusStr) {
+      var str = ""
+      if (wrStatusStr == 1) {
+          str = "提现成功";
+      } else {
+          str = "提现处理中";
+      }
+      return str
+  },
 
 }
