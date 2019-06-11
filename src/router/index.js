@@ -5,6 +5,7 @@ Vue.use(Router);
 
 const router = new Router({
   routes: [{
+    
     path: "/",
     name: "Content",
     redirect: "/Home",
@@ -379,15 +380,24 @@ const router = new Router({
         component: () => import('@/components/Member/InvUser.vue'),
 
         children: [{
+            meta: {
+              isLogin: true
+            },
             path: '/InvUserChildren1',
             name: 'InvUserChildren1',
             component: () => import('@/components/Member/InvUserChild1.vue'),
           }, {
+            meta: {
+              isLogin: true
+            },
             path: '/inv_update01',
             name: 'inv_update01',
             component: () => import('@/components/Member/child_member/inv_update01.vue'),
           },
           {
+            meta: {
+              isLogin: true
+            },
             path: '/inv_pwd',
             name: 'inv_pwd',
             component: () => import('@/components/Member/child_member/inv_pwd.vue')
@@ -483,9 +493,37 @@ const router = new Router({
 //         next();
 //       }
 //     }
+<<<<<<< HEAD
 
 //   }
 // )
+=======
+
+//   }
+// )
+
+/*
+router.beforeEach(
+  (to, from, next) => {
+    // console.log(to);
+    next()
+    if(sessionStorage.getItem('userId')){
+      next()
+    }else{
+      if(to.meta.isLogin){
+        next({
+          path: "/Login"
+        });
+        // next();
+      }else{
+        next();
+      }
+    }
+
+  }
+)*/
+
+>>>>>>> 07ec50a11e5689231f8c32796a69f100e7d8a541
 
 export default router;
 

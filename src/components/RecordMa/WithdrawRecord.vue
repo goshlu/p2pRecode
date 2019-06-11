@@ -3,50 +3,48 @@
     <Title :navArr="navArr"/>
     <div class="app_content">
       <div id="nav">
-        <div class="one">
-          <!-- 搜索框 -->
-          <Search :searchOpt="searchOpt"/>
-          <!-- 导出 -->
-          <div class="export" >
-            <el-select v-model="value" placeholder="批量导出" class="exportWidth">
-              <el-option @click="exportExcel" label="导出全部" value="1"></el-option>
-              <el-option label="导出选中" value="2"></el-option>
+        <!-- 搜索框 -->
+        <!-- <Search :searchOpt="searchOpt"/> -->
+        <div class="sel" style="display: inline-block;">
+          <!-- 搜索选项 -->
+          <el-input placeholder="请输入内容" v-model="input5" :clearable=clearable>
+            <el-select v-model="searchSel" slot="prepend" placeholder="请选择">
+              <el-option
+                v-for="item in searchOpt"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
             </el-select>
-          </div>
+            <el-button @click="getSearchList" slot="append" icon="el-icon-search"></el-button>
+          </el-input>
         </div>
-        <div class="two">
-          <!-- 选择充值方式 -->
-          <Mode :modeOpt="modeOpt"/>
-          <!-- 选择状态
-          <Status :statusOpt="statusOpt"/> -->
-          <!-- 日期选择器 -->
-          <DatePicke/>
-          <!-- 自定义列 -->
-          <el-row class="customize">
-            <el-button plain @click="toggle">自定义列</el-button>
-          </el-row>
+        <!-- 选择充值方式 -->
+        <!-- <Mode :modeOpt="modeOpt"/> -->
+        <!-- 选择状态
+        <Status :statusOpt="statusOpt"/>-->
+        <!-- 选择状态 -->
+        <div class="status">
+          <p style="display: inline-block;">状态筛选：</p>
+          <el-select v-model="statusSel" @change="change">
+            <el-option
+              v-for="item in statusOpt"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </div>
+        <!-- 导出 -->
+        <div class="export">
+          <el-select v-model="value" placeholder="批量导出" class="exportWidth">
+            <el-option @click="exportExcel" label="导出全部" value="1"></el-option>
+            <el-option label="导出选中" value="2"></el-option>
+          </el-select>
         </div>
       </div>
 
       <!-- 穿梭框 -->
-      <div id="filterColumn" v-if="isshow">
-        <template>
-          <el-checkbox
-            :indeterminate="isIndeterminate"
-            v-model="checkAll"
-            @change="handleCheckAllChange"
-          >全选</el-checkbox>
-          <div style="margin: 15px 0;"></div>
-          <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-            <el-checkbox
-              v-for="(city,index) in cities"
-              :label="city"
-              v-model="checkArr[index]"
-              :key="city"
-            >{{city}}</el-checkbox>
-          </el-checkbox-group>
-        </template>
-      </div>
 
       <!-- 表格 -->
       <div id="WithdrawRecord" class="wrapper" style="padding-top: 30px;">
@@ -58,11 +56,11 @@
             style="width: 100%"
           >
             <el-table-column type="selection"></el-table-column>
-            <el-table-column prop="payNumber" label="提现单号" ></el-table-column>
-            <el-table-column prop="pePhone" label="用户手机" ></el-table-column>
-            <el-table-column prop="username" label="真实姓名" ></el-table-column>
+            <el-table-column prop="payNumber" label="提现单号"></el-table-column>
+            <el-table-column prop="pePhone" label="用户手机"></el-table-column>
+            <el-table-column prop="username" label="真实姓名"></el-table-column>
             <!-- <el-table-column prop="loan_ deadline" label="用户类型" ></el-table-column> -->
-            <el-table-column prop="orMoney" label="提现金额" ></el-table-column>
+            <el-table-column prop="orMoney" label="提现金额"></el-table-column>
             <!-- <el-table-column prop="loan_money" label="提现手续费" ></el-table-column> -->
             <!-- <el-table-column prop="loan_money" label="到账金额"  ></el-table-column> -->
             <!-- <el-table-column prop="loan_money" label="银行账号" ></el-table-column> -->
@@ -72,7 +70,7 @@
               <template slot-scope="scope">
                 <p>{{ scope.row.loan_date | dateFormat }}</p>
               </template>
-            </el-table-column> -->
+            </el-table-column>-->
             <el-table-column prop="adName" label="审核人"></el-table-column>
             <el-table-column label="审核时间" width="160px">
               <template slot-scope="scope">
@@ -83,26 +81,38 @@
               <template slot-scope="scope">
                 <p>{{ scope.row.loan_date | dateFormat }}</p>
               </template>
-            </el-table-column> -->
-            <el-table-column label="状态">提现成功</el-table-column>
-            <el-table-column prop="do" label="操作" show-overflow-tooltip>
+            </el-table-column>-->
+            <el-table-column prop="status" label="状态">
               <template slot-scope="scope">
-                <el-button type="primary" icon="el-icon-view" size="mini"
-                  @click="handleView(scope.$index, scope.row)" >查看</el-button>
+                <p>{{ scope.row.orStatus | wrStatusFormate }}</p>
               </template>
             </el-table-column>
+            <!-- <el-table-column prop="do" label="操作" show-overflow-tooltip>
+              <template slot-scope="scope">
+                <el-button
+                  type="primary"
+                  icon="el-icon-view"
+                  size="mini"
+                  @click="handleView(scope.$index, scope.row)"
+                >查看</el-button>
+              </template>
+            </el-table-column> -->
           </el-table>
         </div>
       </div>
 
       <!-- 分页 -->
-      <Pagination
-        :total="total"
-        :pagesize="pagesize"
-        :currentPage="currentPage"
-        :current_change="current_change"
-        :handleSizeChange="handleSizeChange"
-      />
+      <div class="pagination">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5, 8, 10, 20, 50]"
+          :page-size="pagesize"
+          layout="total, sizes, prev, pager, next"
+          :total="total"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -112,50 +122,40 @@ import Title from "./../commonComponents/headerTitle";
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
 
-import Search from "./Subassembly/Search.vue";
-import Mode from "./Subassembly/Mode";
-import Status from "./Subassembly/Status";
+// import Search from "./Subassembly/Search.vue";
+// import Mode from "./Subassembly/Mode";
+// import Status from "./Subassembly/Status";
 // import Atable from "./Subassembly/Atable";
-import Pagination from "./Subassembly/Pagination";
-import DatePicke from "./Subassembly/DatePicke";
-
-const cityOptions = [
-  "充值单号",
-  "用户手机",
-  "真实姓名",
-  "充值金额",
-  "到账金额",
-  "手续费",
-  "充值方式",
-  "订单时间",
-  "到账时间",
-  "状态"
-];
+// import Pagination from "./Subassembly/Pagination";
+// import DatePicke from "./Subassembly/DatePicke";
 
 export default {
   name: "WithdrawRecord",
   components: {
-    Search,
-    Mode,
-    Status,
-    Pagination,
-    DatePicke,
+    // Search,
+    // Mode,
+    // Status,
+    // Pagination,
+    // DatePicke,
     Title
     // Atable
   },
 
   data() {
     return {
+      clearable: true,
+      input5: "",
+      searchSel: 0,
+      statusSel: 0,
       value: "",
       checkArr: [1, 1, 1],
       checkAll: false,
-      cities: cityOptions,
       isIndeterminate: true,
       isshow: false,
       tableData: [],
-      currentPage: 1,
-      pagesize: 5,
-      total: 0,
+      currentPage: 1, // 当前页
+      pagesize: 5, // 每页显示条数
+      total: 0, // 总条数
       tableDatas: [
         {
           reId: "2017040031",
@@ -174,63 +174,75 @@ export default {
         }
       ],
       searchOpt: [
+        { value: 0, label: "全部" },
         { value: 1, label: "提现单号" },
-        { value: 2, label: "用户手机" },
-        { value: 3, label: "账户名" },
-        { value: 4, label: "银行账号" }
-      ],
-      modeOpt: [
-        { value: 1, label: "全部银行" },
-        { value: 2, label: "中国银行" },
-        { value: 3, label: "中国农业银行" },
-        { value: 4, label: "中国工商银行" },
-        { value: 5, label: "中国建设银行" },
-        { value: 6, label: "交通银行" },
-        { value: 7, label: "中信银行" },
-        { value: 8, label: "中国光大银行" },
-        { value: 9, label: "招商银行" },
-        { value: 10, label: "华夏银行" }
+        { value: 2, label: "用户手机" }
       ],
       statusOpt: [
-        { value: 1, label: "全部状态" },
-        { value: 2, label: "已撤销" },
-        { value: 3, label: "待审核" },
-        { value: 4, label: "已到账" },
-        { value: 5, label: "已拒绝" },
-        { value: 6, label: "提现处理中" },
-        { value: 7, label: "提现失败" }
-      ],
-      checkedCities: [
-        "充值单号",
-        "用户手机",
-        "真实姓名",
-        "充值金额",
-        "到账金额",
-        "手续费",
-        "充值方式",
-        "订单时间",
-        "到账时间",
-        "状态"
+        { value: 0, label: "全部状态" },
+        { value: 1, label: "提现成功" },
+        { value: 2, label: "提现处理中" }
       ],
       navArr: ["资金管理", "提现记录"]
     };
   },
 
   methods: {
+    // 获取搜索列表 (pageSize, currentPage)
+    getSearchList() {
+      // number 充值单号 phone 用户手机 status 充值状态 start 开始时间 end 结束时间
+      var selOpt = this.searchSel;
+      if (selOpt == 0) {
+        this.Axios.get("http://172.16.6.72:8080/order/orders/info")
+          .then(res => {
+            this.tableData = res.data.data;
+            console.log(res.data.data);
+            this.total = res.data.count;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
+        var selOpt = this.searchSel === 1 ? "number" : "phone";
+        this.Axios.get(
+          "http://172.16.6.72:8080/order/orders/info?" +selOpt+`=${this.input5}&page=1&limit=5`
+        )
+          .then(res => {
+            this.tableData = res.data.data;
+            this.total = res.data.total;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
+    // 筛选
+    change() {
+      this.Axios.get(
+        "http://172.16.6.72:8080/order/orders?status=" +
+          `${this.statusSel}&page=${this.currentPage}&limit=${this.pagesize}`
+      )
+        .then(res => {
+          console.log(res);
+          this.tableData = res.data.data;
+          this.total = res.data.total;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     // 查看
     handleView: function(row) {
       window.sessionStorage.setItem("rows", JSON.stringify(row));
       console.log(this.$router);
-      this.$router.push({name:"Details",params:{navArr: ["资金管理", "提现记录", "提现记录详情"]}});
+      this.$router.push({
+        name: "Details",
+        params: { navArr: ["资金管理", "提现记录", "提现记录详情"] }
+      });
     },
     // 筛选列 显示隐藏
     toggle() {
       this.isshow = !this.isshow;
-    },
-    // 筛选列 全选
-    handleCheckAllChange(val) {
-      this.checkedCities = val ? cityOptions : [];
-      this.isIndeterminate = false;
     },
     handleCheckedCitiesChange(value) {
       let checkedCount = value.length;
@@ -239,15 +251,44 @@ export default {
         checkedCount > 0 && checkedCount < this.cities.length;
     },
 
-    //  分页
-    handleClick(row) {
-      console.log(row);
+    // handleClick(row) {
+    //   console.log(row);
+    // },
+
+    // 分页
+    // 每页显示条数
+    handleSizeChange(val) {     
+      this.pagesize = val;
+      this.Axios.get(
+        "http://172.16.6.72:8080/order/orders?" +
+          `page=${this.currentPage}&limit=${val}`
+      )
+        .then(res => {
+          console.log(res);
+          this.tableData = res.data.data;
+          this.total = res.data.count;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    current_change: function(currentPage) {
-      this.currentPage = currentPage;
-    },
-    handleSizeChange(pagesize) {
-      this.pagesize = pagesize;
+    // 当前页
+    handleCurrentChange(val) {
+      console.log(`当前页:` + val);
+      console.log(this.pagesize);
+      this.currentPage = val;
+      this.Axios.get(
+        "http://172.16.6.72:8080/order/orders?" +
+          `page=${val}&limit=${this.pagesize}`
+      )
+        .then(res => {
+          console.log(res);
+          this.tableData = res.data.data;
+          this.total = res.data.count;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
 
     // 导出
@@ -277,11 +318,11 @@ export default {
   },
 
   created() {
-    this.Axios.get("http://172.16.6.60:8080/order/orders/info")
+    this.Axios.get("http://172.16.6.72:8080/order/orders/info")
       .then(res => {
         this.tableData = res.data.data;
         console.log(this.tableData);
-        this.total = this.tableData.length;
+        this.total = res.data.count;
       })
       .catch(err => {
         console.log(err);
@@ -307,16 +348,41 @@ export default {
   /* height: 300px; */
   background-color: white;
 }
-#nav .one,
-#nav .two {
+#nav {
   position: relative;
+}
+#nav .status {
+  margin-left: 30px;
+  display: inline-block;
+}
+#nav >>> .two > .dateTimePicker {
+  display: inline-block;
+  margin-left: 30px;
+}
+#nav >>> .two > .dateTimePicker > .el-date-editor {
+  width: 365px;
+}
+#nav .two > .dateTimePicker > p {
+  display: inline-block;
+}
+#nav >>> .el-select .el-input {
+  width: 130px;
+}
+#nav >>> .sel .el-input-group__prepend {
+  background-color: #fff;
 }
 .export,
 .customize {
   position: absolute;
   top: 0;
   right: 0;
-  margin-top: 15px;
+  /* margin-top: 15px; */
   display: inline-block;
+}
+.pagination {
+  text-align: right;
+  padding-top: 20px;
+  padding-right: 10px;
+  padding-bottom: 10px;
 }
 </style>

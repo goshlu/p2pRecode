@@ -9,18 +9,24 @@
         <div class="basicInfo">
           <h4>提现信息</h4>
         </div>
+        <!-- 
+               <el-table-column prop="payNumber" label="提现单号" width="145px"></el-table-column>
+            <el-table-column prop="pePhone" label="用户手机" ></el-table-column>
+            <el-table-column prop="username" label="真实姓名"></el-table-column>
+            <el-table-column prop="orMoney" label="提现金额"></el-table-column>
+         -->
         <el-form ref="from1" label-width="150px">
           <el-form-item label="提现单号：">
-            <span>1231231</span>
+            <span>{{formData.payNumber}}</span>
           </el-form-item>
           <el-form-item label="用户手机号码：">
-            <span>13800000001</span>
+            <span>{{formData.pePhone}}</span>
           </el-form-item>
           <el-form-item label="真实姓名：">
-            <span>陈一二</span>
+            <span>{{formData.username}}</span>
           </el-form-item>
           <el-form-item label="用户类型：">
-            <span>理财用户</span>
+            <span>{{formData.pePhone}}</span>
           </el-form-item>
           <el-form-item label="提现银行：">
             <span>招商银行</span>
@@ -29,17 +35,17 @@
             <span>473821747823782</span>
           </el-form-item>
           <el-form-item label="提现金额：">
-            <span>¥100.00</span>
+            <span>¥{{formData.orMoney}}</span>
           </el-form-item>
           <el-form-item label="提现手续费：">
             <span>¥2.00(2%)</span>
           </el-form-item>
-          <el-form-item label="预计到账金额：">
+          <!-- <el-form-item label="预计到账金额：">
             <span>¥98.00</span>
-          </el-form-item>
-          <el-form-item label="提交时间：">
+          </el-form-item> -->
+          <!-- <el-form-item label="提交时间：">
             <span>2015-02-10 10:00:00</span>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
       </div>
 
@@ -63,23 +69,6 @@
           </el-form-item>
         </el-form>
       </div>
-
-      <!-- 提现记录 -->
-      <!-- <div class="from3">
-        <div class="withdrawalsRecord">
-          <h4>最近提现记录</h4>
-        </div>
-        <el-form ref="from1" label-width="150px">
-          <el-form-item>
-            <el-table :data="tableData" :header-cell-style="{background:'#f2f2f2',color:'#606266'}">
-              style="width: 100%">
-              <el-table-column prop="date" label="日期" width="180"></el-table-column>
-              <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-              <el-table-column prop="address" label="地址"></el-table-column>
-            </el-table>
-          </el-form-item>
-        </el-form>
-      </div>-->
 
       <!-- 审核 -->
       <div class="from4">
@@ -169,8 +158,11 @@ export default {
             this.$router.back();
           }, 500);
           var val = this.form.resource === "通过"?1:2;
+          console.log("orid");
+          console.log(this.formData.orid);
           console.log(val);
-          this.Axios.put("http://172.16.6.60:8080/order/audit?id="+val+"&aId="+val,{
+          // "http://172.16.6.60:8080/order/audit?id="+val+"&aId="+val, 
+          this.Axios.put("http://172.16.6.72:8080/order/audit?id="+`${this.formData.orid}&aId=${val}`,{
             header:{
               ['Content-Type'] : 'application/x-www-form-urlencoded'
             }
@@ -196,15 +188,15 @@ export default {
       console.log("submit!");
     }
   },
-  beforeCreate () {
+  created() {
+    // let formData = this.$route.params.formArr;
     this.formData = {
       ...this.$route.params.formArr
     };
-
-  },
-  created() {
-    // let formData = this.$route.params.formArr;
+    
+  
     console.log("this.formData");
+    console.log(typeof this.formData);
     console.log(this.formData);
   }
 };

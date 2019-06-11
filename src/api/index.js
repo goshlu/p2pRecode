@@ -8,7 +8,6 @@ export const fetchRest = (params) => request
         return res.data;
         // console.log(res.data.data);
     }
-        
     );
     export const fetchRecode = (params) => request
     ("/refund/record",{params}).then(
@@ -25,3 +24,10 @@ export const fetchInv = () => request("/Inv").then(res => res.data.datas);
 
 export const fetchNav = "p2pMenu";
 export const powerMaZiYuan = "/resource/info"
+
+export const bumen = 'admin/group';
+export const gongneng = 'autority/info';
+export const juese = 'role/info';
+export const yuangong = 'admin/info';
+export const zhiwei = 'role/group';
+export const ziyuan = 'resource/info';

@@ -13,7 +13,7 @@
       <li class="right">
         <!-- <div class="message"></div> -->
         <div class="mine">
-          <span @click="getMoreBox">李大钊</span>
+          <span @click="getMoreBox">{{userName}}</span>
           <span class="el-icon-caret-bottom" @click="getMoreBox"></span>
           <div class="imgBox" @click="getMoreBox">
             <span></span>
@@ -32,16 +32,12 @@
         <div :class="!isFullScreen?'fullScreen':'outFullScreen'" @click="getFullScreen"></div>
       </li>
     </ul>
-    <div class="bottom" v-if="openChildren">
+    <div class="bottom" v-if="getOpenChildren">
       <ul class="left">
-        <li :class="openChild===item.title?now:noo" v-for="(item,index) in openChildren" :key="index" @click="childClick(item.title)">
-          <router-link :to="item.url">{{item.title}}</router-link>
+        <li :class="openChild===item.title?now:noo" v-for="(item,index) in getOpenChildren" :key="index" @click="childClick(item.title)">
+          <!-- {{item.title}} -->
+          <router-link :to="item.uri">{{item.title}}</router-link>
         </li>
-        <!-- <li class="now">角色管理</li>
-        <li>|</li>
-        <li>模块管理</li>
-        <li>|</li>
-        <li>用户管理</li> -->
       </ul>
       <ul class="right">
         <div class="searchIput">
@@ -66,6 +62,7 @@ export default {
 
   data(){
     return{
+      userName:"",
       isShowMoreBox:false,
       now:"now",
       noo:"",
@@ -79,18 +76,18 @@ export default {
 
   computed:{
     // this.navData = [],
-    ...mapGetters(['getNavData']),
+    ...mapGetters(['getNavData','getOpenChildren']),
   },
 
   methods:{
-    ...mapActions(['doUpdateNavData','doUpdateNavIsopenTrue']),
+    ...mapActions(['doUpdateNavData','doUpdateNavIsopenTrue','doUpdateOpenChildren']),
     menuClick(index){
       // console.log(index);
       this.doUpdateNavIsopenTrue(index);
       this.getNavData.forEach(element => {
-        if(element.isOpen){
+        if(element.open===1){
           // return element.children;
-          this.openChildren=element.children;
+          this.doUpdateOpenChildren(element.childrens);
           this.openTitle=element.title;
         }
       });
@@ -118,23 +115,54 @@ export default {
   },
 
   created(){
-    this.Axios(`https://5cd808f00cc5100014f1e33e.mockapi.io/${fetchNav}`).then(
-      res => {
-        // console.log(res.data);
-        this.doUpdateNavData(res.data);
-        this.getNavData.forEach(element => {
-          if(element.isOpen){
-            // return element.children;
-            this.openChildren=element.children;
-            this.openTitle=element.title;
-          }
-        });
-      }
-    ).catch(
-      error => {
-        // console.log(error);
-      }
-    );
+    this.doUpdateNavData(JSON.parse(sessionStorage.getItem('menu')));
+    this.userName=sessionStorage.getItem('userName');
+    console.log(this.getNavData);
+    
+    this.getNavData.forEach(element => {
+      console.log(element);
+      
+        if(element.open==1){
+          // return element.children;
+          console.log(element.childrens);
+          console.log("xxxx");
+          
+          this.doUpdateOpenChildren(element.childrens);
+          this.openTitle=element.title;
+          console.log(this.getOpenChildren);
+          
+        }
+    })
+    // this.Axios(`https://5cd808f00cc5100014f1e33e.mockapi.io/${fetchNav}`).then(
+    //   res => {
+    //     // console.log(res.data);
+    //     this.doUpdateNavData(res.data);
+    //     this.getNavData.forEach(element => {
+    //       if(element.open===1){
+    //         // return element.children;
+    //         this.openChildren=element.children;
+    //         this.openTitle=element.title;
+    //       }
+    //     });
+      // }
+    // ).catch(
+    //   error => {
+    //     // console.log(error);
+    //   }
+    // );
+    // this.Axios.get("http://172.16.6.72:8080",{
+    //   headers: {
+    //     token:sessionStorage.getItem('token')
+    //   },
+    // }).then(
+    //     res => {
+    //         // console.log(res.data);
+    //         sessionStorage.setItem('token',res.data.token);
+    //         sessionStorage.setItem('userId',res.data.admin.idCard);
+    //         this.doUpdateNavData(res.data.menu);
+    //         this.$router.push('/Home');
+    //     }
+    // ).catch()
   },
 
 }

@@ -75,6 +75,7 @@
   import AlertBox from './AlertBox';
   import AddNew from './addNew';
   import Delete from './Delete';
+  import {juese} from './../../../api/index'
   export default {
     name:'PowerMaBu',
     components:{
@@ -169,9 +170,27 @@
         // let limit = this.limit;
         
         this.limit = val;
-        this.Axios.get(`http://172.16.6.72:8080/role/info?page=1&limit=${val}`).then(
+        // this.Axios.get(`http://172.16.6.72:8080/role/info?page=1&limit=${val}`).then(
+        //   res => {
+        //     // console.log("每页条数"+res.data);
+        //     let arr = [...res.data.data];
+        //     this.tableData = arr.map(item => {
+        //       return {
+        //         id:item.id,
+        //         name:item.name,
+        //         time:item.time,
+        //         status:item.status,
+        //         description:item.description,
+        //         children:item.autority,
+        //       }
+        //     });
+        //   }).catch(
+        //   error=>{
+        //     // console.log(error);              
+        // })
+        this.AXIOS(juese+`page=1&limit=${val}`).then(
           res => {
-            // console.log("每页条数"+res.data);
+        //     // console.log("每页条数"+res.data);
             let arr = [...res.data.data];
             this.tableData = arr.map(item => {
               return {
@@ -183,10 +202,8 @@
                 children:item.autority,
               }
             });
-          }).catch(
-          error=>{
-            // console.log(error);              
-        })
+          }
+        ).catch()
         
       },
       handleCurrentChange(val) {
@@ -194,7 +211,25 @@
         this.currentPage = val;
         let limit = this.limit;
         //选择第几页
-        this.Axios.get(`http://172.16.6.72:8080/role/info?page=${val}&limit=${limit}`).then(
+        // this.Axios.get(`http://172.16.6.72:8080/role/info?page=${val}&limit=${limit}`).then(
+        //   res => {
+        //     // console.log("每页条数"+res.data);
+        //     let arr = [...res.data.data];
+        //     this.tableData = arr.map(item => {
+        //       return {
+        //         id:item.id,
+        //         name:item.name,
+        //         time:item.time,
+        //         status:item.status,
+        //         description:item.description,
+        //         children:item.autority,
+        //       }
+        //     });
+        //   }).catch(
+        //   error=>{
+        //     // console.log(error);              
+        // })
+        this.AXIOS(juese+`page=${val}&limit=${limit}`).then(
           res => {
             // console.log("每页条数"+res.data);
             let arr = [...res.data.data];
@@ -208,10 +243,8 @@
                 children:item.autority,
               }
             });
-          }).catch(
-          error=>{
-            // console.log(error);              
-        })
+          }
+        ).catch()
       },
       datailCancle(type){
         this.isShowDetailAlertBox=type;
@@ -227,27 +260,28 @@
         }
         
         let limit = this.limit;
-        this.Axios.get(`http://172.16.6.72:8080/role/info?page=1&limit=${limit}`).then(
-            res => {
-              // console.log(res.data);
-              this.count = res.data.count;
-              this.isShowPage = true;
-              let arr = [...res.data.data];
-              this.tableData = arr.map(item => {
-                return {
-                  id:item.id,
-                  name:item.name,
-                  time:item.time,
-                  status:item.status,
-                  description:item.description,
-                  children:item.autority,
-                }
-              });
-            }).catch(
-            error=>{
-              // console.log(error);
+        // this.Axios.get(`http://172.16.6.72:8080/role/info?page=1&limit=${limit}`).then(
+        //     res => {
+        //       // console.log(res.data);
+        //       this.count = res.data.count;
+        //       this.isShowPage = true;
+        //       let arr = [...res.data.data];
+        //       this.tableData = arr.map(item => {
+        //         return {
+        //           id:item.id,
+        //           name:item.name,
+        //           time:item.time,
+        //           status:item.status,
+        //           description:item.description,
+        //           children:item.autority,
+        //         }
+        //       });
+        //     }).catch(
+        //     error=>{
+        //       // console.log(error);
               
-        })
+        // })
+        this.AXIOS()
       },
       addNew(){
         this.isShowAddNew=true;
@@ -256,32 +290,74 @@
         //搜索
         let limit = this.limit;
         let search = this.search;
-        this.Axios.get(`http://172.16.6.72:8080/role/info?name=${search}&page=1&limit=${limit}`).then(
-            res => {
-              // console.log(res.data);
-              this.count = res.data.count;
-              let arr = [...res.data.data];
-              this.tableData = arr.map(item => {
-                return {
-                  id:item.id,
-                  name:item.name,
-                  time:item.time,
-                  status:item.status,
-                  description:item.description,
-                  children:item.autority,
-                }
-              });
-            }).catch(
-            error=>{
-              // console.log(error);              
-        })
+        // this.Axios.get(`http://172.16.6.72:8080/role/info?name=${search}&page=1&limit=${limit}`).then(
+        //     res => {
+        //       // console.log(res.data);
+        //       this.count = res.data.count;
+        //       let arr = [...res.data.data];
+        //       this.tableData = arr.map(item => {
+        //         return {
+        //           id:item.id,
+        //           name:item.name,
+        //           time:item.time,
+        //           status:item.status,
+        //           description:item.description,
+        //           children:item.autority,
+        //         }
+        //       });
+        //     }).catch(
+        //     error=>{
+        //       // console.log(error);              
+        // })
+        this.AXIOS(juese+`name=${search}&page=1&limit=${limit}`).then(
+          res => {
+          // console.log(res.data);
+          this.count = res.data.count;
+          let arr = [...res.data.data];
+          this.tableData = arr.map(item => {
+            return {
+              id:item.id,
+              name:item.name,
+              time:item.time,
+              status:item.status,
+              description:item.description,
+              children:item.autority,
+            }
+          })
+      }).catch()
       }
     },
     created(){
       //获取数据，渲染
       let limit = this.limit;
-      this.Axios.get(`http://172.16.6.72:8080/role/info?page=1&limit=${limit}`).then(
-          res => {
+      // this.Axios.get(`http://172.16.6.72:8080/role/info?page=1&limit=${limit}`).then(
+      //     res => {
+      //       // console.log(res.data);
+      //       this.count = res.data.count;
+      //       this.isShowPage = true;
+      //       let arr = [...res.data.data];
+      //       this.tableData = arr.map(item => {
+      //         return {
+      //           id:item.id,
+      //           name:item.name,
+      //           time:item.time,
+      //           status:item.status,
+      //           description:item.description,
+      //           children:item.autority,
+      //         }
+      //       });
+      //       console.log(this.tableData);
+            
+      //       this.options=[
+
+      //       ]
+      //     }).catch(
+      //     error=>{
+      //       // console.log(error);
+            
+      // })
+      this.AXIOS(juese+`?page=1&limit=${limit}`).then(
+        res => {
             // console.log(res.data);
             this.count = res.data.count;
             this.isShowPage = true;
@@ -296,16 +372,9 @@
                 children:item.autority,
               }
             });
-            console.log(this.tableData);
-            
-            this.options=[
-
-            ]
-          }).catch(
-          error=>{
-            // console.log(error);
-            
-      })
+            // console.log(this.tableData);
+          }
+      ).catch();
     },
   }
 </script>
